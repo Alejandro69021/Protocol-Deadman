@@ -905,12 +905,50 @@
         </div>
 
         <div id="vow-reveal"
-            style="opacity: 0; transform: translateY(15px); transition: all 0.8s ease; margin-top: 25px; max-width: 380px;">
-            <p style="font-size: 1.05rem; font-weight: 500; line-height: 1.7; color: #fff;">
-                "Pokoknya aku bakalan nikahin kamu, aku janji."
-            </p>
-            <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--gold); margin-top: 8px;">— Wafi</p>
-            <button class="btn-core" style="margin-top: 20px;" onclick="navTo(6)">Lanjut</button>
+            style="opacity: 0; transform: translateY(20px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); margin-top: 28px; max-width: 360px; width: 100%;">
+            
+            <!-- Foto cincin dengan efek reveal -->
+            <div id="ring-container" style="
+                position: relative; width: 100%; max-width: 260px; 
+                margin: 0 auto 20px; border-radius: 20px; overflow: hidden;
+                box-shadow: 0 0 40px rgba(244, 192, 78, 0.5), 0 20px 40px rgba(0,0,0,0.7);
+                border: 2px solid rgba(244, 192, 78, 0.5);
+            ">
+                <!-- Blur cover (terangkat saat reveal) -->
+                <div id="ring-blur-cover" style="
+                    position: absolute; inset: 0; z-index: 2;
+                    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+                    background: rgba(5, 8, 20, 0.65);
+                    transition: opacity 1.2s ease 0.3s;
+                    display: flex; align-items: center; justify-content: center;
+                ">
+                    <div style="text-align: center; color: rgba(255,255,255,0.6); font-size: 1.5rem;">
+                        <div>🔒</div>
+                        <div style="font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; margin-top: 4px; color: var(--accent-cyan);">CONFIDENTIAL</div>
+                    </div>
+                </div>
+                <img src="ring.jpg" alt="Cincin dari Wafi" style="
+                    width: 100%; display: block; object-fit: cover;
+                    aspect-ratio: 3/4;
+                ">
+            </div>
+
+            <!-- Pesan komitmen -->
+            <div style="
+                text-align: center; padding: 4px 8px;
+                border-left: 2px solid var(--gold);
+                padding-left: 16px; text-align: left;
+                background: rgba(244, 192, 78, 0.04);
+                border-radius: 0 12px 12px 0;
+                margin-bottom: 16px;
+            ">
+                <p style="font-size: 0.98rem; font-weight: 400; line-height: 1.75; color: #f0e8d8; font-style: italic;">
+                    "Wallahi you're the one and only girls that i want you bear my child. aku sengaja nutupin ini supaya bisa aku kasih ke kamu di momen yang tepat."
+                </p>
+                <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--gold); margin-top: 10px;">— Wafi</p>
+            </div>
+
+            <button class="btn-core" style="margin-top: 0; width: 100%;" onclick="navTo(6)">Lanjut</button>
         </div>
     </section>
 
@@ -1248,6 +1286,23 @@
                 reveal.style.opacity = '1';
                 reveal.style.transform = 'translateY(0)';
                 createSparks(window.innerWidth / 2, window.innerHeight / 2 - 40, 30);
+
+                // Angkat blur cover foto cincin dengan delay dramatis
+                setTimeout(() => {
+                    const cover = document.getElementById('ring-blur-cover');
+                    if (cover) {
+                        cover.style.opacity = '0';
+                        cover.style.pointerEvents = 'none';
+                        // Sparkle tambahan saat cincin terungkap
+                        setTimeout(() => {
+                            const ringBox = document.getElementById('ring-container');
+                            if (ringBox) {
+                                const rRect = ringBox.getBoundingClientRect();
+                                createSparks(rRect.left + rRect.width / 2, rRect.top + rRect.height / 2, 20);
+                            }
+                        }, 600);
+                    }
+                }, 800);
             } else {
                 vowReq = requestAnimationFrame(vowTicker);
             }
