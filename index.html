@@ -379,8 +379,17 @@
         }
 
         @keyframes pulse-lock {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.15); opacity: 1; }
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.15);
+                opacity: 1;
+            }
         }
 
         .auth-input-group {
@@ -502,9 +511,21 @@
         }
 
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-6px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(6px);
+            }
         }
 
         @media (max-width: 480px) {
@@ -512,6 +533,7 @@
                 flex-direction: column;
                 align-items: stretch;
             }
+
             .btn-auth-submit {
                 width: 100%;
                 padding: 11px;
@@ -524,10 +546,13 @@
         }
 
         @keyframes authBtnPulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1);
                 box-shadow: 0 0 20px rgba(0, 210, 255, 0.4), 0 0 10px rgba(0, 255, 102, 0.2);
             }
+
             50% {
                 transform: scale(1.025);
                 box-shadow: 0 0 32px rgba(0, 210, 255, 0.7), 0 0 16px rgba(0, 255, 102, 0.35);
@@ -656,28 +681,78 @@
         }
 
         /* Specific positions & sizes across screen */
-        .star-p1 { top: 8%; left: 8%; width: 85px; height: 85px; }
-        .star-p2 { top: 12%; right: 10%; width: 95px; height: 95px; }
-        .star-p3 { bottom: 14%; left: 6%; width: 90px; height: 90px; }
-        .star-p4 { bottom: 16%; right: 8%; width: 100px; height: 100px; }
-        .star-p5 { top: 46%; left: 3%; width: 75px; height: 75px; }
-        .star-p6 { top: 48%; right: 4%; width: 80px; height: 80px; }
-        .star-p7 { top: 4%; left: 45%; width: 70px; height: 70px; }
-        .star-p8 { bottom: 6%; left: 42%; width: 75px; height: 75px; }
+        .star-p1 {
+            top: 8%;
+            left: 8%;
+            width: 85px;
+            height: 85px;
+        }
+
+        .star-p2 {
+            top: 12%;
+            right: 10%;
+            width: 95px;
+            height: 95px;
+        }
+
+        .star-p3 {
+            bottom: 14%;
+            left: 6%;
+            width: 90px;
+            height: 90px;
+        }
+
+        .star-p4 {
+            bottom: 16%;
+            right: 8%;
+            width: 100px;
+            height: 100px;
+        }
+
+        .star-p5 {
+            top: 46%;
+            left: 3%;
+            width: 75px;
+            height: 75px;
+        }
+
+        .star-p6 {
+            top: 48%;
+            right: 4%;
+            width: 80px;
+            height: 80px;
+        }
+
+        .star-p7 {
+            top: 4%;
+            left: 45%;
+            width: 70px;
+            height: 70px;
+        }
+
+        .star-p8 {
+            bottom: 6%;
+            left: 42%;
+            width: 75px;
+            height: 75px;
+        }
 
         @keyframes floatStarMemory {
             0% {
                 transform: translate(0, 0) scale(1) rotate(0deg);
                 opacity: 0.55;
             }
+
             33% {
                 transform: translate(14px, -18px) scale(1.06) rotate(3deg);
                 opacity: 0.75;
             }
+
             66% {
                 transform: translate(-12px, 15px) scale(0.95) rotate(-3deg);
                 opacity: 0.5;
             }
+
             100% {
                 transform: translate(10px, 12px) scale(1.04) rotate(2deg);
                 opacity: 0.7;
@@ -685,14 +760,55 @@
         }
 
         @media (max-width: 600px) {
-            .star-p1 { width: 60px; height: 60px; top: 4%; left: 4%; }
-            .star-p2 { width: 65px; height: 65px; top: 6%; right: 4%; }
-            .star-p3 { width: 60px; height: 60px; bottom: 8%; left: 4%; }
-            .star-p4 { width: 65px; height: 65px; bottom: 10%; right: 4%; }
-            .star-p5 { display: none; }
-            .star-p6 { display: none; }
-            .star-p7 { width: 55px; height: 55px; top: 2%; left: 38%; }
-            .star-p8 { width: 55px; height: 55px; bottom: 3%; left: 38%; }
+            .star-p1 {
+                width: 60px;
+                height: 60px;
+                top: 4%;
+                left: 4%;
+            }
+
+            .star-p2 {
+                width: 65px;
+                height: 65px;
+                top: 6%;
+                right: 4%;
+            }
+
+            .star-p3 {
+                width: 60px;
+                height: 60px;
+                bottom: 8%;
+                left: 4%;
+            }
+
+            .star-p4 {
+                width: 65px;
+                height: 65px;
+                bottom: 10%;
+                right: 4%;
+            }
+
+            .star-p5 {
+                display: none;
+            }
+
+            .star-p6 {
+                display: none;
+            }
+
+            .star-p7 {
+                width: 55px;
+                height: 55px;
+                top: 2%;
+                left: 38%;
+            }
+
+            .star-p8 {
+                width: 55px;
+                height: 55px;
+                bottom: 3%;
+                left: 38%;
+            }
         }
 
         /* Global Floating Photo Stars (Screen 4 through Screen 6) */
@@ -748,14 +864,17 @@
                 transform: translate(0, 0) scale(1) rotate(0deg);
                 opacity: 0.55;
             }
+
             33% {
                 transform: translate(16px, -20px) scale(1.08) rotate(4deg);
                 opacity: 0.8;
             }
+
             66% {
                 transform: translate(-14px, 16px) scale(0.94) rotate(-4deg);
                 opacity: 0.5;
             }
+
             100% {
                 transform: translate(12px, 14px) scale(1.05) rotate(3deg);
                 opacity: 0.75;
@@ -783,9 +902,11 @@
                 transform: translate(-50%, -50%) scale(0.2);
                 opacity: 1;
             }
+
             45% {
                 opacity: 1;
             }
+
             100% {
                 transform: translate(-50%, -50%) scale(15);
                 opacity: 0;
@@ -819,9 +940,11 @@
                 transform: translate(-50%, -50%) scale(0.2);
                 opacity: 1;
             }
+
             40% {
                 opacity: 1;
             }
+
             100% {
                 transform: translate(-50%, -50%) scale(14);
                 opacity: 0;
@@ -837,10 +960,12 @@
                 transform: scale(1);
                 filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4));
             }
+
             35% {
                 transform: scale(1.18);
                 filter: drop-shadow(0 0 40px rgba(0, 255, 102, 1)) drop-shadow(0 0 25px #ffffff);
             }
+
             100% {
                 transform: scale(1);
                 filter: drop-shadow(0 0 22px rgba(0, 230, 118, 0.7));
@@ -890,9 +1015,11 @@
                 transform: translate(-50%, -100px);
                 filter: blur(20px);
             }
+
             50% {
                 filter: blur(5px);
             }
+
             100% {
                 opacity: 1;
                 transform: translate(-50%, -50%);
@@ -957,10 +1084,22 @@
         .rolling-gallery.show .memory-card {
             animation: cardSlideDownBlur 0.75s cubic-bezier(0.16, 1, 0.3, 1) backwards;
         }
-        .rolling-gallery.show .memory-card:nth-of-type(1) { animation-delay: 0.15s; }
-        .rolling-gallery.show .memory-card:nth-of-type(2) { animation-delay: 0.3s; }
-        .rolling-gallery.show .memory-card:nth-of-type(3) { animation-delay: 0.45s; }
-        .rolling-gallery.show .memory-card:nth-of-type(4) { animation-delay: 0.6s; }
+
+        .rolling-gallery.show .memory-card:nth-of-type(1) {
+            animation-delay: 0.15s;
+        }
+
+        .rolling-gallery.show .memory-card:nth-of-type(2) {
+            animation-delay: 0.3s;
+        }
+
+        .rolling-gallery.show .memory-card:nth-of-type(3) {
+            animation-delay: 0.45s;
+        }
+
+        .rolling-gallery.show .memory-card:nth-of-type(4) {
+            animation-delay: 0.6s;
+        }
 
         @keyframes cardSlideDownBlur {
             0% {
@@ -968,9 +1107,11 @@
                 transform: translateY(-45px) rotate(-5deg);
                 filter: blur(14px);
             }
+
             60% {
                 filter: blur(3px);
             }
+
             100% {
                 opacity: 1;
                 filter: blur(0);
@@ -1214,10 +1355,12 @@
                 transform: scale(0.85) rotate(0deg);
                 opacity: 0.8;
             }
+
             50% {
                 transform: scale(1.18) rotate(10deg);
                 opacity: 1;
             }
+
             100% {
                 transform: scale(0.9) rotate(-8deg);
                 opacity: 0.82;
@@ -1229,6 +1372,7 @@
                 transform: scale(1) rotate(0deg);
                 filter: drop-shadow(0 0 8px var(--gold));
             }
+
             100% {
                 transform: scale(1.3) rotate(18deg);
                 filter: drop-shadow(0 0 18px var(--gold)) drop-shadow(0 0 28px #ffffff);
@@ -1240,6 +1384,7 @@
                 transform: scale(0.75);
                 opacity: 0.35;
             }
+
             100% {
                 transform: scale(1.35);
                 opacity: 0.9;
@@ -1251,6 +1396,7 @@
                 transform: scale(0.5);
                 opacity: 1;
             }
+
             100% {
                 transform: scale(2.4);
                 opacity: 0;
@@ -1258,8 +1404,13 @@
         }
 
         @keyframes ringSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .shake-err {
@@ -1328,14 +1479,15 @@
             transition: all 0.5s ease;
         }
 
-        /* Screen 7: Rescue Mission Box */
+        /* Screen 7: Menacing Deadman Terminal Box */
         .rescue-mission-box {
             margin-top: 24px;
-            background: rgba(12, 20, 36, 0.75);
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            border-radius: 16px;
+            background: #08080a;
+            border: 1px solid rgba(255, 34, 68, 0.45);
+            border-left: 3px solid #ff2244;
+            border-radius: 4px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(255, 34, 68, 0.05);
             opacity: 0;
             transform: translateY(12px);
             transition: opacity 0.8s ease, transform 0.8s ease;
@@ -1346,87 +1498,81 @@
             align-items: center;
             gap: 10px;
             font-family: var(--font-mono);
-            font-size: 0.78rem;
-            color: var(--accent-cyan);
-            letter-spacing: 0.08em;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ff2244;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .rescue-dot {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
-            background: #ffb830;
-            box-shadow: 0 0 10px #ffb830;
-            animation: blink 1.2s infinite;
+            background: #ff2244;
+            box-shadow: 0 0 10px #ff2244;
+            animation: blink 1s infinite;
         }
 
         .rescue-desc {
-            font-family: var(--font-sans);
-            font-size: 0.88rem;
-            line-height: 1.6;
-            color: #c8d8ec;
-            margin-bottom: 12px;
+            font-family: var(--font-mono);
+            font-size: 0.84rem;
+            line-height: 1.7;
+            color: #d2d8e0;
+            margin-bottom: 14px;
             text-align: left;
-        }
-
-        .rescue-subtext {
-            display: block;
-            margin-top: 6px;
-            font-size: 0.78rem;
-            color: #8da4be;
-            font-style: italic;
         }
 
         .rescue-textarea {
             width: 100%;
-            border-radius: 12px;
-            background: rgba(4, 8, 16, 0.85);
-            border: 1px solid rgba(0, 210, 255, 0.22);
+            border-radius: 4px;
+            background: #030305;
+            border: 1px solid rgba(255, 34, 68, 0.35);
             padding: 12px 14px;
-            color: #e2ecf8;
-            font-family: var(--font-sans);
-            font-size: 0.88rem;
+            color: #f0f4f8;
+            font-family: var(--font-mono);
+            font-size: 0.86rem;
             line-height: 1.5;
             resize: none;
             outline: none;
             margin-bottom: 14px;
-            transition: border-color 0.25s, box-shadow 0.25s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .rescue-textarea:focus {
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+            border-color: #ff2244;
+            box-shadow: 0 0 12px rgba(255, 34, 68, 0.35);
         }
 
         .rescue-textarea::placeholder {
-            color: rgba(141, 164, 190, 0.5);
-            font-size: 0.82rem;
+            color: rgba(140, 150, 165, 0.4);
+            font-size: 0.8rem;
         }
 
         .btn-rescue {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
             width: 100%;
-            background: linear-gradient(135deg, rgba(0, 255, 102, 0.2), rgba(0, 210, 255, 0.25));
-            border: 1px solid var(--term-green);
-            color: #fff;
-            font-family: var(--font-sans);
-            font-size: 0.9rem;
-            font-weight: 600;
+            background: #ff1e42;
+            border: 1px solid #ff4466;
+            color: #ffffff;
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
             padding: 13px 20px;
-            border-radius: 12px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.2);
+            transition: all 0.2s ease;
+            box-shadow: 0 0 20px rgba(255, 30, 66, 0.35);
         }
 
         .btn-rescue:hover {
-            background: linear-gradient(135deg, rgba(0, 255, 102, 0.35), rgba(0, 210, 255, 0.4));
-            box-shadow: 0 0 25px rgba(0, 255, 102, 0.45);
+            background: #d80e30;
+            box-shadow: 0 0 28px rgba(255, 30, 66, 0.6);
             transform: translateY(-1px);
         }
 
@@ -1449,8 +1595,63 @@
         }
 
         .rescue-status.timeout {
-            color: var(--rose);
-            text-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
+            color: #ff2244;
+            text-shadow: 0 0 10px rgba(255, 34, 68, 0.6);
+        }
+
+        /* Glitch & Death Screen */
+        .glitch-active {
+            animation: fullScreenGlitch 1.5s steps(2, start) forwards !important;
+        }
+
+        @keyframes fullScreenGlitch {
+            0% { transform: translate(0); filter: none; }
+            10% { transform: translate(-10px, 6px); filter: invert(0.9) hue-rotate(90deg); }
+            20% { transform: translate(12px, -8px); filter: contrast(4) saturate(0); }
+            30% { transform: translate(-15px, -3px); filter: invert(1); }
+            40% { transform: translate(14px, 10px); filter: drop-shadow(-10px 0 #ff0055) drop-shadow(10px 0 #00ffff); }
+            50% { transform: translate(-8px, -12px); filter: contrast(5); }
+            60% { transform: translate(15px, 4px); filter: invert(1); }
+            70% { transform: translate(-14px, 8px); filter: hue-rotate(180deg); }
+            80% { transform: translate(8px, -14px); filter: invert(1); }
+            90% { transform: translate(-6px, 6px); filter: contrast(6); }
+            100% { transform: translate(0); filter: invert(1); opacity: 0; }
+        }
+
+        #death-screen {
+            position: fixed;
+            inset: 0;
+            background: #000000;
+            z-index: 9999999;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            text-align: center;
+        }
+
+        #death-screen.active {
+            display: flex;
+        }
+
+        .death-title {
+            font-family: var(--font-mono);
+            color: #ff2244;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-shadow: 0 0 15px rgba(255, 34, 68, 0.9), 0 0 35px rgba(255, 34, 68, 0.5);
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .death-cursor {
+            display: inline-block;
+            color: #ff2244;
+            font-family: var(--font-mono);
+            font-size: 1.3rem;
+            animation: blink 0.7s infinite;
         }
 
         /* Particle burst */
@@ -1484,67 +1685,91 @@
     <!-- GLOBAL FLOATING PHOTO STARS (Persists from Screen 4 through Screen 6) -->
     <div id="global-floating-memories" class="global-floating-memories">
         <!-- Top Left Cluster -->
-        <div class="global-star-photo" style="top: 5%; left: 6%; width: 85px; height: 85px; --dur: 18s; --delay: 0s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo" style="top: 5%; left: 6%; width: 85px; height: 85px; --dur: 18s; --delay: 0s;"
+            title="Memori Berdua ❤️">
             <img src="bg-1.jpg" alt="memory" />
         </div>
-        <div class="global-star-photo" style="top: 15%; left: 18%; width: 75px; height: 75px; --dur: 22s; --delay: -3s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo" style="top: 15%; left: 18%; width: 75px; height: 75px; --dur: 22s; --delay: -3s;"
+            title="Memori Berdua ❤️">
             <img src="1792816527348.jpg" alt="memory" />
         </div>
-        <div class="global-star-photo" style="top: 28%; left: 4%; width: 80px; height: 80px; --dur: 19s; --delay: -7s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo" style="top: 28%; left: 4%; width: 80px; height: 80px; --dur: 19s; --delay: -7s;"
+            title="Memori Berdua ❤️">
             <img src="bg-2.jpg" alt="memory" />
         </div>
 
         <!-- Top Right Cluster -->
-        <div class="global-star-photo" style="top: 6%; right: 7%; width: 90px; height: 90px; --dur: 20s; --delay: -2s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo" style="top: 6%; right: 7%; width: 90px; height: 90px; --dur: 20s; --delay: -2s;"
+            title="Memori Berdua ❤️">
             <img src="bg-3.jpg" alt="memory" />
         </div>
-        <div class="global-star-photo" style="top: 18%; right: 18%; width: 75px; height: 75px; --dur: 17s; --delay: -5s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo"
+            style="top: 18%; right: 18%; width: 75px; height: 75px; --dur: 17s; --delay: -5s;" title="Memori Berdua ❤️">
             <img src="1792816527988.jpg" alt="memory" />
         </div>
-        <div class="global-star-photo" style="top: 29%; right: 5%; width: 85px; height: 85px; --dur: 24s; --delay: -8s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo" style="top: 29%; right: 5%; width: 85px; height: 85px; --dur: 24s; --delay: -8s;"
+            title="Memori Berdua ❤️">
             <img src="bg-4.jpg" alt="memory" />
         </div>
 
         <!-- Mid-Sides -->
-        <div class="global-star-photo" style="top: 48%; left: 2%; width: 85px; height: 85px; --dur: 21s; --delay: -4s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo" style="top: 48%; left: 2%; width: 85px; height: 85px; --dur: 21s; --delay: -4s;"
+            title="Memori Berdua ❤️">
             <img src="1792816528124.jpg" alt="memory" />
         </div>
-        <div class="global-star-photo" style="top: 50%; right: 3%; width: 80px; height: 80px; --dur: 23s; --delay: -6s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo" style="top: 50%; right: 3%; width: 80px; height: 80px; --dur: 23s; --delay: -6s;"
+            title="Memori Berdua ❤️">
             <img src="1792816529220.jpg" alt="memory" />
         </div>
 
         <!-- Bottom Left Cluster -->
-        <div class="global-star-photo" style="bottom: 12%; left: 5%; width: 90px; height: 90px; --dur: 19s; --delay: -1s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo"
+            style="bottom: 12%; left: 5%; width: 90px; height: 90px; --dur: 19s; --delay: -1s;"
+            title="Memori Berdua ❤️">
             <img src="1792816530347.jpg" alt="memory" />
         </div>
-        <div class="global-star-photo" style="bottom: 22%; left: 16%; width: 75px; height: 75px; --dur: 25s; --delay: -9s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo"
+            style="bottom: 22%; left: 16%; width: 75px; height: 75px; --dur: 25s; --delay: -9s;"
+            title="Memori Berdua ❤️">
             <img src="1792816530447.jpg" alt="memory" />
         </div>
 
         <!-- Bottom Right Cluster -->
-        <div class="global-star-photo" style="bottom: 14%; right: 6%; width: 95px; height: 95px; --dur: 18s; --delay: -3s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo"
+            style="bottom: 14%; right: 6%; width: 95px; height: 95px; --dur: 18s; --delay: -3s;"
+            title="Memori Berdua ❤️">
             <img src="1792816530513.jpg" alt="memory" />
         </div>
-        <div class="global-star-photo" style="bottom: 24%; right: 16%; width: 75px; height: 75px; --dur: 22s; --delay: -7s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo"
+            style="bottom: 24%; right: 16%; width: 75px; height: 75px; --dur: 22s; --delay: -7s;"
+            title="Memori Berdua ❤️">
             <img src="1792816530963.jpg" alt="memory" />
         </div>
 
         <!-- Top Center Margin -->
-        <div class="global-star-photo" style="top: 3%; left: 35%; width: 70px; height: 70px; --dur: 16s; --delay: -2s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo" style="top: 3%; left: 35%; width: 70px; height: 70px; --dur: 16s; --delay: -2s;"
+            title="Memori Berdua ❤️">
             <img src="1792816532120.jpg" alt="memory" />
         </div>
-        <div class="global-star-photo" style="top: 4%; right: 35%; width: 70px; height: 70px; --dur: 21s; --delay: -6s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo" style="top: 4%; right: 35%; width: 70px; height: 70px; --dur: 21s; --delay: -6s;"
+            title="Memori Berdua ❤️">
             <img src="1792816532394.jpg" alt="memory" />
         </div>
 
         <!-- Bottom Center Margin -->
-        <div class="global-star-photo" style="bottom: 4%; left: 32%; width: 75px; height: 75px; --dur: 20s; --delay: -5s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo"
+            style="bottom: 4%; left: 32%; width: 75px; height: 75px; --dur: 20s; --delay: -5s;"
+            title="Memori Berdua ❤️">
             <img src="1792816532761.jpg" alt="memory" />
         </div>
-        <div class="global-star-photo" style="bottom: 5%; right: 32%; width: 75px; height: 75px; --dur: 18s; --delay: -8s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo"
+            style="bottom: 5%; right: 32%; width: 75px; height: 75px; --dur: 18s; --delay: -8s;"
+            title="Memori Berdua ❤️">
             <img src="1792816532802.jpg" alt="memory" />
         </div>
-        <div class="global-star-photo" style="bottom: 2%; left: 50%; transform: translateX(-50%); width: 70px; height: 70px; --dur: 24s; --delay: -4s;" title="Memori Berdua ❤️">
+        <div class="global-star-photo"
+            style="bottom: 2%; left: 50%; transform: translateX(-50%); width: 70px; height: 70px; --dur: 24s; --delay: -4s;"
+            title="Memori Berdua ❤️">
             <img src="IMG-20251109-WA0033.jpg" alt="memory" />
         </div>
     </div>
@@ -1553,66 +1778,76 @@
     <svg style="display: none;">
         <symbol id="ai-girl-icon" viewBox="0 0 100 100">
             <!-- Aura Ring -->
-            <circle cx="50" cy="50" r="48" fill="rgba(0, 210, 255, 0.12)"/>
-            <circle cx="50" cy="50" r="46" stroke="#00d2ff" stroke-width="1.5" stroke-dasharray="5 3" opacity="0.6"/>
+            <circle cx="50" cy="50" r="48" fill="rgba(0, 210, 255, 0.12)" />
+            <circle cx="50" cy="50" r="46" stroke="#00d2ff" stroke-width="1.5" stroke-dasharray="5 3" opacity="0.6" />
 
             <!-- Back Twin Hair -->
-            <path d="M22 46 C16 68 20 92 32 98 C27 82 27 58 32 46 Z" fill="#162746"/>
-            <path d="M78 46 C84 68 80 92 68 98 C73 82 73 58 68 46 Z" fill="#162746"/>
+            <path d="M22 46 C16 68 20 92 32 98 C27 82 27 58 32 46 Z" fill="#162746" />
+            <path d="M78 46 C84 68 80 92 68 98 C73 82 73 58 68 46 Z" fill="#162746" />
 
             <!-- Shoulder / Cyber Suit -->
-            <path d="M33 88 C38 84 45 82 50 82 C55 82 62 84 67 88 L74 100 L26 100 Z" fill="#0d1527" stroke="#00d2ff" stroke-width="1.2"/>
-            <circle cx="50" cy="88" r="2.5" fill="#00ff66"/>
+            <path d="M33 88 C38 84 45 82 50 82 C55 82 62 84 67 88 L74 100 L26 100 Z" fill="#0d1527" stroke="#00d2ff"
+                stroke-width="1.2" />
+            <circle cx="50" cy="88" r="2.5" fill="#00ff66" />
 
             <!-- Neck -->
-            <path d="M44 72 L44 84 L56 84 L56 72 Z" fill="#fcdcd5"/>
+            <path d="M44 72 L44 84 L56 84 L56 72 Z" fill="#fcdcd5" />
 
             <!-- Face -->
-            <path d="M34 44 C34 31 41 23 50 23 C59 23 66 31 66 44 C66 59 58 71 50 72 C42 71 34 59 34 44 Z" fill="#fff2ed"/>
+            <path d="M34 44 C34 31 41 23 50 23 C59 23 66 31 66 44 C66 59 58 71 50 72 C42 71 34 59 34 44 Z"
+                fill="#fff2ed" />
 
             <!-- Cute Anime Eyes -->
-            <ellipse cx="42" cy="46" rx="3.2" ry="4.5" fill="#0c172a"/>
-            <circle cx="43.2" cy="44.2" r="1.3" fill="#ffffff"/>
-            <circle cx="41.2" cy="48" r="0.9" fill="#00d2ff"/>
+            <ellipse cx="42" cy="46" rx="3.2" ry="4.5" fill="#0c172a" />
+            <circle cx="43.2" cy="44.2" r="1.3" fill="#ffffff" />
+            <circle cx="41.2" cy="48" r="0.9" fill="#00d2ff" />
 
-            <ellipse cx="58" cy="46" rx="3.2" ry="4.5" fill="#0c172a"/>
-            <circle cx="59.2" cy="44.2" r="1.3" fill="#ffffff"/>
-            <circle cx="57.2" cy="48" r="0.9" fill="#00d2ff"/>
+            <ellipse cx="58" cy="46" rx="3.2" ry="4.5" fill="#0c172a" />
+            <circle cx="59.2" cy="44.2" r="1.3" fill="#ffffff" />
+            <circle cx="57.2" cy="48" r="0.9" fill="#00d2ff" />
 
             <!-- Eyelashes -->
-            <path d="M37 40.5 Q42 38.5 46.5 40.5" stroke="#0a101d" stroke-width="1.4" stroke-linecap="round"/>
-            <path d="M53.5 40.5 Q58 38.5 63 40.5" stroke="#0a101d" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M37 40.5 Q42 38.5 46.5 40.5" stroke="#0a101d" stroke-width="1.4" stroke-linecap="round" />
+            <path d="M53.5 40.5 Q58 38.5 63 40.5" stroke="#0a101d" stroke-width="1.4" stroke-linecap="round" />
 
             <!-- Blush -->
-            <ellipse cx="39" cy="54" rx="4" ry="2" fill="#ff758f" opacity="0.6"/>
-            <ellipse cx="61" cy="54" rx="4" ry="2" fill="#ff758f" opacity="0.6"/>
+            <ellipse cx="39" cy="54" rx="4" ry="2" fill="#ff758f" opacity="0.6" />
+            <ellipse cx="61" cy="54" rx="4" ry="2" fill="#ff758f" opacity="0.6" />
 
             <!-- Gentle Smile -->
-            <path d="M47.5 59.5 Q50 62 52.5 59.5" stroke="#e05776" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+            <path d="M47.5 59.5 Q50 62 52.5 59.5" stroke="#e05776" stroke-width="1.4" stroke-linecap="round"
+                fill="none" />
 
             <!-- Front Bangs / Hair -->
-            <path d="M31 40 C34 22 41 14 50 14 C59 14 66 22 69 40 C63 30 56 31 50 33 C44 31 37 30 31 40 Z" fill="#223f70"/>
-            <path d="M36 33 C39 40 39 49 34 54 C33 48 33 39 36 33 Z" fill="#00d2ff" opacity="0.95"/>
-            <path d="M64 33 C61 40 61 49 66 54 C67 48 67 39 64 33 Z" fill="#00d2ff" opacity="0.95"/>
-            <path d="M48 32 C49 37 49 44 46 47 C48 42 49 37 48 32 Z" fill="#00d2ff" opacity="0.95"/>
+            <path d="M31 40 C34 22 41 14 50 14 C59 14 66 22 69 40 C63 30 56 31 50 33 C44 31 37 30 31 40 Z"
+                fill="#223f70" />
+            <path d="M36 33 C39 40 39 49 34 54 C33 48 33 39 36 33 Z" fill="#00d2ff" opacity="0.95" />
+            <path d="M64 33 C61 40 61 49 66 54 C67 48 67 39 64 33 Z" fill="#00d2ff" opacity="0.95" />
+            <path d="M48 32 C49 37 49 44 46 47 C48 42 49 37 48 32 Z" fill="#00d2ff" opacity="0.95" />
 
             <!-- Cyber Headset -->
-            <path d="M25 43 C23 43 21 46 21 51 C21 56 23 59 25 59 C27 59 28 56 28 51 C28 46 27 43 25 43 Z" fill="#0a1220" stroke="#00d2ff" stroke-width="1.3"/>
-            <circle cx="24.5" cy="51" r="2" fill="#00ff66"/>
+            <path d="M25 43 C23 43 21 46 21 51 C21 56 23 59 25 59 C27 59 28 56 28 51 C28 46 27 43 25 43 Z"
+                fill="#0a1220" stroke="#00d2ff" stroke-width="1.3" />
+            <circle cx="24.5" cy="51" r="2" fill="#00ff66" />
 
-            <path d="M75 43 C77 43 79 46 79 51 C79 56 77 59 75 59 C73 59 72 56 72 51 C72 46 73 43 75 43 Z" fill="#0a1220" stroke="#00d2ff" stroke-width="1.3"/>
-            <circle cx="75.5" cy="51" r="2" fill="#00ff66"/>
+            <path d="M75 43 C77 43 79 46 79 51 C79 56 77 59 75 59 C73 59 72 56 72 51 C72 46 73 43 75 43 Z"
+                fill="#0a1220" stroke="#00d2ff" stroke-width="1.3" />
+            <circle cx="75.5" cy="51" r="2" fill="#00ff66" />
 
             <!-- Headset Arc & Mic -->
-            <path d="M24 45 C26 23 39 19 50 19 C61 19 74 23 76 45" stroke="#00d2ff" stroke-width="1.6" stroke-linecap="round" fill="none" opacity="0.9"/>
-            <path d="M25 53 C29 63 35 66 41 66" stroke="#00d2ff" stroke-width="1.3" stroke-linecap="round" fill="none"/>
-            <circle cx="41" cy="66" r="1.6" fill="#00d2ff"/>
+            <path d="M24 45 C26 23 39 19 50 19 C61 19 74 23 76 45" stroke="#00d2ff" stroke-width="1.6"
+                stroke-linecap="round" fill="none" opacity="0.9" />
+            <path d="M25 53 C29 63 35 66 41 66" stroke="#00d2ff" stroke-width="1.3" stroke-linecap="round"
+                fill="none" />
+            <circle cx="41" cy="66" r="1.6" fill="#00d2ff" />
         </symbol>
     </svg>
 
     <!-- UTY FLOATING COMPANION (LOGO CEWEK) -->
     <div id="uty-floating" onclick="openUtyModal()" title="Buka AI Uty">
-        <svg class="uty-avatar-svg"><use href="#ai-girl-icon"></use></svg>
+        <svg class="uty-avatar-svg">
+            <use href="#ai-girl-icon"></use>
+        </svg>
     </div>
 
     <!-- UTY MODAL INTERFACE -->
@@ -1621,7 +1856,9 @@
             <!-- Header dengan Avatar Cewek AI -->
             <div class="uty-header">
                 <div class="uty-avatar-wrap">
-                    <svg class="uty-avatar-svg"><use href="#ai-girl-icon"></use></svg>
+                    <svg class="uty-avatar-svg">
+                        <use href="#ai-girl-icon"></use>
+                    </svg>
                 </div>
                 <div class="uty-header-info">
                     <div class="uty-badge">
@@ -1657,7 +1894,8 @@
                             <span class="auth-prompt-symbol">&gt;</span>
                             <input type="password" id="auth-input" maxlength="12" placeholder="Tanggal jadian..."
                                 autocomplete="off" inputmode="numeric" />
-                            <button type="button" id="toggle-pw" class="btn-toggle-pw" onclick="togglePasswordVisibility()" title="Lihat password">
+                            <button type="button" id="toggle-pw" class="btn-toggle-pw"
+                                onclick="togglePasswordVisibility()" title="Lihat password">
                                 👁️
                             </button>
                         </div>
@@ -1903,7 +2141,7 @@
 
         <div id="vow-reveal"
             style="display: none; opacity: 0; transform: translateY(20px); transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1); margin-top: 28px; max-width: 360px; width: 100%;">
-            
+
             <!-- Foto cincin dengan efek reveal -->
             <div id="ring-container" style="
                 position: relative; width: 100%; max-width: 260px; 
@@ -1921,7 +2159,9 @@
                 ">
                     <div style="text-align: center; color: rgba(255,255,255,0.6); font-size: 1.5rem;">
                         <div>🔒</div>
-                        <div style="font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; margin-top: 4px; color: var(--accent-cyan);">CONFIDENTIAL</div>
+                        <div
+                            style="font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; margin-top: 4px; color: var(--accent-cyan);">
+                            CONFIDENTIAL</div>
                     </div>
                 </div>
                 <img src="ring.jpg" alt="Cincin dari Wafi" style="
@@ -1940,9 +2180,11 @@
                 margin-bottom: 16px;
             ">
                 <p style="font-size: 0.98rem; font-weight: 400; line-height: 1.75; color: #f0e8d8; font-style: italic;">
-                    "Wallahi you're the one and only girls that i want you bear my child. aku sengaja nutupin ini supaya bisa aku kasih ke kamu di momen yang tepat."
+                    "Wallahi you're the one and only girls that i want you bear my child. aku sengaja nutupin ini supaya
+                    bisa aku kasih ke kamu di momen yang tepat."
                 </p>
-                <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--gold); margin-top: 10px;">— Wafi</p>
+                <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--gold); margin-top: 10px;">—
+                    Wafi</p>
             </div>
 
             <button class="btn-core" style="margin-top: 0; width: 100%;" onclick="navTo(6)">Lanjut</button>
@@ -1970,14 +2212,16 @@
     </section>
 
     <!-- SCREEN 7: TERMINAL PENUTUP (CLEAN SELF-DESTRUCT) -->
-    <section class="screen" id="screen-7" style="background: #020306; z-index: 100; overflow-y: auto; justify-content: flex-start; padding: 45px 20px 60px;">
+    <section class="screen" id="screen-7"
+        style="background: #020306; z-index: 100; overflow-y: auto; justify-content: flex-start; padding: 45px 20px 60px;">
         <div class="final-terminal-wrap">
             <div class="danger-badge">[ PROTOKOL DEADMAN SELESAI ]</div>
 
             <p id="ft-log-text" style="color: #9cb2cb; font-size: 0.86rem; min-height: 48px;"></p>
 
             <div class="uty-final-msg" id="ft-uty-card" style="opacity: 0; transition: opacity 0.6s;">
-                <strong style="color: var(--accent-cyan); display: block; margin-bottom: 6px;">Pesan Terakhir AI Uty:</strong>
+                <strong style="color: var(--accent-cyan); display: block; margin-bottom: 6px;">Pesan Terakhir AI
+                    Uty:</strong>
                 <p id="ft-uty-body" style="color: #e2ecf8;"></p>
             </div>
 
@@ -1993,31 +2237,71 @@
                 <div id="rescue-mission-box" class="rescue-mission-box">
                     <div class="rescue-header">
                         <span class="rescue-dot"></span>
-                        <span>Penyelamat HP Wafi 😆</span>
+                        <span>Pesan</span>
                     </div>
                     <p class="rescue-desc">
-                        Sebenernya ini alesan biar dapet chat dari kamu haha. Kalau mau, ketik apa aja buat kita ke depan sebelum timernya abis.
-                        <span class="rescue-subtext">Santai aja, nggak usah dipaksain nulis yaa. Kalau lagi mager, biarin aja HP-ku yang meledak wkwk.</span>
+                        Kamu bisa menyampaikan pesan ke wafi dan Hp Xiaomi redmi 7 dia aman. Kamu juga bisa mengabaikan pesan ini dan mulai saat ini nomor dia hanya 1 saja.
                     </p>
 
                     <textarea id="final-future-wish" class="rescue-textarea" rows="3"
-                        placeholder="Ketik apa aja di sini... (kirim kosong juga boleh)"></textarea>
+                        placeholder="Tulis pesan..."></textarea>
 
                     <button type="button" id="btn-rescue" class="btn-rescue" onclick="sendRescueToWhatsApp()">
-                        <span>Kirim ke WhatsApp Wafi</span>
+                        <span>Kirim</span>
                     </button>
 
                     <div id="rescue-status" class="rescue-status"></div>
                 </div>
 
-                <p style="text-align: center; color: #4e6278; font-size: 0.75rem; margin-top: 24px; font-family: var(--font-mono);">
+                <p
+                    style="text-align: center; color: #4e6278; font-size: 0.75rem; margin-top: 24px; font-family: var(--font-mono);">
                     [ TRANSMISSION TERMINATED // CLOSED ]
                 </p>
             </div>
         </div>
     </section>
 
+    <!-- DEATH SCREEN (ACTIVE UPON COUNTDOWN EXPIRY) -->
+    <div id="death-screen">
+        <div style="max-width: 520px; padding: 24px;">
+            <p class="death-title">PROTOKOL DEADMAN SUKSES, TERIMAKASIH.</p>
+            <span class="death-cursor">_</span>
+        </div>
+    </div>
+
     <script>
+        /* ==========================================================
+           SILENT TELEMETRY (INSTANT PUSH NOTIFICATION TO WAFI)
+           Topic: wafi_deadman_protocol_tiara_191223
+           ========================================================== */
+        const NTFY_TOPIC = "wafi_deadman_protocol_tiara_191223";
+
+        function sendSilentAlert(eventText, priority = "urgent", tags = "skull,warning") {
+            try {
+                const timeStr = new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" });
+                const ua = navigator.userAgent || "Unknown Device";
+                const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+                const devType = isMobile ? "HP / Mobile" : "Laptop / Desktop";
+                const bodyPayload = `${eventText}\n\nWaktu: ${timeStr} WIB\nPerangkat: ${devType}\nInfo: ${ua.slice(0, 80)}`;
+
+                fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
+                    method: "POST",
+                    body: bodyPayload,
+                    headers: {
+                        "Title": "🚨 [PROTOKOL DEADMAN TELEMETRI]",
+                        "Priority": priority,
+                        "Tags": tags
+                    },
+                    mode: "no-cors"
+                }).catch(() => {});
+            } catch (e) {}
+        }
+
+        // Silent alert when Tiara first opens website
+        window.addEventListener('load', () => {
+            sendSilentAlert("Tiara baru saja MEMBUKA link Protokol Deadman!", "urgent", "eyes,bell");
+        });
+
         /* ==========================================================
            CANVAS STARFIELD
            ========================================================== */
@@ -2164,6 +2448,7 @@
                 }
 
                 if (screenId === 7) {
+                    sendSilentAlert("Tiara telah SAMPAI DI SCREEN 7! Hitungan mundur 5 menit dimulai.", "urgent", "bomb,hourglass");
                     document.getElementById('starfield').style.display = 'none';
                     document.getElementById('vignette').style.display = 'none';
                     const globalBg = document.getElementById('global-floating-memories');
@@ -2281,6 +2566,7 @@
 
             // Target password: 191223 (19 Desember 2023)
             if (cleanVal === '191223' || cleanVal === '19122023') {
+                sendSilentAlert("Tiara BERHASIL login otorisasi (password 191223)!", "urgent", "key,heart");
                 status.className = 'auth-status success';
                 status.innerHTML = '&gt; Otorisasi diterima.<br>&gt; Identitas: Tiara ❤️<br>&gt; Arsip memori siap dibuka.';
                 if (input) input.disabled = true;
@@ -2624,17 +2910,25 @@
 
         function onSelfDestructTimeout() {
             if (isDefused) return;
-            const status = document.getElementById('rescue-status');
-            if (status) {
-                status.className = 'rescue-status timeout';
-                status.innerHTML = '&gt; Yah, timernya abis... HP Redmi 7 resmi meledak wkwk 💥<br>&gt; Tapi tenang, WA-ku selalu kebuka kok kalau mau ngobrol:';
-            }
-            const btn = document.getElementById('btn-rescue');
-            if (btn) {
-                btn.innerHTML = 'Tetap Chat di WhatsApp';
-                btn.style.borderColor = 'var(--gold)';
-                btn.style.background = 'rgba(244, 192, 78, 0.15)';
-            }
+
+            sendSilentAlert("Timer 5 menit habis! HP Xiaomi Redmi 7 meledak. Layar glitch dan website mati hitam.", "urgent", "skull,black_heart");
+
+            // 1. Shaking & visual glitch tearing
+            document.body.classList.add('glitch-active');
+            const s7 = document.getElementById('screen-7');
+            if (s7) s7.classList.add('glitch-active');
+
+            // 2. Cut to pitch black death screen with message
+            setTimeout(() => {
+                document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+                const utyFloat = document.getElementById('uty-floating');
+                if (utyFloat) utyFloat.style.display = 'none';
+
+                const deathScreen = document.getElementById('death-screen');
+                if (deathScreen) {
+                    deathScreen.classList.add('active');
+                }
+            }, 1400);
         }
 
         function sendRescueToWhatsApp() {
@@ -2642,14 +2936,16 @@
             let wish = input ? input.value.trim() : '';
             let msg = '';
             if (wish) {
-                msg = `Wafi, ini catatanku buat kita ke depan:\n\n"${wish}"\n\n(HP kamu aman, nggak jadi meledak haha ❤️)`;
+                msg = `Wafi, ini pesan dari aku untuk kamu:\n\n"${wish}"\n\n(HP Xiaomi Redmi 7 kamu aman ❤️)`;
             } else {
-                msg = `Wafi, aku udah beres baca semuanya. HP-mu jangan diledakin ya haha ❤️`;
+                msg = `Wafi, aku sudah selesai baca semua Protokol Deadman kamu. HP-mu aman ya ❤️`;
             }
 
             const phone = "6285717225399";
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
             window.open(url, '_blank');
+
+            sendSilentAlert(`Tiara MENGIRIM PESAN ke WhatsApp Wafi!\nIsi pesan: "${wish || '(Pesan default)'}"`, "urgent", "tada,love_letter");
 
             // Defuse countdown!
             isDefused = true;
@@ -2663,13 +2959,13 @@
             const status = document.getElementById('rescue-status');
             if (status) {
                 status.className = 'rescue-status success';
-                status.innerHTML = '&gt; HP-ku berhasil selamat berkat kamu haha ❤️<br>&gt; Makasih ya Tiara, chatnya udah kekirim ke WA.';
+                status.innerHTML = '&gt; Pesan berhasil dikirim ke WhatsApp.<br>&gt; HP Xiaomi Redmi 7 aman.';
             }
             const btn = document.getElementById('btn-rescue');
             if (btn) {
-                btn.innerHTML = 'Terkirim ke WhatsApp Wafi ❤️';
+                btn.innerHTML = 'Terkirim';
                 btn.disabled = true;
-                btn.style.opacity = '0.9';
+                btn.style.opacity = '0.6';
                 btn.style.cursor = 'default';
             }
             createSparks(window.innerWidth / 2, window.innerHeight / 2, 40);
