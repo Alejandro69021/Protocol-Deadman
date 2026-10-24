@@ -679,6 +679,109 @@
             .star-p8 { width: 55px; height: 55px; bottom: 3%; left: 38%; }
         }
 
+        /* Global Floating Photo Stars (Screen 4 through Screen 6) */
+        .global-floating-memories {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 4;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 1.8s;
+        }
+
+        .global-floating-memories.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .global-star-photo {
+            position: absolute;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(244, 192, 78, 0.4), 0 0 45px rgba(0, 210, 255, 0.25);
+            border: 1.5px solid rgba(244, 192, 78, 0.45);
+            filter: blur(2px) brightness(0.85);
+            opacity: 0.65;
+            animation: floatCosmicPhoto var(--dur, 20s) ease-in-out infinite alternate;
+            animation-delay: var(--delay, 0s);
+            transition: filter 0.35s ease, opacity 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .global-star-photo:hover {
+            filter: blur(0px) brightness(1.15);
+            opacity: 1;
+            transform: scale(1.3) !important;
+            z-index: 50;
+            border-color: var(--gold);
+            box-shadow: 0 0 35px rgba(244, 192, 78, 0.95), 0 0 70px rgba(255, 215, 0, 0.7);
+        }
+
+        .global-star-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        @keyframes floatCosmicPhoto {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 0.55;
+            }
+            33% {
+                transform: translate(16px, -20px) scale(1.08) rotate(4deg);
+                opacity: 0.8;
+            }
+            66% {
+                transform: translate(-14px, 16px) scale(0.94) rotate(-4deg);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(12px, 14px) scale(1.05) rotate(3deg);
+                opacity: 0.75;
+            }
+        }
+
+        /* Golden Pop Shockwave in Starmap */
+        .gold-pop-shockwave {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffffff 0%, #ffe066 30%, #f4c04e 65%, transparent 100%);
+            transform: translate(-50%, -50%) scale(0.2);
+            pointer-events: none;
+            z-index: 30;
+            animation: goldPopWave 1.2s cubic-bezier(0.12, 0.8, 0.32, 1) forwards;
+            box-shadow: 0 0 60px rgba(244, 192, 78, 0.95), 0 0 100px rgba(255, 215, 0, 0.8);
+        }
+
+        @keyframes goldPopWave {
+            0% {
+                transform: translate(-50%, -50%) scale(0.2);
+                opacity: 1;
+            }
+            45% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(15);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .global-star-photo {
+                transform: scale(0.75);
+            }
+        }
+
         /* Pop Cahaya Mekar */
         .pop-shockwave {
             position: absolute;
@@ -1045,6 +1148,74 @@
 
     <canvas id="starfield"></canvas>
     <div class="vignette" id="vignette"></div>
+
+    <!-- GLOBAL FLOATING PHOTO STARS (Persists from Screen 4 through Screen 6) -->
+    <div id="global-floating-memories" class="global-floating-memories">
+        <!-- Top Left Cluster -->
+        <div class="global-star-photo" style="top: 5%; left: 6%; width: 85px; height: 85px; --dur: 18s; --delay: 0s;" title="Memori Berdua ❤️">
+            <img src="bg-1.jpg" alt="memory" />
+        </div>
+        <div class="global-star-photo" style="top: 15%; left: 18%; width: 75px; height: 75px; --dur: 22s; --delay: -3s;" title="Memori Berdua ❤️">
+            <img src="1792816527348.jpg" alt="memory" />
+        </div>
+        <div class="global-star-photo" style="top: 28%; left: 4%; width: 80px; height: 80px; --dur: 19s; --delay: -7s;" title="Memori Berdua ❤️">
+            <img src="bg-2.jpg" alt="memory" />
+        </div>
+
+        <!-- Top Right Cluster -->
+        <div class="global-star-photo" style="top: 6%; right: 7%; width: 90px; height: 90px; --dur: 20s; --delay: -2s;" title="Memori Berdua ❤️">
+            <img src="bg-3.jpg" alt="memory" />
+        </div>
+        <div class="global-star-photo" style="top: 18%; right: 18%; width: 75px; height: 75px; --dur: 17s; --delay: -5s;" title="Memori Berdua ❤️">
+            <img src="1792816527988.jpg" alt="memory" />
+        </div>
+        <div class="global-star-photo" style="top: 29%; right: 5%; width: 85px; height: 85px; --dur: 24s; --delay: -8s;" title="Memori Berdua ❤️">
+            <img src="bg-4.jpg" alt="memory" />
+        </div>
+
+        <!-- Mid-Sides -->
+        <div class="global-star-photo" style="top: 48%; left: 2%; width: 85px; height: 85px; --dur: 21s; --delay: -4s;" title="Memori Berdua ❤️">
+            <img src="1792816528124.jpg" alt="memory" />
+        </div>
+        <div class="global-star-photo" style="top: 50%; right: 3%; width: 80px; height: 80px; --dur: 23s; --delay: -6s;" title="Memori Berdua ❤️">
+            <img src="1792816529220.jpg" alt="memory" />
+        </div>
+
+        <!-- Bottom Left Cluster -->
+        <div class="global-star-photo" style="bottom: 12%; left: 5%; width: 90px; height: 90px; --dur: 19s; --delay: -1s;" title="Memori Berdua ❤️">
+            <img src="1792816530347.jpg" alt="memory" />
+        </div>
+        <div class="global-star-photo" style="bottom: 22%; left: 16%; width: 75px; height: 75px; --dur: 25s; --delay: -9s;" title="Memori Berdua ❤️">
+            <img src="1792816530447.jpg" alt="memory" />
+        </div>
+
+        <!-- Bottom Right Cluster -->
+        <div class="global-star-photo" style="bottom: 14%; right: 6%; width: 95px; height: 95px; --dur: 18s; --delay: -3s;" title="Memori Berdua ❤️">
+            <img src="1792816530513.jpg" alt="memory" />
+        </div>
+        <div class="global-star-photo" style="bottom: 24%; right: 16%; width: 75px; height: 75px; --dur: 22s; --delay: -7s;" title="Memori Berdua ❤️">
+            <img src="1792816530963.jpg" alt="memory" />
+        </div>
+
+        <!-- Top Center Margin -->
+        <div class="global-star-photo" style="top: 3%; left: 35%; width: 70px; height: 70px; --dur: 16s; --delay: -2s;" title="Memori Berdua ❤️">
+            <img src="1792816532120.jpg" alt="memory" />
+        </div>
+        <div class="global-star-photo" style="top: 4%; right: 35%; width: 70px; height: 70px; --dur: 21s; --delay: -6s;" title="Memori Berdua ❤️">
+            <img src="1792816532394.jpg" alt="memory" />
+        </div>
+
+        <!-- Bottom Center Margin -->
+        <div class="global-star-photo" style="bottom: 4%; left: 32%; width: 75px; height: 75px; --dur: 20s; --delay: -5s;" title="Memori Berdua ❤️">
+            <img src="1792816532761.jpg" alt="memory" />
+        </div>
+        <div class="global-star-photo" style="bottom: 5%; right: 32%; width: 75px; height: 75px; --dur: 18s; --delay: -8s;" title="Memori Berdua ❤️">
+            <img src="1792816532802.jpg" alt="memory" />
+        </div>
+        <div class="global-star-photo" style="bottom: 2%; left: 50%; transform: translateX(-50%); width: 70px; height: 70px; --dur: 24s; --delay: -4s;" title="Memori Berdua ❤️">
+            <img src="IMG-20251109-WA0033.jpg" alt="memory" />
+        </div>
+    </div>
 
     <!-- SVG SYMBOL: CUTE AI GIRL COMPANION (UTY) -->
     <svg style="display: none;">
@@ -1530,6 +1701,8 @@
                 if (screenId === 7) {
                     document.getElementById('starfield').style.display = 'none';
                     document.getElementById('vignette').style.display = 'none';
+                    const globalBg = document.getElementById('global-floating-memories');
+                    if (globalBg) globalBg.classList.remove('active');
                     runFinalSequence();
                 }
             }, 300);
@@ -1561,11 +1734,17 @@
         }
 
         /* Particle effect */
-        function createSparks(x, y, count = 25) {
+        function createSparks(x, y, count = 25, colorMode = null) {
+            const goldPalette = ['#ffd700', '#f4c04e', '#ffffff', '#ffb703', '#ffe066'];
             for (let i = 0; i < count; i++) {
                 const el = document.createElement('div');
                 el.className = 'spark';
-                el.style.backgroundColor = (i % 2 === 0) ? 'var(--gold)' : 'var(--accent-cyan)';
+                if (colorMode === 'gold') {
+                    el.style.backgroundColor = goldPalette[i % goldPalette.length];
+                    el.style.boxShadow = '0 0 10px rgba(244, 192, 78, 0.8)';
+                } else {
+                    el.style.backgroundColor = (i % 2 === 0) ? 'var(--gold)' : 'var(--accent-cyan)';
+                }
                 const sz = Math.random() * 6 + 3;
                 el.style.width = sz + 'px'; el.style.height = sz + 'px';
                 el.style.left = x + 'px'; el.style.top = y + 'px';
@@ -1785,11 +1964,42 @@
                 document.getElementById('line-wb').classList.add('active');
             } else if (currentStep === 3) {
                 document.getElementById('line-bl').classList.add('active');
+
+                // 1. Pop bercahaya bintang ke-emasan
+                const mapWrap = document.querySelector('.starmap-wrap');
+                if (mapWrap) {
+                    const goldPop = document.createElement('div');
+                    goldPop.className = 'gold-pop-shockwave';
+                    mapWrap.appendChild(goldPop);
+                    setTimeout(() => goldPop.remove(), 1400);
+                }
+
+                // Sparks bintang emas di simpul-simpul rasi
                 const rect = elem.getBoundingClientRect();
-                createSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, 35);
+                createSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, 45, 'gold');
+
+                const bantulNode = document.getElementById('node-bantul');
+                if (bantulNode) {
+                    const rB = bantulNode.getBoundingClientRect();
+                    setTimeout(() => createSparks(rB.left + rB.width / 2, rB.top + rB.height / 2, 35, 'gold'), 150);
+                }
+                const watesNode = document.getElementById('node-wates');
+                if (watesNode) {
+                    const rW = watesNode.getBoundingClientRect();
+                    setTimeout(() => createSparks(rW.left + rW.width / 2, rW.top + rW.height / 2, 30, 'gold'), 300);
+                }
+
+                // 2. Kumpulan foto di latar belakang aktif sampai page ruang balasan
+                const globalBg = document.getElementById('global-floating-memories');
+                if (globalBg) {
+                    globalBg.classList.add('active');
+                }
 
                 setTimeout(() => {
-                    document.getElementById('btn-next-starmap').style.display = 'inline-flex';
+                    const nextBtn = document.getElementById('btn-next-starmap');
+                    nextBtn.style.display = 'inline-flex';
+                    nextBtn.style.boxShadow = '0 0 30px rgba(244, 192, 78, 0.6), 0 0 15px rgba(255, 215, 0, 0.4)';
+                    nextBtn.style.borderColor = 'var(--gold)';
                 }, 500);
             }
         }
