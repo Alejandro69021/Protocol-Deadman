@@ -518,6 +518,21 @@
             }
         }
 
+        #btn-auth.pulse-active {
+            animation: authBtnPulse 1.8s infinite ease-in-out;
+        }
+
+        @keyframes authBtnPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 25px rgba(0, 210, 255, 0.6), 0 0 15px rgba(0, 255, 102, 0.4);
+            }
+            50% {
+                transform: scale(1.04);
+                box-shadow: 0 0 45px rgba(0, 210, 255, 0.95), 0 0 25px rgba(0, 255, 102, 0.8);
+            }
+        }
+
         /* Screen 3: Tree of Memory */
         .tree-stage {
             width: 100%;
@@ -2116,7 +2131,7 @@
             // Target password: 191223 (19 Desember 2023)
             if (cleanVal === '191223' || cleanVal === '19122023') {
                 status.className = 'auth-status success';
-                status.innerHTML = '&gt; [STATUS: DISETUJUI] Otorisasi berhasil!<br>&gt; Identitas terkonfirmasi: Tiara ❤️<br>&gt; Membuka akses arsip memori...';
+                status.innerHTML = '&gt; [STATUS: DISETUJUI] Otorisasi berhasil!<br>&gt; Identitas terkonfirmasi: Tiara ❤️<br>&gt; Akses terbuka. Silakan klik tombol di bawah untuk membuka memori:';
                 if (input) input.disabled = true;
                 if (btnSubmit) btnSubmit.disabled = true;
 
@@ -2126,16 +2141,10 @@
                 if (btnAuth) {
                     btnAuth.style.opacity = '1';
                     btnAuth.style.visibility = 'visible';
-                    btnAuth.style.boxShadow = '0 0 30px rgba(0, 210, 255, 0.6), 0 0 15px rgba(0, 255, 102, 0.4)';
+                    btnAuth.style.pointerEvents = 'auto';
+                    btnAuth.classList.add('pulse-active');
                     btnAuth.innerHTML = '✨ [ BUKA AKSES MEMORI ] ✨';
                 }
-
-                // Smoothly transition after brief moment
-                setTimeout(() => {
-                    if (currentScreen === 1) {
-                        navTo(2);
-                    }
-                }, 1500);
             } else {
                 status.className = 'auth-status error';
                 status.innerHTML = '&gt; [STATUS: DITOLAK] Password salah! Akses tidak diizinkan.<br>&gt; Petunjuk: Tanggal jadian kita berdua (DDMMYY).';
@@ -2147,6 +2156,7 @@
         }
 
         function proceedToMemory() {
+            createSparks(window.innerWidth / 2, window.innerHeight / 2, 40);
             navTo(2);
         }
 
