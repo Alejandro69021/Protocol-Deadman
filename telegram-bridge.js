@@ -1,20 +1,16 @@
 /**
  * TELEGRAM TO WHATSAPP BRIDGE DAEMON
  * Protocol Deadman - Alwafie (@alexdodod)
- *
- * Controls:
- * - /start atau /menu : Menampilkan menu tombol kontrol
- * - /kirim           : Kirim transmisi Protokol Deadman ke WA Tiara
- * - /status          : Cek kuota dan status koneksi WhatsApp Fonnte
  */
 
 const https = require('https');
 
 const TG_TOKEN = "8674896830:AAFnMAWzmNvnDXqKSNoK3yXVQvSaaz36sVw";
-const ALLOWED_CHAT_ID = 5443153034; // ID Telegram Wafi
+const ALLOWED_CHAT_ID = "5443153034"; // ID Telegram Wafi (string for safe comparison)
 const FONNTE_TOKEN = "B9xXX9Muj7Ji71f6AKLN";
 const TIARA_WA = "6285954113051";
 
+// Pesan Transmisi Protokol Deadman (Versi Terbaru Wafi)
 const DEADMAN_TRANSMISSION_TEXT = `[SYSTEM AUTOMATED MESSAGE: PROTOKOL DEADMAN AKTIF]
 [STATUS: TIDAK ADA AKTIVITAS WA SELAMA 168 JAM (7 HARI)]
 
@@ -33,7 +29,7 @@ Jika pop-up pesan ini muncul di perangkatmu, kamu memiliki opsi untuk mengabaika
 Berikut adalah direktori tautan penting yang telah aku enkripsi dan berikan otorisasi khusus untuk kamu buka apabila terjadi situasi di atas:
 
 1. https://alejandro69021.github.io/Protocol-Deadman/
-2. https://drive.google.com/drive/folders/1EMQcqXExHHpffTJdIkiZ9g8FFpTtYE4s?usp=sharing
+2.https://drive.google.com/drive/folders/1EMQcqXExHHpffTJdIkiZ9g8FFpTtYE4s?usp=sharing
 
 Apabila trigger sistem ini disebabkan oleh KODE 01 atau KODE 03, aku memohon maaf yang sebesar-besarnya. Namun, jika KODE 02 yang tereksekusi, tolong maafkan semua kesalahan Wafi dan doakan agar husnul khatimah.
 
@@ -42,33 +38,37 @@ Apabila trigger sistem ini disebabkan oleh KODE 01 atau KODE 03, aku memohon maa
 // Helper HTTP POST
 function postRequest(url, headers, body) {
     return new Promise((resolve, reject) => {
-        const u = new URL(url);
-        const postData = typeof body === 'string' ? body : JSON.stringify(body);
-        const options = {
-            hostname: u.hostname,
-            path: u.pathname + u.search,
-            method: 'POST',
-            headers: {
-                ...headers,
-                'Content-Length': Buffer.byteLength(postData)
-            }
-        };
-
-        const req = https.request(options, (res) => {
-            let data = '';
-            res.on('data', chunk => data += chunk);
-            res.on('end', () => {
-                try {
-                    resolve(JSON.parse(data));
-                } catch (e) {
-                    resolve(data);
+        try {
+            const u = new URL(url);
+            const postData = typeof body === 'string' ? body : JSON.stringify(body);
+            const options = {
+                hostname: u.hostname,
+                path: u.pathname + u.search,
+                method: 'POST',
+                headers: {
+                    ...headers,
+                    'Content-Length': Buffer.byteLength(postData)
                 }
-            });
-        });
+            };
 
-        req.on('error', reject);
-        req.write(postData);
-        req.end();
+            const req = https.request(options, (res) => {
+                let data = '';
+                res.on('data', chunk => data += chunk);
+                res.on('end', () => {
+                    try {
+                        resolve(JSON.parse(data));
+                    } catch (e) {
+                        resolve(data);
+                    }
+                });
+            });
+
+            req.on('error', reject);
+            req.write(postData);
+            req.end();
+        } catch (err) {
+            reject(err);
+        }
     });
 }
 
@@ -86,7 +86,7 @@ async function sendTg(chatId, text, replyMarkup = null) {
     }, payload);
 }
 
-// Helper Send Telegram Answer Callback Query
+// Helper Send Telegram Answer Callback Query (menghilangkan loading spinner tombol)
 async function answerCallback(callbackQueryId, text = "") {
     return postRequest(`https://api.telegram.org/bot${TG_TOKEN}/answerCallbackQuery`, {
         'Content-Type': 'application/json'
@@ -119,155 +119,71 @@ async function checkFonnteStatus() {
 
 // Telegram Long Polling
 let offset = 0;
+let isPolling = false;
 
-async function poll() {
+async function pollUpdates() {
+    if (isPolling) return;
+    isPolling = true;
+
     try {
         const res = await postRequest(`https://api.telegram.org/bot${TG_TOKEN}/getUpdates`, {
             'Content-Type': 'application/json'
         }, {
             offset: offset,
-            timeout: 25
+            timeout: 20
         });
 
         if (res && res.ok && Array.isArray(res.result)) {
             for (const upd of res.result) {
                 offset = upd.update_id + 1;
 
-                // Handle Callback Query (tombol ditekan)
+                // 1. Tangani Klik Tombol (Callback Query)
                 if (upd.callback_query) {
                     const cb = upd.callback_query;
-                    const fromId = cb.from ? cb.from.id : null;
-                    if (fromId !== ALLOWED_CHAT_ID) continue;
-
-                    if (cb.data === 'confirm_send_tiara') {
-                        await answerCallback(cb.id, "Sedang mengirim ke WA Tiara...");
-                        await sendTg(fromId, "⏳ Memproses pengiriman pesan ke WhatsApp Tiara (+6285954113051)...");
-                        try {
-                            const resWA = await sendWhatsAppToTiara();
-                            if (resWA && resWA.status) {
-                                await sendTg(fromId, `✅ TRANSMISI BERHASIL!\n\nPesan Protokol Deadman telah resmi terkirim ke WhatsApp Tiara (${TIARA_WA}) melalui server Fonnte.\n\nID Pengiriman: ${resWA.id ? resWA.id.join(', ') : 'OK'}`);
-                            } else {
-                                await sendTg(fromId, `❌ Gagal mengirim: ${JSON.stringify(resWA)}`);
-                            }
-                        } catch (err) {
-                            await sendTg(fromId, `❌ Error koneksi Fonnte: ${err.message}`);
-                        }
-                    } else if (cb.data === 'cancel_send') {
-                        await answerCallback(cb.id, "Dibatalkan.");
-                        await sendTg(fromId, "🛑 Pengiriman dibatalkan. Pesan tidak dikirim ke WhatsApp Tiara.");
-                    } else if (cb.data === 'check_status') {
-                        await answerCallback(cb.id, "Mengecek status...");
-                        try {
-                            const st = await checkFonnteStatus();
-                            await sendTg(fromId, `📊 STATUS WHATSAPP GATEWAY:\n- Status: ${st.device_status || 'Unknown'}\n- Nomor: ${st.device || '-'}\n- Sisa Kuota: ${st.quota || '-'}\n- Expired: ${st.expired || '-'}`);
-                        } catch (e) {
-                            await sendTg(fromId, `❌ Gagal cek status: ${e.message}`);
-                        }
+                    const fromId = String(cb.from ? cb.from.id : '');
+                    if (fromId !== ALLOWED_CHAT_ID) {
+                        await answerCallback(cb.id, "Akses ditolak.");
+                        continue;
                     }
-                    continue;
-                }
 
-                // Handle Text Message
-                if (upd.message && upd.message.text) {
-                    const msg = upd.message;
-                    const fromId = msg.from ? msg.from.id : null;
-                    if (fromId !== ALLOWED_CHAT_ID) continue;
-
-                    const text = msg.text.trim();
-
-                    if (text === '/start' || text === '/menu' || text === '/help') {
-                        const keyboard = {
-                            inline_keyboard: [
-                                [
-                                    { text: "🚀 Kirim Transmisi ke WA Tiara", callback_data: "ask_confirm" }
-                                ],
-                                [
-                                    { text: "📊 Cek Status Server Fonnte", callback_data: "check_status" }
-                                ]
-                            ]
-                        };
-                        await sendTg(fromId, "🤖 *KONTROL PUSAT PROTOKOL DEADMAN*\n\nSelamat datang, Wafi. Kamu bisa memicu pengiriman pesan darurat langsung dari sini tanpa perlu membuka WhatsApp HP kamu.\n\nPilih opsi di bawah:", keyboard);
-                    } else if (text === '/kirim' || text === '/kirim_wa') {
-                        const keyboard = {
-                            inline_keyboard: [
-                                [
-                                    { text: "🚨 YA, EKSEKUSI SEKARANG", callback_data: "confirm_send_tiara" },
-                                    { text: "❌ BATALKAN", callback_data: "cancel_send" }
-                                ]
-                            ]
-                        };
-                        await sendTg(fromId, `⚠️ *KONFIRMASI EKSEKUSI DARURAT*\n\nApakah kamu yakin ingin mengirim teks transmisi Protokol Deadman ke nomor WhatsApp Tiara:\n📱 *${TIARA_WA}* ?\n\nPesan akan langsung terkirim sekarang.`, keyboard);
-                    } else if (text === '/status') {
-                        try {
-                            const st = await checkFonnteStatus();
-                            await sendTg(fromId, `📊 *STATUS WHATSAPP GATEWAY:*\n- Status: ${st.device_status}\n- Nomor Pengirim: ${st.device}\n- Kuota: ${st.quota}\n- Masa Aktif: ${st.expired}`);
-                        } catch (e) {
-                            await sendTg(fromId, `❌ Gagal: ${e.message}`);
-                        }
-                    }
-                }
-            }
-        }
-    } catch (e) {
-        // Sleep on error before retrying
-        await new Promise(r => setTimeout(r, 2000));
-    }
-
-    setImmediate(poll);
-}
-
-// Handle callback_data ask_confirm from /start menu
-const origPoll = poll;
-poll = async function() {
-    try {
-        const res = await postRequest(`https://api.telegram.org/bot${TG_TOKEN}/getUpdates`, {
-            'Content-Type': 'application/json'
-        }, {
-            offset: offset,
-            timeout: 25
-        });
-
-        if (res && res.ok && Array.isArray(res.result)) {
-            for (const upd of res.result) {
-                offset = upd.update_id + 1;
-
-                if (upd.callback_query) {
-                    const cb = upd.callback_query;
-                    const fromId = cb.from ? cb.from.id : null;
-                    if (fromId !== ALLOWED_CHAT_ID) continue;
+                    console.log(`[CALLBACK] Action clicked: ${cb.data} from ${fromId}`);
 
                     if (cb.data === 'ask_confirm') {
                         await answerCallback(cb.id);
                         const keyboard = {
                             inline_keyboard: [
                                 [
-                                    { text: "🚨 YA, EKSEKUSI SEKARANG", callback_data: "confirm_send_tiara" },
+                                    { text: "🚨 YA, EKSEKUSI SEKARANG", callback_data: "confirm_send_tiara" }
+                                ],
+                                [
                                     { text: "❌ BATALKAN", callback_data: "cancel_send" }
                                 ]
                             ]
                         };
-                        await sendTg(fromId, `⚠️ *KONFIRMASI EKSEKUSI DARURAT*\n\nApakah kamu yakin ingin mengirim teks transmisi Protokol Deadman ke nomor WhatsApp Tiara:\n📱 *${TIARA_WA}* ?`, keyboard);
+                        await sendTg(fromId, `⚠️ *KONFIRMASI EKSEKUSI DARURAT*\n\nApakah kamu yakin ingin mengirim pesan PROTOKOL DEADMAN ke nomor WhatsApp Tiara:\n📱 *${TIARA_WA}* ?\n\nPesan akan langsung terkirim sekarang.`, keyboard);
                     } else if (cb.data === 'confirm_send_tiara') {
                         await answerCallback(cb.id, "Sedang mengirim ke WA Tiara...");
-                        await sendTg(fromId, "⏳ Memproses pengiriman pesan ke WhatsApp Tiara (+6285954113051)...");
+                        await sendTg(fromId, `⏳ Memproses pengiriman pesan ke WhatsApp Tiara (${TIARA_WA})...`);
+
                         try {
                             const resWA = await sendWhatsAppToTiara();
+                            console.log('[FONNTE RES]', resWA);
                             if (resWA && resWA.status) {
-                                await sendTg(fromId, `✅ TRANSMISI BERHASIL!\n\nPesan Protokol Deadman telah resmi terkirim ke WhatsApp Tiara (${TIARA_WA}) melalui server Fonnte.\n\nID Pengiriman: ${resWA.id ? resWA.id.join(', ') : 'OK'}`);
+                                await sendTg(fromId, `✅ *TRANSMISI BERHASIL!*\n\nPesan Protokol Deadman telah resmi terkirim ke WhatsApp Tiara (${TIARA_WA}).\n\nStatus Fonnte: Berhasil masuk antrean kirim.`);
                             } else {
-                                await sendTg(fromId, `❌ Gagal mengirim: ${JSON.stringify(resWA)}`);
+                                await sendTg(fromId, `❌ Gagal mengirim via Fonnte:\n${JSON.stringify(resWA)}`);
                             }
                         } catch (err) {
-                            await sendTg(fromId, `❌ Error koneksi Fonnte: ${err.message}`);
+                            await sendTg(fromId, `❌ Error Fonnte: ${err.message}`);
                         }
                     } else if (cb.data === 'cancel_send') {
                         await answerCallback(cb.id, "Dibatalkan.");
-                        await sendTg(fromId, "🛑 Pengiriman dibatalkan. Pesan tidak dikirim ke WhatsApp Tiara.");
+                        await sendTg(fromId, "🛑 Pengiriman dibatalkan. Pesan TIDAK dikirim ke WhatsApp Tiara.");
                     } else if (cb.data === 'check_status') {
                         await answerCallback(cb.id, "Mengecek status...");
                         try {
                             const st = await checkFonnteStatus();
-                            await sendTg(fromId, `📊 STATUS WHATSAPP GATEWAY:\n- Status: ${st.device_status || 'Unknown'}\n- Nomor: ${st.device || '-'}\n- Sisa Kuota: ${st.quota || '-'}\n- Expired: ${st.expired || '-'}`);
+                            await sendTg(fromId, `📊 *STATUS WHATSAPP GATEWAY:*\n- Status: ${st.device_status || 'Unknown'}\n- Nomor Pengirim: ${st.device || '-'}\n- Sisa Kuota: ${st.quota || '-'}\n- Expired: ${st.expired || '-'}`);
                         } catch (e) {
                             await sendTg(fromId, `❌ Gagal cek status: ${e.message}`);
                         }
@@ -275,12 +191,14 @@ poll = async function() {
                     continue;
                 }
 
+                // 2. Tangani Perintah Teks
                 if (upd.message && upd.message.text) {
                     const msg = upd.message;
-                    const fromId = msg.from ? msg.from.id : null;
+                    const fromId = String(msg.from ? msg.from.id : '');
                     if (fromId !== ALLOWED_CHAT_ID) continue;
 
-                    const text = msg.text.trim();
+                    const text = msg.text.trim().toLowerCase();
+                    console.log(`[TEXT] Message: ${text} from ${fromId}`);
 
                     if (text === '/start' || text === '/menu' || text === '/help') {
                         const keyboard = {
@@ -293,17 +211,19 @@ poll = async function() {
                                 ]
                             ]
                         };
-                        await sendTg(fromId, "🤖 *KONTROL PUSAT PROTOKOL DEADMAN*\n\nSelamat datang, Wafi. Kamu bisa memicu pengiriman pesan darurat langsung dari sini tanpa perlu membuka WhatsApp HP kamu.\n\nPilih opsi di bawah:", keyboard);
+                        await sendTg(fromId, "🤖 *KONTROL PUSAT PROTOKOL DEADMAN*\n\nSelamat datang, Wafi. Sistem siap mengeksekusi pesan darurat ke WhatsApp Tiara tanpa perlu membuka WhatsApp HP kamu.\n\nPilih tindakan di bawah:", keyboard);
                     } else if (text === '/kirim' || text === '/kirim_wa') {
                         const keyboard = {
                             inline_keyboard: [
                                 [
-                                    { text: "🚨 YA, EKSEKUSI SEKARANG", callback_data: "confirm_send_tiara" },
+                                    { text: "🚨 YA, EKSEKUSI SEKARANG", callback_data: "confirm_send_tiara" }
+                                ],
+                                [
                                     { text: "❌ BATALKAN", callback_data: "cancel_send" }
                                 ]
                             ]
                         };
-                        await sendTg(fromId, `⚠️ *KONFIRMASI EKSEKUSI DARURAT*\n\nApakah kamu yakin ingin mengirim teks transmisi Protokol Deadman ke nomor WhatsApp Tiara:\n📱 *${TIARA_WA}* ?`, keyboard);
+                        await sendTg(fromId, `⚠️ *KONFIRMASI EKSEKUSI DARURAT*\n\nApakah kamu yakin ingin mengirim pesan PROTOKOL DEADMAN ke nomor WhatsApp Tiara:\n📱 *${TIARA_WA}* ?`, keyboard);
                     } else if (text === '/status') {
                         try {
                             const st = await checkFonnteStatus();
@@ -316,11 +236,13 @@ poll = async function() {
             }
         }
     } catch (e) {
+        console.error('[POLL ERROR]', e.message);
         await new Promise(r => setTimeout(r, 2000));
+    } finally {
+        isPolling = false;
+        setTimeout(pollUpdates, 300);
     }
+}
 
-    setImmediate(poll);
-};
-
-console.log("Deadman Telegram Bridge is running...");
-poll();
+console.log("Deadman Telegram Bridge is ACTIVE and listening...");
+pollUpdates();
