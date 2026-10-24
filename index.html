@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Protokol Deadman // Untuk Tiara</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=JetBrains+Mono:wght@300;400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=JetBrains+Mono:wght@300;400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
     <style>
         :root {
             --term-green: #00ff66;
@@ -23,45 +26,77 @@
             --font-serif: 'Cinzel', serif;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        body, html {
-            width: 100%; height: 100%;
-            background-color: var(--bg-dark); color: #e8ecf4;
-            font-family: var(--font-sans); overflow: hidden;
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-dark);
+            color: #e8ecf4;
+            font-family: var(--font-sans);
+            overflow: hidden;
             letter-spacing: -0.01em;
         }
 
         /* Starfield & Vignette */
         #starfield {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1; pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
         }
+
         .vignette {
-            position: absolute; inset: 0;
+            position: absolute;
+            inset: 0;
             background: radial-gradient(circle at center, transparent 30%, rgba(4, 6, 12, 0.85) 90%);
-            z-index: 2; pointer-events: none;
+            z-index: 2;
+            pointer-events: none;
         }
 
         /* Screens */
         .screen {
-            position: absolute; inset: 0;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0; visibility: hidden;
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
             transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
-            z-index: 10; padding: 24px; text-align: center;
+            z-index: 10;
+            padding: 24px;
+            text-align: center;
         }
-        .screen.active { opacity: 1; visibility: visible; }
+
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
 
         /* Typography & Card */
         .glass-card {
             background: var(--glass);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
-            border-radius: 24px; padding: 32px 26px;
-            width: 100%; max-width: 440px;
+            border-radius: 24px;
+            padding: 32px 26px;
+            width: 100%;
+            max-width: 440px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            position: relative; z-index: 20;
+            position: relative;
+            z-index: 20;
         }
 
         .title-gold {
@@ -71,6 +106,7 @@
             letter-spacing: 0.05em;
             text-transform: uppercase;
         }
+
         .subtitle-mono {
             font-family: var(--font-mono);
             font-size: 0.75rem;
@@ -82,233 +118,490 @@
 
         /* Interactive Buttons */
         .btn-core {
-            display: inline-flex; align-items: center; justify-content: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             background: linear-gradient(135deg, rgba(0, 210, 255, 0.2), rgba(58, 123, 213, 0.3));
             border: 1px solid var(--accent-cyan);
-            color: #fff; padding: 13px 30px; border-radius: 40px;
-            font-family: var(--font-sans); font-size: 0.92rem; font-weight: 600;
-            cursor: pointer; position: relative; overflow: hidden;
+            color: #fff;
+            padding: 13px 30px;
+            border-radius: 40px;
+            font-family: var(--font-sans);
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
             box-shadow: 0 0 20px rgba(0, 210, 255, 0.25);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            margin-top: 22px; text-decoration: none;
+            margin-top: 22px;
+            text-decoration: none;
         }
-        .btn-core:active { transform: scale(0.96); }
+
+        .btn-core:active {
+            transform: scale(0.96);
+        }
+
         .btn-core::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: translateX(-100%); transition: transform 0.6s ease;
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
         }
-        .btn-core:hover::before { transform: translateX(100%); }
+
+        .btn-core:hover::before {
+            transform: translateX(100%);
+        }
 
         .btn-secondary {
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #b0c0d8; box-shadow: none;
+            color: #b0c0d8;
+            box-shadow: none;
         }
-        .btn-secondary:hover { border-color: var(--accent-cyan); color: #fff; }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-cyan);
+            color: #fff;
+        }
 
         /* UTY Companion HUD */
         #uty-floating {
-            position: fixed; top: 20px; left: 20px;
-            width: 48px; height: 48px; border-radius: 14px;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
             background: rgba(10, 16, 30, 0.85);
             border: 1px solid var(--accent-cyan);
-            display: flex; justify-content: center; align-items: center;
-            font-family: var(--font-mono); font-size: 1.1rem; color: var(--accent-cyan);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            color: var(--accent-cyan);
             box-shadow: 0 0 20px rgba(0, 210, 255, 0.35);
-            cursor: pointer; z-index: 999;
-            opacity: 0; visibility: hidden;
+            cursor: pointer;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
             transition: all 0.4s ease;
             backdrop-filter: blur(10px);
         }
-        #uty-floating.show { opacity: 1; visibility: visible; }
+
+        #uty-floating.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
         #uty-floating::after {
-            content: ''; position: absolute; top: -3px; right: -3px;
-            width: 8px; height: 8px; border-radius: 50%;
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
             background: var(--term-green);
             box-shadow: 0 0 8px var(--term-green);
         }
 
         #uty-modal {
-            position: fixed; inset: 0; z-index: 1000;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
             background: rgba(3, 5, 10, 0.88);
-            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 24px; opacity: 0; visibility: hidden;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            opacity: 0;
+            visibility: hidden;
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        #uty-modal.show { opacity: 1; visibility: visible; }
-        
+
+        #uty-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
         .uty-dialog-card {
             background: rgba(16, 23, 42, 0.9);
             border: 1px solid var(--accent-cyan);
-            border-radius: 20px; padding: 28px 24px;
-            max-width: 400px; width: 100%; position: relative;
+            border-radius: 20px;
+            padding: 28px 24px;
+            max-width: 400px;
+            width: 100%;
+            position: relative;
             box-shadow: 0 0 40px rgba(0, 210, 255, 0.2);
             text-align: left;
         }
+
         .uty-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            font-family: var(--font-mono); font-size: 0.72rem;
-            color: var(--accent-cyan); text-transform: uppercase;
-            letter-spacing: 0.1em; margin-bottom: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 14px;
         }
+
         .uty-badge .dot {
-            width: 6px; height: 6px; border-radius: 50%; background: var(--term-green);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--term-green);
             box-shadow: 0 0 6px var(--term-green);
         }
+
         #uty-text-content {
-            font-size: 0.94rem; line-height: 1.65; color: #d0ddec;
-            min-height: 70px; font-weight: 300;
+            font-size: 0.94rem;
+            line-height: 1.65;
+            color: #d0ddec;
+            min-height: 70px;
+            font-weight: 300;
         }
 
         /* Screen 1: Terminal Minimalis */
         .term-container {
-            width: 100%; max-width: 540px; font-family: var(--font-mono);
-            font-size: 0.88rem; line-height: 1.8; color: var(--term-green);
-            text-shadow: 0 0 8px var(--term-dim); text-align: left;
-            background: rgba(0, 20, 10, 0.35); padding: 24px;
-            border-radius: 16px; border: 1px solid rgba(0, 255, 102, 0.2);
+            width: 100%;
+            max-width: 540px;
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            line-height: 1.8;
+            color: var(--term-green);
+            text-shadow: 0 0 8px var(--term-dim);
+            text-align: left;
+            background: rgba(0, 20, 10, 0.35);
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 255, 102, 0.2);
         }
-        .cursor { display: inline-block; width: 8px; height: 1.1em; background: var(--term-green); vertical-align: text-bottom; animation: blink 0.9s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.1em;
+            background: var(--term-green);
+            vertical-align: text-bottom;
+            animation: blink 0.9s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
 
         /* Screen 3: Tree of Memory */
         .tree-stage {
-            width: 100%; max-width: 380px; height: 260px;
-            position: relative; display: flex; justify-content: center; align-items: flex-end;
+            width: 100%;
+            max-width: 380px;
+            height: 260px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
             margin-bottom: 16px;
         }
+
         .tree-svg-wrap {
-            width: 180px; height: 220px;
+            width: 180px;
+            height: 220px;
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4));
         }
+
         .water-spray {
-            position: absolute; top: 20px; right: 28%;
-            font-size: 2.2rem; opacity: 0; transform: rotate(0deg);
-            transition: all 0.3s ease; pointer-events: none;
+            position: absolute;
+            top: 20px;
+            right: 28%;
+            font-size: 2.2rem;
+            opacity: 0;
+            transform: rotate(0deg);
+            transition: all 0.3s ease;
+            pointer-events: none;
         }
+
         .water-spray.pouring {
-            opacity: 1; transform: rotate(-35deg) translate(-10px, 10px);
+            opacity: 1;
+            transform: rotate(-35deg) translate(-10px, 10px);
         }
 
         /* Hold Button */
         .hold-btn {
-            position: relative; width: 250px; height: 52px;
-            border-radius: 30px; overflow: hidden;
+            position: relative;
+            width: 250px;
+            height: 52px;
+            border-radius: 30px;
+            overflow: hidden;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(0, 210, 255, 0.4);
-            cursor: pointer; user-select: none;
+            cursor: pointer;
+            user-select: none;
             box-shadow: 0 0 20px rgba(0, 210, 255, 0.15);
         }
+
         .hold-fill {
-            position: absolute; top: 0; left: 0; height: 100%; width: 0%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
             background: linear-gradient(90deg, rgba(0, 210, 255, 0.4), rgba(0, 255, 102, 0.6));
             transition: width 0.08s linear;
         }
+
         .hold-label {
-            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-            font-size: 0.88rem; font-weight: 600; letter-spacing: 0.02em;
-            color: #fff; pointer-events: none; z-index: 2;
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.88rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: #fff;
+            pointer-events: none;
+            z-index: 2;
         }
 
         /* Rolling Gallery */
         .rolling-gallery {
-            position: absolute; inset: 0;
-            display: flex; align-items: center; gap: 16px;
-            overflow-x: auto; padding: 20px;
-            opacity: 0; visibility: hidden; transition: opacity 0.8s ease;
-            z-index: 30; background: rgba(4, 6, 12, 0.85);
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            overflow-x: auto;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease;
+            z-index: 30;
+            background: rgba(4, 6, 12, 0.85);
             backdrop-filter: blur(12px);
         }
-        .rolling-gallery.show { opacity: 1; visibility: visible; }
-        .rolling-gallery::-webkit-scrollbar { display: none; }
-        
+
+        .rolling-gallery.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .rolling-gallery::-webkit-scrollbar {
+            display: none;
+        }
+
         .memory-card {
-            flex: 0 0 170px; height: 230px;
-            background: #fff; padding: 8px 8px 30px 8px;
-            border-radius: 6px; box-shadow: 0 12px 30px rgba(0,0,0,0.6);
-            transform: rotate(-2deg); transition: transform 0.3s;
-            display: flex; flex-direction: column;
+            flex: 0 0 170px;
+            height: 230px;
+            background: #fff;
+            padding: 8px 8px 30px 8px;
+            border-radius: 6px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+            transform: rotate(-2deg);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
         }
-        .memory-card:nth-child(even) { transform: rotate(3deg); }
-        .memory-card:hover { transform: scale(1.05) rotate(0deg); z-index: 5; }
+
+        .memory-card:nth-child(even) {
+            transform: rotate(3deg);
+        }
+
+        .memory-card:hover {
+            transform: scale(1.05) rotate(0deg);
+            z-index: 5;
+        }
+
         .memory-card .img-box {
-            width: 100%; flex: 1; background: #121824;
-            border-radius: 4px; overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
-            font-family: var(--font-mono); font-size: 0.72rem; color: #8899ac;
+            width: 100%;
+            flex: 1;
+            background: #121824;
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: #8899ac;
         }
-        .memory-card .img-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .memory-card .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .memory-card .caption {
-            font-size: 0.72rem; color: #333; margin-top: 8px;
-            font-family: var(--font-sans); font-weight: 500; text-align: left;
+            font-size: 0.72rem;
+            color: #333;
+            margin-top: 8px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            text-align: left;
         }
 
         /* Screen 4: Star Map */
-        .starmap-wrap { width: 100%; max-width: 380px; height: 290px; position: relative; }
-        svg.starmap-svg { width: 100%; height: 100%; overflow: visible; }
+        .starmap-wrap {
+            width: 100%;
+            max-width: 380px;
+            height: 290px;
+            position: relative;
+        }
+
+        svg.starmap-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
         .star-link {
-            stroke: var(--gold); stroke-width: 2; stroke-dasharray: 400; stroke-dashoffset: 400;
-            filter: drop-shadow(0 0 8px var(--gold)); opacity: 0;
+            stroke: var(--gold);
+            stroke-width: 2;
+            stroke-dasharray: 400;
+            stroke-dashoffset: 400;
+            filter: drop-shadow(0 0 8px var(--gold));
+            opacity: 0;
             transition: stroke-dashoffset 0.8s ease, opacity 0.5s;
         }
-        .star-link.active { stroke-dashoffset: 0; opacity: 1; }
-        
-        .node-group { cursor: pointer; }
-        .node-glow { fill: rgba(0, 210, 255, 0.15); transition: all 0.3s; }
-        .node-core { fill: #b8cce4; transition: all 0.3s; }
-        .node-text {
-            fill: #9ab0ca; font-family: var(--font-mono); font-size: 11px;
-            letter-spacing: 0.05em; pointer-events: none; transition: all 0.3s;
+
+        .star-link.active {
+            stroke-dashoffset: 0;
+            opacity: 1;
         }
-        .node-group.connected .node-core { fill: var(--gold); filter: drop-shadow(0 0 8px var(--gold)); }
-        .node-group.connected .node-text { fill: #fff; font-weight: 600; }
-        .shake-err { animation: errShake 0.35s ease; }
+
+        .node-group {
+            cursor: pointer;
+        }
+
+        .node-glow {
+            fill: rgba(0, 210, 255, 0.15);
+            transition: all 0.3s;
+        }
+
+        .node-core {
+            fill: #b8cce4;
+            transition: all 0.3s;
+        }
+
+        .node-text {
+            fill: #9ab0ca;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.05em;
+            pointer-events: none;
+            transition: all 0.3s;
+        }
+
+        .node-group.connected .node-core {
+            fill: var(--gold);
+            filter: drop-shadow(0 0 8px var(--gold));
+        }
+
+        .node-group.connected .node-text {
+            fill: #fff;
+            font-weight: 600;
+        }
+
+        .shake-err {
+            animation: errShake 0.35s ease;
+        }
+
         @keyframes errShake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-6px); }
-            75% { transform: translateX(6px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-6px);
+            }
+
+            75% {
+                transform: translateX(6px);
+            }
         }
 
         /* Screen 7: Final Clean Terminal */
         .final-terminal-wrap {
-            width: 100%; max-width: 540px; font-family: var(--font-mono);
-            font-size: 0.88rem; line-height: 1.7; text-align: left;
+            width: 100%;
+            max-width: 540px;
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            line-height: 1.7;
+            text-align: left;
             color: #d8e5f5;
         }
+
         .danger-badge {
-            display: inline-block; padding: 4px 10px; border-radius: 6px;
-            background: rgba(255, 77, 109, 0.15); color: var(--rose);
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(255, 77, 109, 0.15);
+            color: var(--rose);
             border: 1px solid rgba(255, 77, 109, 0.4);
-            font-size: 0.75rem; letter-spacing: 0.1em; margin-bottom: 16px;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
         }
+
         .uty-final-msg {
             background: rgba(0, 210, 255, 0.05);
             border-left: 3px solid var(--accent-cyan);
             border-radius: 0 12px 12px 0;
-            padding: 16px; margin: 18px 0;
-            font-family: var(--font-sans); font-size: 0.9rem; line-height: 1.6;
+            padding: 16px;
+            margin: 18px 0;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            line-height: 1.6;
         }
+
         .cd-display {
-            font-family: var(--font-mono); font-size: 3rem; font-weight: 700;
-            color: var(--rose); text-shadow: 0 0 25px rgba(255, 77, 109, 0.4);
-            text-align: center; margin: 20px 0; letter-spacing: 0.05em;
+            font-family: var(--font-mono);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--rose);
+            text-shadow: 0 0 25px rgba(255, 77, 109, 0.4);
+            text-align: center;
+            margin: 20px 0;
+            letter-spacing: 0.05em;
         }
 
         /* Particle burst */
         .spark {
-            position: absolute; border-radius: 50%; pointer-events: none;
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
             animation: burst 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             z-index: 999;
         }
+
         @keyframes burst {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(0);
+                opacity: 0;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <canvas id="starfield"></canvas>
@@ -328,7 +621,8 @@
             </div>
             <div id="uty-text-content"></div>
             <div style="text-align: right; margin-top: 20px;">
-                <button class="btn-core" style="margin-top: 0; padding: 10px 22px; font-size: 0.85rem;" onclick="closeUtyModal()">Lanjut & Mengerti</button>
+                <button class="btn-core" style="margin-top: 0; padding: 10px 22px; font-size: 0.85rem;"
+                    onclick="closeUtyModal()">Lanjut & Mengerti</button>
             </div>
         </div>
     </div>
@@ -348,9 +642,11 @@
         <div class="glass-card">
             <h1 class="title-gold">Happy 3rd Anniversary</h1>
             <p class="subtitle-mono">Status Memori: 10 / 09 / 2026</p>
-            
-            <div style="font-size: 0.95rem; line-height: 1.75; color: #d5e0f0; text-align: left; border-left: 2px solid var(--accent-cyan); padding-left: 16px; margin: 15px 0;">
-                "Sayang, aku kangen kamu, aku sayang kamu banget. Semangat ya magang di Bantul dan perjalanannya nanti ke Lombok. Apapun yang terjadi, pokoknya aku bakalan nikahin kamu, aku janji."
+
+            <div
+                style="font-size: 0.95rem; line-height: 1.75; color: #d5e0f0; text-align: left; border-left: 2px solid var(--accent-cyan); padding-left: 16px; margin: 15px 0;">
+                "Sayang, aku kangen kamu, aku sayang kamu banget. Semangat ya magang di Bantul dan perjalanannya nanti
+                ke Lombok. Apapun yang terjadi, pokoknya aku bakalan nikahin kamu, aku janji."
             </div>
 
             <button class="btn-core" onclick="navTo(3)">Buka Babak Cerita</button>
@@ -361,15 +657,17 @@
     <section class="screen" id="screen-3">
         <div class="tree-stage">
             <div class="water-spray" id="water-can">🚿</div>
-            
+
             <!-- Pohon SVG Elegan -->
             <svg class="tree-svg-wrap" id="tree-svg" viewBox="0 0 100 120">
                 <!-- Batang Pohon -->
-                <path d="M50 115 Q50 80 50 65 Q45 50 35 40 M50 65 Q55 50 65 40 M50 75 Q42 68 38 60" 
-                      fill="none" stroke="#795548" stroke-width="4" stroke-linecap="round" />
+                <path d="M50 115 Q50 80 50 65 Q45 50 35 40 M50 65 Q55 50 65 40 M50 75 Q42 68 38 60" fill="none"
+                    stroke="#795548" stroke-width="4" stroke-linecap="round" />
                 <!-- Daun/Bunga (berubah via transform scale & color) -->
-                <g id="foliage" transform="scale(0.2) translate(150, 150)" style="transition: all 0.4s ease; transform-origin: 50px 50px;">
-                    <circle cx="50" cy="40" r="22" fill="#00e676" opacity="0.85" filter="drop-shadow(0 0 8px rgba(0,230,118,0.5))" />
+                <g id="foliage" transform="scale(0.2) translate(150, 150)"
+                    style="transition: all 0.4s ease; transform-origin: 50px 50px;">
+                    <circle cx="50" cy="40" r="22" fill="#00e676" opacity="0.85"
+                        filter="drop-shadow(0 0 8px rgba(0,230,118,0.5))" />
                     <circle cx="35" cy="45" r="16" fill="#00e676" opacity="0.85" />
                     <circle cx="65" cy="45" r="16" fill="#00e676" opacity="0.85" />
                     <circle cx="50" cy="25" r="14" fill="#69f0ae" opacity="0.9" />
@@ -409,7 +707,8 @@
             </div>
         </div>
 
-        <button id="btn-next-tree" class="btn-core" style="display: none; margin-top: 18px; z-index: 50;" onclick="navTo(4)">
+        <button id="btn-next-tree" class="btn-core" style="display: none; margin-top: 18px; z-index: 50;"
+            onclick="navTo(4)">
             Lanjut ke Peta Rasi Bintang
         </button>
     </section>
@@ -480,14 +779,16 @@
 
     <!-- SCREEN 5: RUANG JANJI (HOLD UNLOCK) -->
     <section class="screen" id="screen-5">
-        <div style="font-size: 3.5rem; margin-bottom: 16px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.4));" id="lock-icon">🔒</div>
-        
+        <div style="font-size: 3.5rem; margin-bottom: 16px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.4));"
+            id="lock-icon">🔒</div>
+
         <div class="hold-btn" id="vow-hold-btn">
             <div class="hold-fill" id="vow-fill"></div>
             <div class="hold-label" id="vow-label">Tahan 3 Detik Membuka</div>
         </div>
 
-        <div id="vow-reveal" style="opacity: 0; transform: translateY(15px); transition: all 0.8s ease; margin-top: 25px; max-width: 380px;">
+        <div id="vow-reveal"
+            style="opacity: 0; transform: translateY(15px); transition: all 0.8s ease; margin-top: 25px; max-width: 380px;">
             <p style="font-size: 1.05rem; font-weight: 500; line-height: 1.7; color: #fff;">
                 "Pokoknya aku bakalan nikahin kamu, aku janji."
             </p>
@@ -500,12 +801,13 @@
     <section class="screen" id="screen-6">
         <div class="glass-card">
             <h2 class="title-gold" style="font-size: 1.4rem;">Ruang Balasan</h2>
-            <p style="font-size: 0.82rem; color: #9bb0c6; margin: 6px 0 16px;">Tuliskan apa saja yang ada di hatimu untuk Wafi (opsional).</p>
-            
-            <textarea id="reply-text" rows="4" 
-                      style="width: 100%; border-radius: 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 14px; color: #fff; font-family: var(--font-sans); font-size: 0.9rem; resize: none; outline: none;" 
-                      placeholder="Ketik balasan atau pesanmu di sini..."></textarea>
-            
+            <p style="font-size: 0.82rem; color: #9bb0c6; margin: 6px 0 16px;">Tuliskan apa saja yang ada di hatimu
+                untuk Wafi (opsional).</p>
+
+            <textarea id="reply-text" rows="4"
+                style="width: 100%; border-radius: 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 14px; color: #fff; font-family: var(--font-sans); font-size: 0.9rem; resize: none; outline: none;"
+                placeholder="Ketik balasan atau pesanmu di sini..."></textarea>
+
             <button class="btn-core" style="width: 100%; margin-top: 14px;" onclick="sendToWhatsApp()">
                 Kirim Balasan ke WhatsApp Wafi
             </button>
@@ -519,16 +821,17 @@
     <section class="screen" id="screen-7" style="background: #020306; z-index: 100;">
         <div class="final-terminal-wrap">
             <div class="danger-badge">[ PROTOKOL DEADMAN SELESAI ]</div>
-            
+
             <p id="ft-log-text" style="color: #9cb2cb; font-size: 0.86rem; min-height: 48px;"></p>
-            
+
             <div class="uty-final-msg" id="ft-uty-card" style="opacity: 0; transition: opacity 0.6s;">
-                <strong style="color: var(--accent-cyan); display: block; margin-bottom: 6px;">Pesan Terakhir AI Uty:</strong>
+                <strong style="color: var(--accent-cyan); display: block; margin-bottom: 6px;">Pesan Terakhir AI
+                    Uty:</strong>
                 <p id="ft-uty-body" style="color: #e2ecf8;"></p>
             </div>
-            
+
             <p id="ft-warn-text" style="color: #ff9944; font-size: 0.84rem; min-height: 40px;"></p>
-            
+
             <div id="ft-countdown-box" style="opacity: 0; transition: opacity 0.6s;">
                 <div class="cd-display" id="cd-timer">05:00</div>
                 <p style="text-align: center; color: #6e849e; font-size: 0.8rem;">
@@ -571,15 +874,15 @@
             }
             update() {
                 this.x += this.vx; this.y += this.vy;
-                if(this.x < 0) this.x = canvas.width;
-                if(this.x > canvas.width) this.x = 0;
-                if(this.y < 0) this.y = canvas.height;
-                if(this.y > canvas.height) this.y = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
                 this.alpha += this.delta;
-                if(this.alpha <= 0.1 || this.alpha >= 0.9) this.delta *= -1;
+                if (this.alpha <= 0.1 || this.alpha >= 0.9) this.delta *= -1;
             }
         }
-        for(let i = 0; i < 110; i++) stars.push(new Star());
+        for (let i = 0; i < 110; i++) stars.push(new Star());
 
         function loopStars() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -606,7 +909,7 @@
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             setTimeout(() => {
                 const target = document.getElementById(`screen-${screenId}`);
-                if(target) target.classList.add('active');
+                if (target) target.classList.add('active');
                 currentScreen = screenId;
 
                 const utyFloat = document.getElementById('uty-floating');
@@ -617,7 +920,7 @@
                     utyFloat.classList.remove('show');
                 }
 
-                if(screenId === 7) {
+                if (screenId === 7) {
                     document.getElementById('starfield').style.display = 'none';
                     document.getElementById('vignette').style.display = 'none';
                     runFinalSequence();
@@ -626,17 +929,17 @@
         }
 
         function openUtyModal() {
-            if(!utyDialogs[currentScreen]) return;
+            if (!utyDialogs[currentScreen]) return;
             const modal = document.getElementById('uty-modal');
             const textBox = document.getElementById('uty-text-content');
             modal.classList.add('show');
             textBox.innerHTML = '';
-            
+
             const msg = utyDialogs[currentScreen];
             let idx = 0;
             clearInterval(utyInterval);
             utyInterval = setInterval(() => {
-                if(idx < msg.length) {
+                if (idx < msg.length) {
                     textBox.innerHTML += msg.charAt(idx);
                     idx++;
                 } else {
@@ -652,7 +955,7 @@
 
         /* Particle effect */
         function createSparks(x, y, count = 25) {
-            for(let i = 0; i < count; i++) {
+            for (let i = 0; i < count; i++) {
                 const el = document.createElement('div');
                 el.className = 'spark';
                 el.style.backgroundColor = (i % 2 === 0) ? 'var(--gold)' : 'var(--accent-cyan)';
@@ -676,7 +979,7 @@
         let introIdx = 0;
         function streamIntro() {
             const el = document.getElementById('term-stream');
-            if(introIdx < introLog.length) {
+            if (introIdx < introLog.length) {
                 el.innerHTML += introLog.charAt(introIdx) === '\n' ? '<br>' : introLog.charAt(introIdx);
                 introIdx++;
                 setTimeout(streamIntro, 35);
@@ -696,15 +999,15 @@
         const waterCan = document.getElementById('water-can');
         const foliage = document.getElementById('foliage');
         const blossoms = document.getElementById('blossoms');
-        
+
         let isWatering = false;
         let growValue = 0;
         let growAnimId = null;
         let treeComplete = false;
 
         function startPour(e) {
-            if(e.cancelable && e.type === 'touchstart') e.preventDefault();
-            if(treeComplete) return;
+            if (e.cancelable && e.type === 'touchstart') e.preventDefault();
+            if (treeComplete) return;
             isWatering = true;
             waterCan.classList.add('pouring');
             waterTicker();
@@ -717,9 +1020,9 @@
         }
 
         function waterTicker() {
-            if(!isWatering) return;
+            if (!isWatering) return;
             growValue += 0.9;
-            if(growValue > 100) growValue = 100;
+            if (growValue > 100) growValue = 100;
 
             waterFill.style.width = `${growValue}%`;
 
@@ -727,11 +1030,11 @@
             const scale = 0.2 + (growValue / 100) * 0.9;
             foliage.setAttribute('transform', `scale(${scale}) translate(${50 * (1 - scale)}, ${50 * (1 - scale)})`);
 
-            if(growValue > 70) {
+            if (growValue > 70) {
                 blossoms.style.opacity = ((growValue - 70) / 30).toString();
             }
 
-            if(growValue >= 100) {
+            if (growValue >= 100) {
                 stopPour();
                 treeComplete = true;
                 document.getElementById('tree-controls').style.display = 'none';
@@ -761,7 +1064,7 @@
         let currentStep = 0;
 
         function clickStar(id, elem) {
-            if(id !== route[currentStep]) {
+            if (id !== route[currentStep]) {
                 elem.classList.remove('shake-err');
                 void elem.offsetWidth;
                 elem.classList.add('shake-err');
@@ -771,9 +1074,9 @@
             elem.classList.add('connected');
             currentStep++;
 
-            if(currentStep === 2) {
+            if (currentStep === 2) {
                 document.getElementById('line-wb').classList.add('active');
-            } else if(currentStep === 3) {
+            } else if (currentStep === 3) {
                 document.getElementById('line-bl').classList.add('active');
                 const rect = elem.getBoundingClientRect();
                 createSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, 35);
@@ -790,15 +1093,15 @@
         const vowBtn = document.getElementById('vow-hold-btn');
         const vowFill = document.getElementById('vow-fill');
         const vowLabel = document.getElementById('vow-label');
-        
+
         let isHoldingVow = false;
         let vowStart = 0;
         let vowReq = null;
         let vowOpened = false;
 
         function startVowHold(e) {
-            if(e.cancelable && e.type === 'touchstart') e.preventDefault();
-            if(vowOpened) return;
+            if (e.cancelable && e.type === 'touchstart') e.preventDefault();
+            if (vowOpened) return;
             isHoldingVow = true;
             vowStart = Date.now();
             vowLabel.innerText = "Membuka...";
@@ -808,19 +1111,19 @@
         function stopVowHold() {
             isHoldingVow = false;
             cancelAnimationFrame(vowReq);
-            if(!vowOpened) {
+            if (!vowOpened) {
                 vowFill.style.width = '0%';
                 vowLabel.innerText = "Tahan 3 Detik Membuka";
             }
         }
 
         function vowTicker() {
-            if(!isHoldingVow) return;
+            if (!isHoldingVow) return;
             const elapsed = Date.now() - vowStart;
             const pct = Math.min((elapsed / 3000) * 100, 100);
             vowFill.style.width = `${pct}%`;
 
-            if(pct >= 100) {
+            if (pct >= 100) {
                 vowOpened = true;
                 vowBtn.style.display = 'none';
                 document.getElementById('lock-icon').innerText = "🔓";
@@ -844,7 +1147,7 @@
            ========================================================== */
         function sendToWhatsApp() {
             let msg = document.getElementById('reply-text').value.trim();
-            if(!msg) {
+            if (!msg) {
                 msg = "Wafi, aku sudah baca seluruh memori di Protokol Deadman. Terima kasih ya.";
             }
             const phone = "6281234567890"; // Ganti dengan nomor Wafi
@@ -857,12 +1160,12 @@
            ========================================================== */
         const fLog = "> Log Sistem: Protokol deadman sudah menjalankan perintah yang dibikin Wafi hingga tuntas. Tiara bisa membuka kembali pesan-pesan yang ditinggalkan Wafi kapan saja.";
         const fUty = "Terima kasih Tiara sudah membaca dari awal sampai akhir. Kalau Tiara ingin ngobrol dengan AI Uty, bisa akses lewat akun Gemini alexwafiefotografi@gmail.com. Mewakili Wafi, terima kasih atas 3 tahun yang begitu berharga, semoga bertahan hingga akhir hayat.";
-        const fWarn = "> PERINGATAN SISTEM: Sesuai protokol, sistem ini bakal nutup dan kehapus otomatis dari HP Wafi dalam hitungan mundur. Jadi, buruan kabari atau balas chat Wafi sekarang sebelum sistemnya benar-benar tertutup ya!";
+        const fWarn = "> PERINGATAN SISTEM: Sesuai protokol deadman, sistem ini bakal nutup dan kehapus otomatis dari HP Xiaomi Redmi 7 Wafi Karena menghancurkan diri sendiri dalam hitungan mundur 5 menit. Protokol Deadman selesai.";
 
         async function typeAsync(id, text, delay = 25) {
             const el = document.getElementById(id);
             el.innerHTML = '';
-            for(let i = 0; i < text.length; i++) {
+            for (let i = 0; i < text.length; i++) {
                 el.innerHTML += text.charAt(i);
                 await new Promise(r => setTimeout(r, delay));
             }
@@ -870,14 +1173,14 @@
 
         async function runFinalSequence() {
             await typeAsync('ft-log-text', fLog, 18);
-            
+
             const utyCard = document.getElementById('ft-uty-card');
             utyCard.style.opacity = '1';
             await new Promise(r => setTimeout(r, 200));
             await typeAsync('ft-uty-body', fUty, 22);
-            
+
             await typeAsync('ft-warn-text', fWarn, 18);
-            
+
             document.getElementById('ft-countdown-box').style.opacity = '1';
             startFinalTimer(300);
         }
@@ -888,8 +1191,8 @@
             const timer = setInterval(() => {
                 const m = Math.floor(left / 60);
                 const s = left % 60;
-                display.innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
-                if(left <= 0) {
+                display.innerText = `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
+                if (left <= 0) {
                     clearInterval(timer);
                     display.innerText = "00:00";
                 }
@@ -898,4 +1201,5 @@
         }
     </script>
 </body>
+
 </html>
