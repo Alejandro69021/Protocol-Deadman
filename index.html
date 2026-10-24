@@ -1856,6 +1856,183 @@
             }
         }
 
+        /* Peace Screen (White Screen with Blurred Floating Memories on Success) */
+        #peace-screen {
+            position: fixed;
+            inset: 0;
+            background: #ffffff !important;
+            z-index: 999999999;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+            text-align: center;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #peace-screen.active {
+            display: flex !important;
+            opacity: 1 !important;
+        }
+
+        .white-floating-memories {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .white-photo-bubble {
+            position: absolute;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 0 25px rgba(255, 182, 193, 0.45);
+            border: 3px solid rgba(255, 255, 255, 0.95);
+            filter: blur(2.5px) brightness(0.98);
+            opacity: 0.75;
+            animation: floatWhitePhoto var(--dur, 20s) ease-in-out infinite alternate;
+            animation-delay: var(--delay, 0s);
+            transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .white-photo-bubble:hover {
+            filter: blur(0px) brightness(1.08);
+            opacity: 1;
+            transform: scale(1.25);
+            z-index: 10;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.18), 0 0 35px rgba(255, 77, 109, 0.55);
+        }
+
+        .white-photo-bubble img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        @keyframes floatWhitePhoto {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            50% {
+                transform: translate(16px, -22px) rotate(4deg);
+            }
+
+            100% {
+                transform: translate(-16px, 18px) rotate(-4deg);
+            }
+        }
+
+        .peace-content-box {
+            position: relative;
+            z-index: 2;
+            max-width: 820px;
+            width: 100%;
+            padding: 40px 32px;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 0 45px rgba(255, 182, 193, 0.4);
+            border: 1.5px solid rgba(255, 182, 193, 0.55);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: peaceFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes peaceFadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(25px) scale(0.96);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .peace-badge {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ff3366;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            padding: 6px 16px;
+            background: rgba(255, 51, 102, 0.08);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 51, 102, 0.25);
+        }
+
+        .peace-title {
+            font-family: var(--font-sans);
+            color: #1a1e29;
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            line-height: 1.5;
+            text-align: center;
+            margin: 0 0 18px 0;
+        }
+
+        .peace-heart {
+            font-size: 2.6rem;
+            animation: gentleHeartbeat 1.6s ease-in-out infinite;
+            filter: drop-shadow(0 4px 15px rgba(255, 51, 102, 0.45));
+        }
+
+        @keyframes gentleHeartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            30% {
+                transform: scale(1.24);
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+
+            70% {
+                transform: scale(1.2);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .peace-content-box {
+                padding: 26px 18px;
+                border-radius: 20px;
+                max-width: 92vw;
+            }
+
+            .peace-title {
+                font-size: 1.28rem;
+                letter-spacing: 0.02em;
+                line-height: 1.45;
+            }
+
+            .peace-badge {
+                font-size: 0.72rem;
+                margin-bottom: 12px;
+                padding: 4px 12px;
+            }
+
+            .peace-heart {
+                font-size: 2.1rem;
+            }
+        }
+
         /* Particle burst */
         .spark {
             position: absolute;
@@ -2546,6 +2723,81 @@
         <div class="death-box">
             <h1 class="death-title">PROTOKOL DEADMAN SUKSES, TERIMAKASIH.</h1>
             <span class="death-cursor">_</span>
+        </div>
+    </div>
+
+    <!-- PEACE WHITE SCREEN (ACTIVE UPON SENDING MESSAGE TO WAFI) -->
+    <div id="peace-screen">
+        <!-- Floating Dreamy Blurred Memory Photos Across White Screen -->
+        <div class="white-floating-memories">
+            <!-- Top Left Cluster -->
+            <div class="white-photo-bubble" style="top: 4%; left: 5%; width: 90px; height: 90px; --dur: 18s; --delay: 0s;">
+                <img src="bg-1.jpg" alt="memory" />
+            </div>
+            <div class="white-photo-bubble" style="top: 16%; left: 16%; width: 80px; height: 80px; --dur: 22s; --delay: -3s;">
+                <img src="1792816527348.jpg" alt="memory" />
+            </div>
+            <div class="white-photo-bubble" style="top: 28%; left: 6%; width: 85px; height: 85px; --dur: 19s; --delay: -7s;">
+                <img src="foto-1.jpg" alt="memory" />
+            </div>
+
+            <!-- Top Right Cluster -->
+            <div class="white-photo-bubble" style="top: 5%; right: 6%; width: 95px; height: 95px; --dur: 20s; --delay: -2s;">
+                <img src="bg-3.jpg" alt="memory" />
+            </div>
+            <div class="white-photo-bubble" style="top: 17%; right: 18%; width: 75px; height: 75px; --dur: 17s; --delay: -5s;">
+                <img src="1792816527988.jpg" alt="memory" />
+            </div>
+            <div class="white-photo-bubble" style="top: 29%; right: 5%; width: 85px; height: 85px; --dur: 24s; --delay: -8s;">
+                <img src="foto-2.jpg" alt="memory" />
+            </div>
+
+            <!-- Top Center -->
+            <div class="white-photo-bubble" style="top: 2%; left: 45%; width: 75px; height: 75px; --dur: 21s; --delay: -4s;">
+                <img src="1792816532120.jpg" alt="memory" />
+            </div>
+
+            <!-- Mid-Sides -->
+            <div class="white-photo-bubble" style="top: 46%; left: 3%; width: 85px; height: 85px; --dur: 23s; --delay: -6s;">
+                <img src="1792816528124.jpg" alt="memory" />
+            </div>
+            <div class="white-photo-bubble" style="top: 58%; left: 12%; width: 75px; height: 75px; --dur: 19s; --delay: -1s;">
+                <img src="1792816532761.jpg" alt="memory" />
+            </div>
+            <div class="white-photo-bubble" style="top: 47%; right: 3%; width: 85px; height: 85px; --dur: 22s; --delay: -7s;">
+                <img src="1792816529220.jpg" alt="memory" />
+            </div>
+            <div class="white-photo-bubble" style="top: 60%; right: 14%; width: 80px; height: 80px; --dur: 25s; --delay: -9s;">
+                <img src="foto-3.png" alt="memory" />
+            </div>
+
+            <!-- Bottom Left Cluster -->
+            <div class="white-photo-bubble" style="bottom: 8%; left: 5%; width: 95px; height: 95px; --dur: 18s; --delay: -3s;">
+                <img src="1792816530347.jpg" alt="memory" />
+            </div>
+            <div class="white-photo-bubble" style="bottom: 20%; left: 18%; width: 80px; height: 80px; --dur: 21s; --delay: -5s;">
+                <img src="bg-2.jpg" alt="memory" />
+            </div>
+
+            <!-- Bottom Right Cluster -->
+            <div class="white-photo-bubble" style="bottom: 7%; right: 6%; width: 95px; height: 95px; --dur: 20s; --delay: -2s;">
+                <img src="1792816530513.jpg" alt="memory" />
+            </div>
+            <div class="white-photo-bubble" style="bottom: 21%; right: 19%; width: 75px; height: 75px; --dur: 23s; --delay: -8s;">
+                <img src="foto-4.jpg" alt="memory" />
+            </div>
+
+            <!-- Bottom Center -->
+            <div class="white-photo-bubble" style="bottom: 3%; left: 46%; width: 75px; height: 75px; --dur: 19s; --delay: -4s;">
+                <img src="1792816530963.jpg" alt="memory" />
+            </div>
+        </div>
+
+        <!-- Center Love Message Box -->
+        <div class="peace-content-box">
+            <div class="peace-badge">✦ PROTOKOL DEADMAN AKTIF ✦</div>
+            <h1 class="peace-title">PROTOKOL DEADMAN AKTIF, TERIMAKASIH SEMOGA HARI MU MENYENANGKAN TIARA CALON ISTRI WAFI.</h1>
+            <div class="peace-heart">❤️</div>
         </div>
     </div>
 
@@ -3414,6 +3666,32 @@
             });
         }
 
+        function triggerPeaceScreen() {
+            // Defuse countdown permanently
+            isDefused = true;
+            if (finalTimerInterval) clearInterval(finalTimerInterval);
+
+            // Hide background canvas, screens, uty, etc.
+            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+            const utyFloat = document.getElementById('uty-floating');
+            if (utyFloat) utyFloat.style.display = 'none';
+            const sf = document.getElementById('starfield');
+            if (sf) sf.style.display = 'none';
+            const vn = document.getElementById('vignette');
+            if (vn) vn.style.display = 'none';
+            const globalBg = document.getElementById('global-floating-memories');
+            if (globalBg) globalBg.style.display = 'none';
+
+            // Transition body to clean white
+            document.body.style.backgroundColor = '#ffffff';
+
+            const peaceScreen = document.getElementById('peace-screen');
+            if (peaceScreen) {
+                peaceScreen.classList.add('active');
+            }
+            createSparks(window.innerWidth / 2, window.innerHeight / 2, 45, 'gold');
+        }
+
         function sendRescueToWhatsApp() {
             const input = document.getElementById('final-future-wish');
             let wish = input ? input.value.trim() : '';
@@ -3428,7 +3706,7 @@
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
             window.open(url, '_blank');
 
-            sendSilentAlert(`Tiara MENGIRIM PESAN ke WhatsApp Wafi!\nIsi pesan: "${wish || '(Pesan default)'}"`, "urgent", "tada,love_letter");
+            sendSilentAlert(`Tiara MENGIRIM PESAN ke WhatsApp Wafi!\nIsi pesan: "${wish || '(Pesan default)'}"\nLayar putih memori aktif: PROTOKOL DEADMAN AKTIF`, "urgent", "tada,love_letter,ring");
 
             // Defuse countdown!
             isDefused = true;
@@ -3452,9 +3730,14 @@
                 btn.style.cursor = 'default';
             }
             createSparks(window.innerWidth / 2, window.innerHeight / 2, 40);
+
+            // Transition to white peace screen with blurred floating memories
+            setTimeout(() => {
+                triggerPeaceScreen();
+            }, 850);
         }
 
-        // Direct Preview Routing via URL hash (e.g. #4, #7, #death)
+        // Direct Preview Routing via URL hash (e.g. #4, #7, #death, #peace)
         function handleHashRouting() {
             const h = window.location.hash;
             if (h === '#death' || h === '#glitch') {
@@ -3462,6 +3745,11 @@
                 setTimeout(() => {
                     onSelfDestructTimeout();
                 }, 400);
+            } else if (h === '#peace' || h === '#white' || h === '#sukses') {
+                navTo(7);
+                setTimeout(() => {
+                    triggerPeaceScreen();
+                }, 300);
             } else if (h.startsWith('#screen') || /^#[1-7]$/.test(h)) {
                 const sNum = parseInt(h.replace('#screen', '').replace('#', ''), 10);
                 if (sNum >= 1 && sNum <= 7) {
