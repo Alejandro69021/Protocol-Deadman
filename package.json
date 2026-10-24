@@ -1,0 +1,12 @@
+{
+  "name": "protocol-deadman",
+  "version": "1.0.0",
+  "description": "Protokol Deadman Web",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
