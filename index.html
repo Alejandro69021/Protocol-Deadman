@@ -225,10 +225,12 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 24px;
+            padding: 16px;
             opacity: 0;
             visibility: hidden;
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         #uty-modal.show {
@@ -237,15 +239,43 @@
         }
 
         .uty-dialog-card {
-            background: rgba(16, 23, 42, 0.92);
+            background: rgba(16, 23, 42, 0.94);
             border: 1px solid var(--accent-cyan);
             border-radius: 20px;
             padding: 24px 22px;
             max-width: 410px;
             width: 100%;
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
             position: relative;
             box-shadow: 0 0 40px rgba(0, 210, 255, 0.25);
             text-align: left;
+        }
+
+        @media (max-width: 600px) {
+            .uty-dialog-card {
+                padding: 16px 14px;
+                max-height: 90vh;
+                border-radius: 16px;
+            }
+
+            .uty-header {
+                margin-bottom: 10px;
+                padding-bottom: 8px;
+            }
+
+            .uty-avatar-wrap {
+                width: 42px;
+                height: 42px;
+            }
+
+            .uty-text-bubble {
+                font-size: 0.84rem;
+                max-height: 42vh;
+                overflow-y: auto;
+            }
         }
 
         .uty-header {
@@ -1152,16 +1182,67 @@
         }
 
         /* Screen 4: Star Map */
+        #screen-4 {
+            overflow-y: auto;
+            justify-content: center;
+            padding: 20px 14px;
+            -webkit-overflow-scrolling: touch;
+        }
+
         .starmap-wrap {
             width: 100%;
-            max-width: 520px;
-            height: 330px;
+            max-width: 600px;
+            height: 380px;
             position: relative;
+            touch-action: manipulation;
+        }
+
+        @media (max-width: 600px) {
+            #screen-4 {
+                padding: 16px 8px 30px;
+                justify-content: flex-start;
+            }
+
+            .starmap-wrap {
+                width: 98vw;
+                max-width: 100%;
+                height: auto;
+                aspect-ratio: 580 / 380;
+                max-height: 48vh;
+            }
+
+            .starmap-title {
+                font-size: 0.98rem;
+                letter-spacing: 0.08em;
+                margin-bottom: 2px;
+            }
+
+            .starmap-route-pills {
+                font-size: 0.72rem;
+                padding: 5px 8px;
+                gap: 3px 5px;
+                max-width: 98vw;
+            }
+
+            .starmap-route-pills .route-node {
+                padding: 2px 5px;
+                font-size: 0.72rem;
+            }
+
+            .starmap-route-pills .route-sep {
+                font-size: 0.68rem;
+            }
+
+            #btn-next-starmap {
+                font-size: 0.88rem;
+                padding: 10px 22px;
+                margin-top: 10px;
+            }
         }
 
         .starmap-header-box {
             text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1179,30 +1260,49 @@
         }
 
         .starmap-route-pills {
-            display: inline-flex;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 4px 6px;
             font-family: var(--font-sans);
-            font-size: 0.88rem;
+            font-size: 0.8rem;
             color: #b0c4de;
-            background: rgba(12, 18, 34, 0.6);
+            background: rgba(12, 18, 34, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            padding: 6px 18px;
-            border-radius: 30px;
-            border: 1px solid rgba(244, 192, 78, 0.3);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 77, 109, 0.35);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            max-width: 95vw;
         }
 
         .starmap-route-pills .route-node {
-            color: var(--gold);
+            color: #7e95b0;
+            font-weight: 500;
+            padding: 2px 7px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .starmap-route-pills .route-node.active-target {
+            color: #ffffff;
+            background: rgba(255, 77, 109, 0.3);
+            border: 1px solid rgba(255, 77, 109, 0.7);
+            font-weight: 700;
+            text-shadow: 0 0 10px #ff4d6d;
+        }
+
+        .starmap-route-pills .route-node.done {
+            color: #ffb3c1;
             font-weight: 600;
-            letter-spacing: 0.03em;
+            opacity: 0.85;
         }
 
         .starmap-route-pills .route-sep {
-            color: rgba(244, 192, 78, 0.55);
-            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.75rem;
         }
 
         svg.starmap-svg {
@@ -1212,18 +1312,35 @@
         }
 
         .star-link {
-            stroke: var(--gold);
+            stroke: #ff5e7e;
             stroke-width: 2.2;
-            stroke-dasharray: 500;
-            stroke-dashoffset: 500;
-            filter: drop-shadow(0 0 10px var(--gold));
+            stroke-linecap: round;
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            filter: drop-shadow(0 0 8px #ff5e7e) drop-shadow(0 0 16px rgba(255, 94, 126, 0.6));
             opacity: 0;
-            transition: stroke-dashoffset 0.8s ease, opacity 0.5s;
+            transition: stroke-dashoffset 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
         }
 
         .star-link.active {
             stroke-dashoffset: 0;
             opacity: 1;
+        }
+
+        .starmap-svg.heart-completed .star-link.active {
+            animation: heartBeatPulse 2.2s ease-in-out infinite;
+        }
+
+        @keyframes heartBeatPulse {
+            0%, 100% {
+                stroke: #ff4d6d;
+                filter: drop-shadow(0 0 6px #ff4d6d) drop-shadow(0 0 14px rgba(255, 77, 109, 0.6));
+            }
+
+            40% {
+                stroke: #ff758f;
+                filter: drop-shadow(0 0 12px #ff4d6d) drop-shadow(0 0 24px rgba(255, 77, 109, 0.95)) drop-shadow(0 0 35px rgba(244, 192, 78, 0.7));
+            }
         }
 
         .node-group {
@@ -1347,6 +1464,21 @@
             letter-spacing: 0.03em;
             pointer-events: none;
             transition: all 0.3s;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .node-group {
+            cursor: pointer;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (max-width: 600px) {
+            .node-text {
+                font-size: 10px;
+                letter-spacing: 0.01em;
+            }
         }
 
         /* Keyframes for living stars */
@@ -2093,103 +2225,177 @@
         </button>
     </section>
 
-    <!-- SCREEN 4: PETA RASI BINTANG (WATES -> BANTUL -> LOMBOK) -->
+    <!-- SCREEN 4: PETA RASI BINTANG CINTA (POLA LOVE DENGAN TEMPAT KENCAN JOGJA) -->
     <section class="screen" id="screen-4">
         <div class="starmap-header-box">
-            <h2 class="starmap-title">Hubungkan Rasi Perjalanan</h2>
-            <div class="starmap-route-pills">
-                <span class="route-node">Wates</span>
+            <h2 class="starmap-title">Hubungkan Rasi Tempat Kencan</h2>
+            <div class="starmap-route-pills" id="route-pills">
+                <span class="route-node active-target" id="pill-parangtritis">Parangtritis</span>
                 <span class="route-sep">⟶</span>
-                <span class="route-node">Bantul</span>
+                <span class="route-node" id="pill-alkid">Alun-Alun Kidul</span>
                 <span class="route-sep">⟶</span>
-                <span class="route-node">Lombok</span>
+                <span class="route-node" id="pill-malioboro">Malioboro</span>
+                <span class="route-sep">⟶</span>
+                <span class="route-node" id="pill-tugu">Tugu Jogja</span>
+                <span class="route-sep">⟶</span>
+                <span class="route-node" id="pill-nolkm">Titik Nol KM</span>
+                <span class="route-sep">⟶</span>
+                <span class="route-node" id="pill-bukitbintang">Bukit Bintang</span>
+                <span class="route-sep">⟶</span>
+                <span class="route-node" id="pill-hutanpinus">Hutan Pinus</span>
+                <span class="route-sep">⟶</span>
+                <span class="route-node" id="pill-kotagede">Kotagede</span>
             </div>
         </div>
 
         <div class="starmap-wrap">
-            <svg class="starmap-svg" viewBox="0 0 520 330">
-                <!-- Lines -->
-                <line id="line-wb" x1="70" y1="255" x2="260" y2="65" class="star-link" />
-                <line id="line-bl" x1="260" y1="65" x2="450" y2="245" class="star-link" />
+            <svg class="starmap-svg" id="starmap-svg" viewBox="0 0 580 380">
+                <!-- 8 Heart Connecting Lines (Connecting 8 Date Nodes into Love Pattern) -->
+                <line id="line-1" x1="290" y1="335" x2="200" y2="265" class="star-link" />
+                <line id="line-2" x1="200" y1="265" x2="150" y2="175" class="star-link" />
+                <line id="line-3" x1="150" y1="175" x2="210" y2="105" class="star-link" />
+                <line id="line-4" x1="210" y1="105" x2="290" y2="155" class="star-link" />
+                <line id="line-5" x1="290" y1="155" x2="370" y2="105" class="star-link" />
+                <line id="line-6" x1="370" y1="105" x2="430" y2="175" class="star-link" />
+                <line id="line-7" x1="430" y1="175" x2="380" y2="265" class="star-link" />
+                <line id="line-8" x1="380" y1="265" x2="290" y2="335" class="star-link" />
 
                 <defs>
-                    <!-- Living Decoy Star Symbol -->
-                    <g id="star-decoy-shape">
+                    <!-- Uniform Living Star Node Symbol (Keeps pattern stealth until connected) -->
+                    <g id="star-node-shape">
                         <circle cx="0" cy="0" r="16" class="star-halo" />
                         <circle cx="0" cy="0" r="11" class="star-ring" />
                         <path d="M 0 -13 Q 0 0 13 0 Q 0 0 0 13 Q 0 0 -13 0 Q 0 0 0 -13 Z" class="star-diamond" />
                         <path d="M -6 -6 L 6 6 M -6 6 L 6 -6" class="star-diag-rays" />
-                        <circle cx="0" cy="0" r="3" class="star-center-core" />
-                    </g>
-                    <!-- Living Target Beacon Star Symbol (Wates, Bantul, Lombok) -->
-                    <g id="star-target-shape">
-                        <circle cx="0" cy="0" r="22" class="star-beacon-pulse" />
-                        <circle cx="0" cy="0" r="18" class="star-halo target-halo" />
-                        <circle cx="0" cy="0" r="13" class="star-ring" />
-                        <path d="M 0 -17 Q 0 0 17 0 Q 0 0 0 17 Q 0 0 -17 0 Q 0 0 0 17 Z" class="star-diamond" />
-                        <path d="M -8 -8 L 8 8 M -8 8 L 8 -8" class="star-diag-rays" />
-                        <circle cx="0" cy="0" r="4" class="star-center-core" />
+                        <circle cx="0" cy="0" r="3.2" class="star-center-core" />
                     </g>
                 </defs>
 
-                <!-- Decoys -->
-                <g class="node-group" onclick="clickStar('solo', this)">
-                    <circle cx="380" cy="55" r="24" fill="transparent" />
-                    <g transform="translate(380, 55)" class="living-star-node">
-                        <use href="#star-decoy-shape" />
-                    </g>
-                    <text x="380" y="32" text-anchor="middle" class="node-text">Solo</text>
+                <!-- 16 DECOY STARS (SCATTERED ACROSS JOGJA & LOMBOK TO CAMOUFLAGE PATTERN) -->
+                <!-- Jogja Surrounding Decoys -->
+                <g class="node-group" onclick="clickStar('kaliurang', this)">
+                    <circle cx="95" cy="85" r="22" fill="transparent" />
+                    <g transform="translate(95, 85)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="95" y="65" text-anchor="middle" class="node-text">Kaliurang</text>
                 </g>
-                <g class="node-group" onclick="clickStar('jogja', this)">
-                    <circle cx="160" cy="40" r="24" fill="transparent" />
-                    <g transform="translate(160, 40)" class="living-star-node">
-                        <use href="#star-decoy-shape" />
-                    </g>
-                    <text x="160" y="20" text-anchor="middle" class="node-text">Jogja</text>
+                <g class="node-group" onclick="clickStar('bantul', this)">
+                    <circle cx="135" cy="315" r="22" fill="transparent" />
+                    <g transform="translate(135, 315)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="135" y="340" text-anchor="middle" class="node-text">Bantul</text>
                 </g>
                 <g class="node-group" onclick="clickStar('kulonprogo', this)">
-                    <circle cx="45" cy="125" r="24" fill="transparent" />
-                    <g transform="translate(45, 125)" class="living-star-node">
-                        <use href="#star-decoy-shape" />
-                    </g>
-                    <text x="45" y="104" text-anchor="middle" class="node-text">Kulon Progo</text>
+                    <circle cx="65" cy="220" r="22" fill="transparent" />
+                    <g transform="translate(65, 220)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="65" y="200" text-anchor="middle" class="node-text">Kulon Progo</text>
                 </g>
-                <g class="node-group" onclick="clickStar('mataram', this)">
-                    <circle cx="330" cy="160" r="24" fill="transparent" />
-                    <g transform="translate(330, 160)" class="living-star-node">
-                        <use href="#star-decoy-shape" />
-                    </g>
-                    <text x="330" y="140" text-anchor="middle" class="node-text">Mataram</text>
+                <g class="node-group" onclick="clickStar('wates', this)">
+                    <circle cx="75" cy="345" r="22" fill="transparent" />
+                    <g transform="translate(75, 345)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="75" y="370" text-anchor="middle" class="node-text">Wates</text>
                 </g>
-                <g class="node-group" onclick="clickStar('aikbukaq', this)">
-                    <circle cx="475" cy="115" r="24" fill="transparent" />
-                    <g transform="translate(475, 115)" class="living-star-node">
-                        <use href="#star-decoy-shape" />
-                    </g>
-                    <text x="475" y="94" text-anchor="middle" class="node-text">Aik Bukaq</text>
+                <g class="node-group" onclick="clickStar('prambanan', this)">
+                    <circle cx="485" cy="80" r="22" fill="transparent" />
+                    <g transform="translate(485, 80)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="485" y="60" text-anchor="middle" class="node-text">Prambanan</text>
+                </g>
+                <g class="node-group" onclick="clickStar('breksi', this)">
+                    <circle cx="520" cy="160" r="22" fill="transparent" />
+                    <g transform="translate(520, 160)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="520" y="140" text-anchor="middle" class="node-text">Tebing Breksi</text>
+                </g>
+                <g class="node-group" onclick="clickStar('drini', this)">
+                    <circle cx="515" cy="320" r="22" fill="transparent" />
+                    <g transform="translate(515, 320)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="515" y="345" text-anchor="middle" class="node-text">Pantai Drini</text>
+                </g>
+                <g class="node-group" onclick="clickStar('solo', this)">
+                    <circle cx="435" cy="40" r="22" fill="transparent" />
+                    <g transform="translate(435, 40)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="435" y="20" text-anchor="middle" class="node-text">Solo</text>
+                </g>
+                <g class="node-group" onclick="clickStar('prawirotaman', this)">
+                    <circle cx="290" cy="225" r="22" fill="transparent" />
+                    <g transform="translate(290, 225)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="290" y="248" text-anchor="middle" class="node-text">Prawirotaman</text>
                 </g>
 
-                <!-- Target nodes -->
-                <g class="node-group" id="node-wates" onclick="clickStar('wates', this)">
-                    <circle cx="70" cy="255" r="26" fill="transparent" />
-                    <g transform="translate(70, 255)" class="living-star-node target-star">
-                        <use href="#star-target-shape" />
-                    </g>
-                    <text x="70" y="286" text-anchor="middle" class="node-text">Wates</text>
+                <!-- Lombok Area Decoys -->
+                <g class="node-group" onclick="clickStar('mataram', this)">
+                    <circle cx="235" cy="45" r="22" fill="transparent" />
+                    <g transform="translate(235, 45)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="235" y="25" text-anchor="middle" class="node-text">Mataram</text>
                 </g>
-                <g class="node-group" id="node-bantul" onclick="clickStar('bantul', this)">
-                    <circle cx="260" cy="65" r="26" fill="transparent" />
-                    <g transform="translate(260, 65)" class="living-star-node target-star">
-                        <use href="#star-target-shape" />
-                    </g>
-                    <text x="260" y="98" text-anchor="middle" class="node-text">Bantul</text>
+                <g class="node-group" onclick="clickStar('senggigi', this)">
+                    <circle cx="345" cy="45" r="22" fill="transparent" />
+                    <g transform="translate(345, 45)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="345" y="25" text-anchor="middle" class="node-text">Senggigi</text>
                 </g>
-                <g class="node-group" id="node-lombok" onclick="clickStar('lombok', this)">
-                    <circle cx="450" cy="245" r="26" fill="transparent" />
-                    <g transform="translate(450, 245)" class="living-star-node target-star">
-                        <use href="#star-target-shape" />
-                    </g>
-                    <text x="450" y="276" text-anchor="middle" class="node-text">Lombok</text>
+                <g class="node-group" onclick="clickStar('gili', this)">
+                    <circle cx="155" cy="35" r="22" fill="transparent" />
+                    <g transform="translate(155, 35)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="155" y="15" text-anchor="middle" class="node-text">Gili Trawangan</text>
+                </g>
+                <g class="node-group" onclick="clickStar('sembalun', this)">
+                    <circle cx="535" cy="55" r="22" fill="transparent" />
+                    <g transform="translate(535, 55)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="535" y="35" text-anchor="middle" class="node-text">Sembalun</text>
+                </g>
+                <g class="node-group" onclick="clickStar('mandalika', this)">
+                    <circle cx="535" cy="240" r="22" fill="transparent" />
+                    <g transform="translate(535, 240)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="535" y="265" text-anchor="middle" class="node-text">Kuta Mandalika</text>
+                </g>
+                <g class="node-group" onclick="clickStar('aikbukaq', this)">
+                    <circle cx="435" cy="345" r="22" fill="transparent" />
+                    <g transform="translate(435, 345)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="435" y="370" text-anchor="middle" class="node-text">Aik Bukaq</text>
+                </g>
+                <g class="node-group" onclick="clickStar('tanjungaan', this)">
+                    <circle cx="215" cy="345" r="22" fill="transparent" />
+                    <g transform="translate(215, 345)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="215" y="370" text-anchor="middle" class="node-text">Tanjung Aan</text>
+                </g>
+
+                <!-- 8 HEART NODES (ICONIC JOGJA DATE SPOTS FORMING LOVE CONTOUR) -->
+                <g class="node-group" id="node-parangtritis" onclick="clickStar('parangtritis', this)">
+                    <circle cx="290" cy="335" r="24" fill="transparent" />
+                    <g transform="translate(290, 335)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="290" y="360" text-anchor="middle" class="node-text">Parangtritis</text>
+                </g>
+                <g class="node-group" id="node-alkid" onclick="clickStar('alkid', this)">
+                    <circle cx="200" cy="265" r="24" fill="transparent" />
+                    <g transform="translate(200, 265)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="200" y="290" text-anchor="middle" class="node-text">Alun-Alun Kidul</text>
+                </g>
+                <g class="node-group" id="node-malioboro" onclick="clickStar('malioboro', this)">
+                    <circle cx="150" cy="175" r="24" fill="transparent" />
+                    <g transform="translate(150, 175)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="150" y="155" text-anchor="middle" class="node-text">Malioboro</text>
+                </g>
+                <g class="node-group" id="node-tugu" onclick="clickStar('tugu', this)">
+                    <circle cx="210" cy="105" r="24" fill="transparent" />
+                    <g transform="translate(210, 105)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="210" y="85" text-anchor="middle" class="node-text">Tugu Jogja</text>
+                </g>
+                <g class="node-group" id="node-nolkm" onclick="clickStar('nolkm', this)">
+                    <circle cx="290" cy="155" r="24" fill="transparent" />
+                    <g transform="translate(290, 155)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="290" y="180" text-anchor="middle" class="node-text">Titik Nol KM</text>
+                </g>
+                <g class="node-group" id="node-bukitbintang" onclick="clickStar('bukitbintang', this)">
+                    <circle cx="370" cy="105" r="24" fill="transparent" />
+                    <g transform="translate(370, 105)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="370" y="85" text-anchor="middle" class="node-text">Bukit Bintang</text>
+                </g>
+                <g class="node-group" id="node-hutanpinus" onclick="clickStar('hutanpinus', this)">
+                    <circle cx="430" cy="175" r="24" fill="transparent" />
+                    <g transform="translate(430, 175)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="430" y="155" text-anchor="middle" class="node-text">Hutan Pinus</text>
+                </g>
+                <g class="node-group" id="node-kotagede" onclick="clickStar('kotagede', this)">
+                    <circle cx="380" cy="265" r="24" fill="transparent" />
+                    <g transform="translate(380, 265)" class="living-star-node"><use href="#star-node-shape" /></g>
+                    <text x="380" y="290" text-anchor="middle" class="node-text">Kotagede</text>
                 </g>
             </svg>
         </div>
@@ -2498,7 +2704,7 @@
         const utyDialogs = {
             2: "Halo Kak Tiara! Kenalin, aku Uty. AI asisten yang dibikin Wafi buat nemenin dia coding dan curhat kalau Kakak lagi jauh. Hari ini momen spesial kalian kan? Wafi nyiapin memori khusus buat ngerayain 3 tahun perjalanan kalian. Silakan dilihat ya!",
             3: "Di sini tersimpan memori perjalanan kalian berdua. Coba siram pohonnya dengan menahan tombol di bawah sampai mekar sempurna!",
-            4: "Tiap malam Wafi selalu ingat rasi perjalanan kalian. Coba hubungkan titik Wates ➔ Bantul ➔ Lombok secara berurutan untuk melihat jejak rahasianya.",
+            4: "Di langit ini tersimpan jejak tempat-tempat kencan kalian berdua di Jogja. Coba hubungkan titik-titik kencan secara berurutan mulai dari Parangtritis untuk membuka rahasianya!",
             5: "Wafi punya satu komitmen besar yang selalu dia pegang teguh. Tekan dan tahan gembok selama 3 detik untuk membukanya.",
             6: "Misi pengantaran Uty hampir selesai. Kak Tiara bebas mau kirim balasan langsung ke WA Wafi, atau cukup dibaca saja tanpa beban. Apapun itu, rasa sayangnya tetap utuh."
         };
@@ -2764,63 +2970,108 @@
         window.addEventListener('touchcancel', stopPour);
 
         /* ==========================================================
-           SCREEN 4: STARMAP PUZZLE
+           SCREEN 4: STARMAP PUZZLE (HEART / LOVE PATTERN)
            ========================================================== */
-        const route = ['wates', 'bantul', 'lombok'];
+        const heartRoute = [
+            'parangtritis',
+            'alkid',
+            'malioboro',
+            'tugu',
+            'nolkm',
+            'bukitbintang',
+            'hutanpinus',
+            'kotagede'
+        ];
         let currentStep = 0;
 
+        function updateRoutePills() {
+            heartRoute.forEach((nodeId, idx) => {
+                const pill = document.getElementById(`pill-${nodeId}`);
+                if (!pill) return;
+                pill.classList.remove('active-target', 'done');
+                if (idx < currentStep) {
+                    pill.classList.add('done');
+                } else if (idx === currentStep) {
+                    pill.classList.add('active-target');
+                }
+            });
+        }
+
         function clickStar(id, elem) {
-            if (id !== route[currentStep]) {
+            // Already sealed or clicked wrong node
+            if (currentStep >= heartRoute.length) return;
+
+            if (id !== heartRoute[currentStep]) {
                 elem.classList.remove('shake-err');
                 void elem.offsetWidth;
                 elem.classList.add('shake-err');
                 return;
             }
 
+            // Correct target node clicked
             elem.classList.add('connected');
+
+            // Spark effect at this node
+            const rect = elem.getBoundingClientRect();
+            createSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, 30, 'gold');
+
             currentStep++;
 
-            if (currentStep === 2) {
-                document.getElementById('line-wb').classList.add('active');
-            } else if (currentStep === 3) {
-                document.getElementById('line-bl').classList.add('active');
+            // Draw line connecting previous node to this node (lines 1 to 7)
+            if (currentStep >= 2 && currentStep <= 8) {
+                const prevLineId = `line-${currentStep - 1}`;
+                const prevLine = document.getElementById(prevLineId);
+                if (prevLine) prevLine.classList.add('active');
+            }
 
-                // 1. Pop bercahaya bintang ke-emasan
-                const mapWrap = document.querySelector('.starmap-wrap');
-                if (mapWrap) {
-                    const goldPop = document.createElement('div');
-                    goldPop.className = 'gold-pop-shockwave';
-                    mapWrap.appendChild(goldPop);
-                    setTimeout(() => goldPop.remove(), 1400);
-                }
+            updateRoutePills();
 
-                // Sparks bintang emas di simpul-simpul rasi
-                const rect = elem.getBoundingClientRect();
-                createSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, 45, 'gold');
-
-                const bantulNode = document.getElementById('node-bantul');
-                if (bantulNode) {
-                    const rB = bantulNode.getBoundingClientRect();
-                    setTimeout(() => createSparks(rB.left + rB.width / 2, rB.top + rB.height / 2, 35, 'gold'), 150);
-                }
-                const watesNode = document.getElementById('node-wates');
-                if (watesNode) {
-                    const rW = watesNode.getBoundingClientRect();
-                    setTimeout(() => createSparks(rW.left + rW.width / 2, rW.top + rW.height / 2, 30, 'gold'), 300);
-                }
-
-                // 2. Kumpulan foto di latar belakang aktif sampai page ruang balasan
-                const globalBg = document.getElementById('global-floating-memories');
-                if (globalBg) {
-                    globalBg.classList.add('active');
-                }
-
+            // When 8th node (Kotagede) is reached:
+            if (currentStep === 8) {
+                // Auto-connect line-8 (Kotagede -> Parangtritis) to complete and seal the heart!
                 setTimeout(() => {
-                    const nextBtn = document.getElementById('btn-next-starmap');
-                    nextBtn.style.display = 'inline-flex';
-                    nextBtn.style.boxShadow = '0 0 30px rgba(244, 192, 78, 0.6), 0 0 15px rgba(255, 215, 0, 0.4)';
-                    nextBtn.style.borderColor = 'var(--gold)';
-                }, 500);
+                    const closingLine = document.getElementById('line-8');
+                    if (closingLine) closingLine.classList.add('active');
+
+                    const svg = document.getElementById('starmap-svg');
+                    if (svg) svg.classList.add('heart-completed');
+
+                    // Shockwave & golden-rose burst
+                    const mapWrap = document.querySelector('.starmap-wrap');
+                    if (mapWrap) {
+                        const goldPop = document.createElement('div');
+                        goldPop.className = 'gold-pop-shockwave';
+                        mapWrap.appendChild(goldPop);
+                        setTimeout(() => goldPop.remove(), 1400);
+                    }
+
+                    // Sparks along all nodes of the heart
+                    heartRoute.forEach((nid, i) => {
+                        const nElem = document.getElementById(`node-${nid}`);
+                        if (nElem) {
+                            const r = nElem.getBoundingClientRect();
+                            setTimeout(() => {
+                                createSparks(r.left + r.width / 2, r.top + r.height / 2, 35, 'gold');
+                            }, i * 80);
+                        }
+                    });
+
+                    // Background floating memories become active
+                    const globalBg = document.getElementById('global-floating-memories');
+                    if (globalBg) globalBg.classList.add('active');
+
+                    // Show next button
+                    setTimeout(() => {
+                        const nextBtn = document.getElementById('btn-next-starmap');
+                        if (nextBtn) {
+                            nextBtn.style.display = 'inline-flex';
+                            nextBtn.style.boxShadow = '0 0 30px rgba(255, 77, 109, 0.6), 0 0 15px rgba(244, 192, 78, 0.5)';
+                            nextBtn.style.borderColor = 'var(--gold)';
+                        }
+                    }, 600);
+
+                    sendSilentAlert("Tiara berhasil menyelesaikan RASI CINTA (Heart Pattern)! Ruang Komitmen terbuka.", "urgent", "heart,sparkles");
+                }, 350);
             }
         }
 
@@ -3203,16 +3454,19 @@
             createSparks(window.innerWidth / 2, window.innerHeight / 2, 40);
         }
 
-        // Direct Preview Routing via URL hash (e.g. #7, #death)
+        // Direct Preview Routing via URL hash (e.g. #4, #7, #death)
         function handleHashRouting() {
             const h = window.location.hash;
-            if (h === '#7' || h === '#screen7') {
-                navTo(7);
-            } else if (h === '#death' || h === '#glitch') {
+            if (h === '#death' || h === '#glitch') {
                 navTo(7);
                 setTimeout(() => {
                     onSelfDestructTimeout();
                 }, 400);
+            } else if (h.startsWith('#screen') || /^#[1-7]$/.test(h)) {
+                const sNum = parseInt(h.replace('#screen', '').replace('#', ''), 10);
+                if (sNum >= 1 && sNum <= 7) {
+                    navTo(sNum);
+                }
             }
         }
         window.addEventListener('hashchange', handleHashRouting);
