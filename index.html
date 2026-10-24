@@ -519,17 +519,18 @@
         }
 
         #btn-auth.pulse-active {
-            animation: authBtnPulse 1.8s infinite ease-in-out;
+            animation: authBtnPulse 2.4s infinite ease-in-out;
+            letter-spacing: 0.04em;
         }
 
         @keyframes authBtnPulse {
             0%, 100% {
                 transform: scale(1);
-                box-shadow: 0 0 25px rgba(0, 210, 255, 0.6), 0 0 15px rgba(0, 255, 102, 0.4);
+                box-shadow: 0 0 20px rgba(0, 210, 255, 0.4), 0 0 10px rgba(0, 255, 102, 0.2);
             }
             50% {
-                transform: scale(1.04);
-                box-shadow: 0 0 45px rgba(0, 210, 255, 0.95), 0 0 25px rgba(0, 255, 102, 0.8);
+                transform: scale(1.025);
+                box-shadow: 0 0 32px rgba(0, 210, 255, 0.7), 0 0 16px rgba(0, 255, 102, 0.35);
             }
         }
 
@@ -1547,7 +1548,7 @@
         </div>
 
         <button id="btn-auth" class="btn-core" style="opacity: 0; visibility: hidden;" onclick="proceedToMemory()">
-            [ BUKA AKSES MEMORI ]
+            Buka Arsip Memori →
         </button>
     </section>
 
@@ -2123,7 +2124,7 @@
 
             if (!rawVal) {
                 status.className = 'auth-status error';
-                status.innerHTML = '&gt; Masukkan password otorisasi terlebih dahulu.';
+                status.innerHTML = '&gt; Masukkan tanggal otorisasi.';
                 if (input) input.focus();
                 return;
             }
@@ -2131,7 +2132,7 @@
             // Target password: 191223 (19 Desember 2023)
             if (cleanVal === '191223' || cleanVal === '19122023') {
                 status.className = 'auth-status success';
-                status.innerHTML = '&gt; [STATUS: DISETUJUI] Otorisasi berhasil!<br>&gt; Identitas terkonfirmasi: Tiara ❤️<br>&gt; Akses terbuka. Silakan klik tombol di bawah untuk membuka memori:';
+                status.innerHTML = '&gt; Otorisasi diterima.<br>&gt; Identitas: Tiara ❤️<br>&gt; Arsip memori siap dibuka.';
                 if (input) input.disabled = true;
                 if (btnSubmit) btnSubmit.disabled = true;
 
@@ -2143,11 +2144,11 @@
                     btnAuth.style.visibility = 'visible';
                     btnAuth.style.pointerEvents = 'auto';
                     btnAuth.classList.add('pulse-active');
-                    btnAuth.innerHTML = '✨ [ BUKA AKSES MEMORI ] ✨';
+                    btnAuth.innerHTML = 'Buka Arsip Memori →';
                 }
             } else {
                 status.className = 'auth-status error';
-                status.innerHTML = '&gt; [STATUS: DITOLAK] Password salah! Akses tidak diizinkan.<br>&gt; Petunjuk: Tanggal jadian kita berdua (DDMMYY).';
+                status.innerHTML = '&gt; Kunci tidak cocok.<br>&gt; Petunjuk: Tanggal jadian kita (DDMMYY).';
                 if (input) {
                     input.value = '';
                     input.focus();
