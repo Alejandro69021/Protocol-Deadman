@@ -1993,18 +1993,18 @@
                 <div id="rescue-mission-box" class="rescue-mission-box">
                     <div class="rescue-header">
                         <span class="rescue-dot"></span>
-                        <span>OPSI PEMBATALAN // SELAMATKAN HP WAFI</span>
+                        <span>Penyelamat HP Wafi 😆</span>
                     </div>
                     <p class="rescue-desc">
-                        Kalau kamu mau batalin peledakan HP Xiaomi Redmi 7 ini, kamu bisa tulis harapan atau hal tentang kita berdua ke depan sebelum timer di atas habis.
-                        <span class="rescue-subtext">*(Santai aja ya, nggak wajib diisi kok. Kalau kamu lagi nggak pengen nulis apa-apa, biarin sistemnya meledak dengan tenang 💥)*</span>
+                        Sebenernya ini alesan biar dapet chat dari kamu haha. Kalau mau, ketik apa aja buat kita ke depan sebelum timernya abis.
+                        <span class="rescue-subtext">Santai aja, nggak usah dipaksain nulis yaa. Kalau lagi mager, biarin aja HP-ku yang meledak wkwk.</span>
                     </p>
 
                     <textarea id="final-future-wish" class="rescue-textarea" rows="3"
-                        placeholder="Tulis harapan atau pesanmu tentang kita ke depan di sini..."></textarea>
+                        placeholder="Ketik apa aja di sini... (kirim kosong juga boleh)"></textarea>
 
                     <button type="button" id="btn-rescue" class="btn-rescue" onclick="sendRescueToWhatsApp()">
-                        <span>🚀 Kirim ke WhatsApp &amp; Batalkan Ledakan</span>
+                        <span>Kirim ke WhatsApp Wafi</span>
                     </button>
 
                     <div id="rescue-status" class="rescue-status"></div>
@@ -2627,11 +2627,11 @@
             const status = document.getElementById('rescue-status');
             if (status) {
                 status.className = 'rescue-status timeout';
-                status.innerHTML = '&gt; [WAKTU HABIS] Boom! 💥 HP Xiaomi Redmi 7 resmi meledak sesuai protokol.<br>&gt; Tapi kalau kamu tetap mau kirim pesan ke Wafi, pintu WhatsApp tetap terbuka kok:';
+                status.innerHTML = '&gt; Yah, timernya abis... HP Redmi 7 resmi meledak wkwk 💥<br>&gt; Tapi tenang, WA-ku selalu kebuka kok kalau mau ngobrol:';
             }
             const btn = document.getElementById('btn-rescue');
             if (btn) {
-                btn.innerHTML = 'Tetap Chat Wafi di WhatsApp 📱';
+                btn.innerHTML = 'Tetap Chat di WhatsApp';
                 btn.style.borderColor = 'var(--gold)';
                 btn.style.background = 'rgba(244, 192, 78, 0.15)';
             }
@@ -2642,9 +2642,9 @@
             let wish = input ? input.value.trim() : '';
             let msg = '';
             if (wish) {
-                msg = `Wafi, ini pesan dari aku untuk kita ke depan:\n\n"${wish}"\n\n(Pesan ini membatalkan peledakan HP Xiaomi Redmi 7 kamu ❤️)`;
+                msg = `Wafi, ini catatanku buat kita ke depan:\n\n"${wish}"\n\n(HP kamu aman, nggak jadi meledak haha ❤️)`;
             } else {
-                msg = `Wafi, aku sudah selesai baca semua Protokol Deadman kamu. Jangan diledakin ya HP-nya haha ❤️`;
+                msg = `Wafi, aku udah beres baca semuanya. HP-mu jangan diledakin ya haha ❤️`;
             }
 
             const phone = "6285717225399";
@@ -2656,18 +2656,18 @@
             if (finalTimerInterval) clearInterval(finalTimerInterval);
             const display = document.getElementById('cd-timer');
             if (display) {
-                display.innerText = "SELAMAT ❤️";
+                display.innerText = "AMAN ❤️";
                 display.style.color = "var(--term-green)";
                 display.style.textShadow = "0 0 25px rgba(0, 255, 102, 0.7)";
             }
             const status = document.getElementById('rescue-status');
             if (status) {
                 status.className = 'rescue-status success';
-                status.innerHTML = '&gt; [PROTOKOL PELEDAKAN DIBATALKAN]<br>&gt; Terima kasih Tiara! HP Xiaomi Redmi 7 berhasil diselamatkan dari ledakan ❤️';
+                status.innerHTML = '&gt; HP-ku berhasil selamat berkat kamu haha ❤️<br>&gt; Makasih ya Tiara, chatnya udah kekirim ke WA.';
             }
             const btn = document.getElementById('btn-rescue');
             if (btn) {
-                btn.innerHTML = '✅ Terkirim ke WhatsApp Wafi (HP Selamat)';
+                btn.innerHTML = 'Terkirim ke WhatsApp Wafi ❤️';
                 btn.disabled = true;
                 btn.style.opacity = '0.9';
                 btn.style.cursor = 'default';
