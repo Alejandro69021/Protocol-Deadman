@@ -348,6 +348,176 @@
             }
         }
 
+        /* Screen 1: Auth Panel & Input */
+        .auth-panel {
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px dashed rgba(0, 255, 102, 0.25);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: translateY(6px);
+        }
+
+        .auth-panel.revealed {
+            opacity: 1 !important;
+            transform: translateY(0);
+        }
+
+        .auth-label {
+            font-size: 0.8rem;
+            color: #86efac;
+            margin-bottom: 12px;
+            font-family: var(--font-mono);
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .auth-lock-icon {
+            font-size: 0.95rem;
+            animation: pulse-lock 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-lock {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+        }
+
+        .auth-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .auth-input-wrapper {
+            position: relative;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: rgba(0, 15, 8, 0.7);
+            border: 1px solid rgba(0, 255, 102, 0.4);
+            border-radius: 10px;
+            padding: 2px 10px;
+            box-shadow: inset 0 0 12px rgba(0, 255, 102, 0.08);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .auth-input-wrapper:focus-within {
+            border-color: var(--term-green);
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.3), inset 0 0 10px rgba(0, 255, 102, 0.15);
+        }
+
+        .auth-prompt-symbol {
+            color: var(--term-green);
+            font-family: var(--font-mono);
+            font-weight: bold;
+            margin-right: 8px;
+            font-size: 1rem;
+        }
+
+        #auth-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--term-green);
+            font-family: var(--font-mono);
+            font-size: 1.05rem;
+            padding: 10px 0;
+            letter-spacing: 2px;
+        }
+
+        #auth-input::placeholder {
+            color: rgba(0, 255, 102, 0.35);
+            font-size: 0.82rem;
+            letter-spacing: normal;
+        }
+
+        .btn-toggle-pw {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+            padding: 4px;
+        }
+
+        .btn-toggle-pw:hover {
+            opacity: 1;
+        }
+
+        .btn-auth-submit {
+            background: rgba(0, 255, 102, 0.15);
+            border: 1px solid var(--term-green);
+            color: var(--term-green);
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding: 12px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.15);
+            white-space: nowrap;
+        }
+
+        .btn-auth-submit:hover {
+            background: rgba(0, 255, 102, 0.3);
+            box-shadow: 0 0 18px rgba(0, 255, 102, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-auth-submit:active {
+            transform: scale(0.96);
+        }
+
+        .auth-hint {
+            margin-top: 8px;
+            font-size: 0.76rem;
+            color: rgba(255, 255, 255, 0.45);
+            font-family: var(--font-mono);
+            line-height: 1.4;
+        }
+
+        .auth-status {
+            margin-top: 10px;
+            font-family: var(--font-mono);
+            font-size: 0.84rem;
+            line-height: 1.5;
+            min-height: 22px;
+        }
+
+        .auth-status.error {
+            color: #ff4d6d;
+            text-shadow: 0 0 8px rgba(255, 77, 109, 0.5);
+            animation: shake 0.4s ease;
+        }
+
+        .auth-status.success {
+            color: #00ff66;
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.6);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        @media (max-width: 480px) {
+            .auth-input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn-auth-submit {
+                width: 100%;
+                padding: 11px;
+            }
+        }
+
         /* Screen 3: Tree of Memory */
         .tree-stage {
             width: 100%;
@@ -746,10 +916,38 @@
 
     <!-- SCREEN 1: TERMINAL DEADMAN -->
     <section class="screen active" id="screen-1">
-        <div class="term-container">
-            <span id="term-stream"></span><span class="cursor"></span>
+        <div class="term-container" id="term-box">
+            <span id="term-stream"></span><span class="cursor" id="term-cursor"></span>
+
+            <!-- Auth Input Panel -->
+            <div id="auth-panel" class="auth-panel" style="display: none; opacity: 0;">
+                <div class="auth-label">
+                    <span class="auth-lock-icon">🔒</span>
+                    <span>OTORISASI DIPERLUKAN // MASUKKAN KUNCI:</span>
+                </div>
+                <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+                    <div class="auth-input-group">
+                        <div class="auth-input-wrapper">
+                            <span class="auth-prompt-symbol">&gt;</span>
+                            <input type="password" id="auth-input" maxlength="12" placeholder="Tanggal jadian..."
+                                autocomplete="off" inputmode="numeric" />
+                            <button type="button" id="toggle-pw" class="btn-toggle-pw" onclick="togglePasswordVisibility()" title="Lihat password">
+                                👁️
+                            </button>
+                        </div>
+                        <button type="submit" id="btn-submit-auth" class="btn-auth-submit">
+                            VERIFIKASI
+                        </button>
+                    </div>
+                    <div id="auth-hint" class="auth-hint">
+                        * Petunjuk: Tanggal jadian kita berdua (format DDMMYY)
+                    </div>
+                    <div id="auth-status" class="auth-status"></div>
+                </form>
+            </div>
         </div>
-        <button id="btn-auth" class="btn-core" style="opacity: 0; visibility: hidden;" onclick="navTo(2)">
+
+        <button id="btn-auth" class="btn-core" style="opacity: 0; visibility: hidden;" onclick="proceedToMemory()">
             [ BUKA AKSES MEMORI ]
         </button>
     </section>
@@ -1128,9 +1326,9 @@
         }
 
         /* ==========================================================
-           SCREEN 1: TYPEWRITER INTRO
+           SCREEN 1: TYPEWRITER INTRO & AUTHORIZATION (191223)
            ========================================================== */
-        const introLog = `[ PROTOKOL DEADMAN AKTIF... ]\n> Memeriksa catatan telemetri komunikasi...\n> Mendeteksi anomali jarak Wates - Bantul.\n> Menunggu otorisasi pengguna...`;
+        const introLog = `[ PROTOKOL DEADMAN AKTIF... ]\n> Mendeteksi anomali log in...\n> Memastikan kalau ini Tiara...\n> Menunggu otorisasi pengguna...`;
         let introIdx = 0;
         function streamIntro() {
             const el = document.getElementById('term-stream');
@@ -1139,12 +1337,86 @@
                 introIdx++;
                 setTimeout(streamIntro, 35);
             } else {
-                const btn = document.getElementById('btn-auth');
-                btn.style.opacity = '1';
-                btn.style.visibility = 'visible';
+                // Reveal auth panel smoothly
+                const panel = document.getElementById('auth-panel');
+                if (panel) {
+                    panel.style.display = 'block';
+                    requestAnimationFrame(() => {
+                        panel.classList.add('revealed');
+                    });
+                    const inputEl = document.getElementById('auth-input');
+                    if (inputEl) {
+                        setTimeout(() => inputEl.focus(), 300);
+                    }
+                }
             }
         }
         window.onload = () => setTimeout(streamIntro, 400);
+
+        function togglePasswordVisibility() {
+            const input = document.getElementById('auth-input');
+            const btn = document.getElementById('toggle-pw');
+            if (!input || !btn) return;
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.innerText = '🙈';
+            } else {
+                input.type = 'password';
+                btn.innerText = '👁️';
+            }
+        }
+
+        function handleAuthSubmit(e) {
+            if (e) e.preventDefault();
+            const input = document.getElementById('auth-input');
+            const status = document.getElementById('auth-status');
+            const btnSubmit = document.getElementById('btn-submit-auth');
+            const rawVal = input ? input.value.trim() : '';
+            const cleanVal = rawVal.replace(/[^0-9]/g, '');
+
+            if (!rawVal) {
+                status.className = 'auth-status error';
+                status.innerHTML = '&gt; Masukkan password otorisasi terlebih dahulu.';
+                if (input) input.focus();
+                return;
+            }
+
+            // Target password: 191223 (19 Desember 2023)
+            if (cleanVal === '191223' || cleanVal === '19122023') {
+                status.className = 'auth-status success';
+                status.innerHTML = '&gt; [STATUS: DISETUJUI] Otorisasi berhasil!<br>&gt; Identitas terkonfirmasi: Tiara ❤️<br>&gt; Membuka akses arsip memori...';
+                if (input) input.disabled = true;
+                if (btnSubmit) btnSubmit.disabled = true;
+
+                createSparks(window.innerWidth / 2, window.innerHeight / 2, 40);
+
+                const btnAuth = document.getElementById('btn-auth');
+                if (btnAuth) {
+                    btnAuth.style.opacity = '1';
+                    btnAuth.style.visibility = 'visible';
+                    btnAuth.style.boxShadow = '0 0 30px rgba(0, 210, 255, 0.6), 0 0 15px rgba(0, 255, 102, 0.4)';
+                    btnAuth.innerHTML = '✨ [ BUKA AKSES MEMORI ] ✨';
+                }
+
+                // Smoothly transition after brief moment
+                setTimeout(() => {
+                    if (currentScreen === 1) {
+                        navTo(2);
+                    }
+                }, 1500);
+            } else {
+                status.className = 'auth-status error';
+                status.innerHTML = '&gt; [STATUS: DITOLAK] Password salah! Akses tidak diizinkan.<br>&gt; Petunjuk: Tanggal jadian kita berdua (DDMMYY).';
+                if (input) {
+                    input.value = '';
+                    input.focus();
+                }
+            }
+        }
+
+        function proceedToMemory() {
+            navTo(2);
+        }
 
         /* ==========================================================
            SCREEN 3: TREE GROWING MECHANIC
