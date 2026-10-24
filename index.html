@@ -592,80 +592,303 @@
         }
 
         /* Rolling Gallery */
-        .rolling-gallery {
+        /* Background Star Floating Memories */
+        .bg-star-memories {
             position: absolute;
             inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 5;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 1.6s;
+        }
+
+        .bg-star-memories.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .star-photo {
+            position: absolute;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.45), 0 0 50px rgba(0, 255, 102, 0.25);
+            border: 1.5px solid rgba(0, 210, 255, 0.4);
+            filter: blur(2.5px) brightness(0.8);
+            opacity: 0.65;
+            animation: floatStarMemory var(--dur, 18s) ease-in-out infinite alternate;
+            animation-delay: var(--delay, 0s);
+            transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .star-photo:hover {
+            filter: blur(0px) brightness(1.1);
+            opacity: 1;
+            transform: scale(1.25) !important;
+            z-index: 20;
+            box-shadow: 0 0 35px rgba(0, 210, 255, 0.8), 0 0 60px rgba(244, 192, 78, 0.5);
+        }
+
+        .star-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Specific positions & sizes across screen */
+        .star-p1 { top: 8%; left: 8%; width: 85px; height: 85px; }
+        .star-p2 { top: 12%; right: 10%; width: 95px; height: 95px; }
+        .star-p3 { bottom: 14%; left: 6%; width: 90px; height: 90px; }
+        .star-p4 { bottom: 16%; right: 8%; width: 100px; height: 100px; }
+        .star-p5 { top: 46%; left: 3%; width: 75px; height: 75px; }
+        .star-p6 { top: 48%; right: 4%; width: 80px; height: 80px; }
+        .star-p7 { top: 4%; left: 45%; width: 70px; height: 70px; }
+        .star-p8 { bottom: 6%; left: 42%; width: 75px; height: 75px; }
+
+        @keyframes floatStarMemory {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 0.55;
+            }
+            33% {
+                transform: translate(14px, -18px) scale(1.06) rotate(3deg);
+                opacity: 0.75;
+            }
+            66% {
+                transform: translate(-12px, 15px) scale(0.95) rotate(-3deg);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(10px, 12px) scale(1.04) rotate(2deg);
+                opacity: 0.7;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .star-p1 { width: 60px; height: 60px; top: 4%; left: 4%; }
+            .star-p2 { width: 65px; height: 65px; top: 6%; right: 4%; }
+            .star-p3 { width: 60px; height: 60px; bottom: 8%; left: 4%; }
+            .star-p4 { width: 65px; height: 65px; bottom: 10%; right: 4%; }
+            .star-p5 { display: none; }
+            .star-p6 { display: none; }
+            .star-p7 { width: 55px; height: 55px; top: 2%; left: 38%; }
+            .star-p8 { width: 55px; height: 55px; bottom: 3%; left: 38%; }
+        }
+
+        /* Pop Cahaya Mekar */
+        .pop-shockwave {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(0, 255, 102, 0.9) 35%, rgba(0, 210, 255, 0.6) 65%, transparent 100%);
+            transform: translate(-50%, -50%) scale(0.2);
+            pointer-events: none;
+            z-index: 25;
+            animation: popWave 1s cubic-bezier(0.12, 0.8, 0.32, 1) forwards;
+            box-shadow: 0 0 50px rgba(0, 255, 102, 0.8), 0 0 90px rgba(0, 210, 255, 0.7);
+        }
+
+        @keyframes popWave {
+            0% {
+                transform: translate(-50%, -50%) scale(0.2);
+                opacity: 1;
+            }
+            40% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(14);
+                opacity: 0;
+            }
+        }
+
+        .tree-pop-active {
+            animation: treeGlowPulse 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes treeGlowPulse {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4));
+            }
+            35% {
+                transform: scale(1.18);
+                filter: drop-shadow(0 0 40px rgba(0, 255, 102, 1)) drop-shadow(0 0 25px #ffffff);
+            }
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 22px rgba(0, 230, 118, 0.7));
+            }
+        }
+
+        /* Rolling Gallery with Slide Down Blur Animation */
+        .rolling-gallery {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -90px);
+            width: 94vw;
+            max-width: 580px;
+            height: 280px;
             display: flex;
             align-items: center;
             gap: 16px;
             overflow-x: auto;
-            padding: 20px;
+            overflow-y: hidden;
+            padding: 30px 18px 16px 18px;
+            border-radius: 18px;
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.8s ease;
-            z-index: 30;
-            background: rgba(4, 6, 12, 0.85);
-            backdrop-filter: blur(12px);
+            pointer-events: none;
+            z-index: 35;
+            background: rgba(5, 8, 18, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 210, 255, 0.4) transparent;
         }
 
         .rolling-gallery.show {
             opacity: 1;
             visibility: visible;
+            pointer-events: auto;
+            animation: slideDownBlurGallery 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideDownBlurGallery {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -100px);
+                filter: blur(20px);
+            }
+            50% {
+                filter: blur(5px);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+                filter: blur(0px);
+            }
+        }
+
+        .gallery-header-badge {
+            position: absolute;
+            top: 8px;
+            left: 18px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--gold);
+            letter-spacing: 0.08em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-shadow: 0 0 8px rgba(244, 192, 78, 0.4);
+            pointer-events: none;
         }
 
         .rolling-gallery::-webkit-scrollbar {
-            display: none;
+            height: 5px;
+        }
+
+        .rolling-gallery::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .rolling-gallery::-webkit-scrollbar-thumb {
+            background: rgba(0, 210, 255, 0.4);
+            border-radius: 10px;
         }
 
         .memory-card {
-            flex: 0 0 170px;
-            height: 230px;
-            background: #fff;
-            padding: 8px 8px 30px 8px;
-            border-radius: 6px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+            flex: 0 0 160px;
+            height: 220px;
+            background: #ffffff;
+            padding: 8px 8px 24px 8px;
+            border-radius: 8px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.7);
             transform: rotate(-2deg);
-            transition: transform 0.3s;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
             display: flex;
             flex-direction: column;
+            cursor: pointer;
+            position: relative;
         }
 
         .memory-card:nth-child(even) {
-            transform: rotate(3deg);
+            transform: rotate(2.5deg);
         }
 
         .memory-card:hover {
-            transform: scale(1.05) rotate(0deg);
-            z-index: 5;
+            transform: scale(1.06) rotate(0deg) !important;
+            box-shadow: 0 16px 36px rgba(0, 210, 255, 0.35);
+            z-index: 10;
+        }
+
+        .rolling-gallery.show .memory-card {
+            animation: cardSlideDownBlur 0.75s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+        .rolling-gallery.show .memory-card:nth-of-type(1) { animation-delay: 0.15s; }
+        .rolling-gallery.show .memory-card:nth-of-type(2) { animation-delay: 0.3s; }
+        .rolling-gallery.show .memory-card:nth-of-type(3) { animation-delay: 0.45s; }
+        .rolling-gallery.show .memory-card:nth-of-type(4) { animation-delay: 0.6s; }
+
+        @keyframes cardSlideDownBlur {
+            0% {
+                opacity: 0;
+                transform: translateY(-45px) rotate(-5deg);
+                filter: blur(14px);
+            }
+            60% {
+                filter: blur(3px);
+            }
+            100% {
+                opacity: 1;
+                filter: blur(0);
+            }
         }
 
         .memory-card .img-box {
             width: 100%;
             flex: 1;
-            background: #121824;
-            border-radius: 4px;
+            background: #0d121d;
+            border-radius: 5px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            color: #8899ac;
         }
 
         .memory-card .img-box img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .memory-card:hover .img-box img {
+            transform: scale(1.05);
         }
 
         .memory-card .caption {
-            font-size: 0.72rem;
-            color: #333;
+            font-size: 0.7rem;
+            color: #24292e;
             margin-top: 8px;
             font-family: var(--font-sans);
-            font-weight: 500;
+            font-weight: 600;
             text-align: left;
+            line-height: 1.3;
         }
 
         /* Screen 4: Star Map */
@@ -970,6 +1193,34 @@
 
     <!-- SCREEN 3: MINI GAME POHON MEMORI -->
     <section class="screen" id="screen-3">
+        <!-- Background floating blurred star memories -->
+        <div id="bg-star-memories" class="bg-star-memories">
+            <div class="star-photo star-p1" style="--delay: 0s; --dur: 16s;" title="Kita berdua ❤️">
+                <img src="bg-1.jpg" alt="memory" />
+            </div>
+            <div class="star-photo star-p2" style="--delay: -3s; --dur: 20s;" title="Kita berdua ❤️">
+                <img src="bg-2.jpg" alt="memory" />
+            </div>
+            <div class="star-photo star-p3" style="--delay: -6s; --dur: 18s;" title="Kita berdua ❤️">
+                <img src="bg-3.jpg" alt="memory" />
+            </div>
+            <div class="star-photo star-p4" style="--delay: -2s; --dur: 22s;" title="Kita berdua ❤️">
+                <img src="bg-4.jpg" alt="memory" />
+            </div>
+            <div class="star-photo star-p5" style="--delay: -5s; --dur: 19s;" title="Kita berdua ❤️">
+                <img src="foto-1.jpg" alt="memory" />
+            </div>
+            <div class="star-photo star-p6" style="--delay: -8s; --dur: 24s;" title="Kita berdua ❤️">
+                <img src="foto-2.jpg" alt="memory" />
+            </div>
+            <div class="star-photo star-p7" style="--delay: -4s; --dur: 17s;" title="Kita berdua ❤️">
+                <img src="foto-3.png" alt="memory" />
+            </div>
+            <div class="star-photo star-p8" style="--delay: -7s; --dur: 21s;" title="Kita berdua ❤️">
+                <img src="foto-4.jpg" alt="memory" />
+            </div>
+        </div>
+
         <div class="tree-stage">
             <div class="water-spray" id="water-can">🚿</div>
 
@@ -996,20 +1247,23 @@
 
             <!-- Rolling Gallery saat pohon mekar -->
             <div class="rolling-gallery" id="tree-gallery">
+                <div class="gallery-header-badge">
+                    <span>🌸 MEMORI KITA BERDUA (Geser ➔)</span>
+                </div>
                 <div class="memory-card">
-                    <div class="img-box"><span>Foto Kenangan 1</span></div>
+                    <div class="img-box"><img src="foto-1.jpg" alt="Awal perjumpaan kita" /></div>
                     <div class="caption">Awal perjumpaan kita.</div>
                 </div>
                 <div class="memory-card">
-                    <div class="img-box"><span>Foto Kenangan 2</span></div>
+                    <div class="img-box"><img src="foto-2.jpg" alt="Waktu nemenin di Wates" /></div>
                     <div class="caption">Waktu nemenin di Wates.</div>
                 </div>
                 <div class="memory-card">
-                    <div class="img-box"><span>Foto Kenangan 3</span></div>
+                    <div class="img-box"><img src="foto-3.png" alt="Bantul & langkah baru" /></div>
                     <div class="caption">Bantul & langkah baru.</div>
                 </div>
                 <div class="memory-card">
-                    <div class="img-box"><span>Foto Pamungkas</span></div>
+                    <div class="img-box"><img src="foto-4.jpg" alt="Menuju masa depan berdua" /></div>
                     <div class="caption">Menuju masa depan berdua.</div>
                 </div>
             </div>
@@ -1466,13 +1720,39 @@
                 treeComplete = true;
                 document.getElementById('tree-controls').style.display = 'none';
 
-                const box = foliage.getBoundingClientRect();
-                createSparks(box.left + box.width / 2, box.top + box.height / 2, 40);
+                // 1. Pop bercahaya
+                const treeSvg = document.getElementById('tree-svg');
+                if (treeSvg) treeSvg.classList.add('tree-pop-active');
 
+                // Shockwave cahaya pop
+                const shockwave = document.createElement('div');
+                shockwave.className = 'pop-shockwave';
+                document.querySelector('.tree-stage').appendChild(shockwave);
+                setTimeout(() => shockwave.remove(), 1200);
+
+                const box = foliage.getBoundingClientRect();
+                createSparks(box.left + box.width / 2, box.top + box.height / 2, 50);
+
+                // 2. Dilanjutkan slide dari atas ke bawah blur foto-foto
                 setTimeout(() => {
-                    document.getElementById('tree-gallery').classList.add('show');
-                    document.getElementById('btn-next-tree').style.display = 'inline-flex';
-                }, 600);
+                    const gallery = document.getElementById('tree-gallery');
+                    if (gallery) {
+                        gallery.classList.add('show');
+                    }
+                    const bgMemories = document.getElementById('bg-star-memories');
+                    if (bgMemories) {
+                        bgMemories.classList.add('active');
+                    }
+                    const nextBtn = document.getElementById('btn-next-tree');
+                    if (nextBtn) {
+                        nextBtn.style.display = 'inline-flex';
+                        nextBtn.style.opacity = '0';
+                        nextBtn.style.transition = 'opacity 0.6s ease';
+                        requestAnimationFrame(() => {
+                            nextBtn.style.opacity = '1';
+                        });
+                    }
+                }, 450);
             } else {
                 growAnimId = requestAnimationFrame(waterTicker);
             }
