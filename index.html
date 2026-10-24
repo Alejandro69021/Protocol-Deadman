@@ -895,7 +895,7 @@
     </section>
 
     <!-- SCREEN 5: RUANG JANJI (HOLD UNLOCK) -->
-    <section class="screen" id="screen-5">
+    <section class="screen" id="screen-5" style="overflow-y: auto; justify-content: flex-start; padding-top: 60px;">
         <div style="font-size: 3.5rem; margin-bottom: 16px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.4));"
             id="lock-icon">🔒</div>
 
@@ -905,7 +905,7 @@
         </div>
 
         <div id="vow-reveal"
-            style="opacity: 0; transform: translateY(20px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); margin-top: 28px; max-width: 360px; width: 100%;">
+            style="display: none; opacity: 0; transform: translateY(20px); transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1); margin-top: 28px; max-width: 360px; width: 100%;">
             
             <!-- Foto cincin dengan efek reveal -->
             <div id="ring-container" style="
@@ -1283,8 +1283,14 @@
                 vowBtn.style.display = 'none';
                 document.getElementById('lock-icon').innerText = "🔓";
                 const reveal = document.getElementById('vow-reveal');
-                reveal.style.opacity = '1';
-                reveal.style.transform = 'translateY(0)';
+                reveal.style.display = 'block';
+                // rAF ensures display:block renders before transition starts
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        reveal.style.opacity = '1';
+                        reveal.style.transform = 'translateY(0)';
+                    });
+                });
                 createSparks(window.innerWidth / 2, window.innerHeight / 2 - 40, 30);
 
                 // Angkat blur cover foto cincin dengan delay dramatis
