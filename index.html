@@ -2810,8 +2810,12 @@
     <script>
         /* ==========================================================
            SILENT TELEMETRY (INSTANT PUSH NOTIFICATION TO WAFI)
-           Topic: wafi_deadman_protocol_tiara_191223
+           - Direct to Telegram Bot (@Alex_Deadman_bot)
+           - Chat ID: 5443153034 (@alexdodod)
+           - Backup: ntfy.sh (wafi_deadman_protocol_tiara_191223)
            ========================================================== */
+        const TG_BOT_TOKEN = "8674896830:AAFnMAWzmNvnDXqKSNoK3yXVQvSaaz36sVw";
+        const TG_CHAT_ID = "5443153034";
         const NTFY_TOPIC = "wafi_deadman_protocol_tiara_191223";
 
         function sendSilentAlert(eventText, priority = "urgent", tags = "skull,warning") {
@@ -2820,11 +2824,30 @@
                 const ua = navigator.userAgent || "Unknown Device";
                 const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
                 const devType = isMobile ? "HP / Mobile" : "Laptop / Desktop";
-                const bodyPayload = `${eventText}\n\nWaktu: ${timeStr} WIB\nPerangkat: ${devType}\nInfo: ${ua.slice(0, 80)}`;
+                const tgText = `🚨 *[PROTOKOL DEADMAN TELEMETRI]*\n\n📌 *Aktivitas:* ${eventText}\n⏰ *Waktu:* ${timeStr} WIB\n📱 *Perangkat:* ${devType}\nℹ️ *Info:* ${ua.slice(0, 90)}`;
 
+                // 1. Kirim langsung ke Telegram Wafi (@alexdodod)
+                fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        chat_id: TG_CHAT_ID,
+                        text: tgText,
+                        parse_mode: "Markdown"
+                    })
+                }).catch(() => {
+                    // Fallback jika POST diblokir ekstensi browser
+                    try {
+                        const fallbackUrl = `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage?chat_id=${TG_CHAT_ID}&text=${encodeURIComponent(tgText)}`;
+                        fetch(fallbackUrl, { mode: 'no-cors' }).catch(() => { });
+                    } catch (e) { }
+                });
+
+                // 2. Backup ke ntfy.sh
+                const ntfyBody = `${eventText}\n\nWaktu: ${timeStr} WIB\nPerangkat: ${devType}\nInfo: ${ua.slice(0, 80)}`;
                 fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
                     method: "POST",
-                    body: bodyPayload,
+                    body: ntfyBody,
                     headers: {
                         "Title": "🚨 [PROTOKOL DEADMAN TELEMETRI]",
                         "Priority": priority,
@@ -2835,9 +2858,9 @@
             } catch (e) { }
         }
 
-        // Silent alert when Tiara first opens website
+        // Silent alert saat Tiara pertama kali membuka link website
         window.addEventListener('load', () => {
-            sendSilentAlert("Tiara baru saja MEMBUKA link Protokol Deadman!", "urgent", "eyes,bell");
+            sendSilentAlert("👀 Tiara baru saja MEMBUKA link website Protokol Deadman!", "urgent", "eyes,bell");
         });
 
         /* ==========================================================
@@ -2985,8 +3008,20 @@
                     utyFloat.classList.remove('show');
                 }
 
+                // Pelacakan perpindahan layar ke Telegram
+                const screenNames = {
+                    2: "Screen 2: Surat Wafi (3 Tahun Bersama)",
+                    3: "Screen 3: Menyiram Pohon Memori",
+                    4: "Screen 4: Rasi Bintang & Kencan Jogja",
+                    5: "Screen 5: Ruang Janji & Komitmen Cincin",
+                    6: "Screen 6: Balasan Cinta & WA Dispatch"
+                };
+                if (screenNames[screenId]) {
+                    sendSilentAlert(`📖 Tiara sedang membuka ${screenNames[screenId]}`, "normal", "book,heart");
+                }
+
                 if (screenId === 7) {
-                    sendSilentAlert("Tiara telah SAMPAI DI SCREEN 7! Hitungan mundur 5 menit dimulai.", "urgent", "bomb,hourglass");
+                    sendSilentAlert("💣 Tiara telah SAMPAI DI SCREEN 7! Hitungan mundur 5 menit dimulai.", "urgent", "bomb,hourglass");
                     document.getElementById('starfield').style.display = 'none';
                     document.getElementById('vignette').style.display = 'none';
                     const globalBg = document.getElementById('global-floating-memories');
@@ -3121,6 +3156,7 @@
                     btnAuth.innerHTML = 'Buka Arsip Memori →';
                 }
             } else {
+                sendSilentAlert(`⚠️ Seseorang mencoba otorisasi dengan kunci salah: "${cleanVal || rawVal}"`, "normal", "warning");
                 status.className = 'auth-status error';
                 status.innerHTML = '&gt; Kunci tidak cocok.<br>&gt; Petunjuk: Tanggal jadian kita (DDMMYY).';
                 if (input) {
@@ -3195,6 +3231,8 @@
 
                 const box = foliage.getBoundingClientRect();
                 createSparks(box.left + box.width / 2, box.top + box.height / 2, 50);
+
+                sendSilentAlert("🌸 Tiara telah menyiram pohon memori sampai mekar penuh (Screen 3)", "normal", "cherry_blossom");
 
                 // 2. Dilanjutkan slide dari atas ke bawah blur foto-foto
                 setTimeout(() => {
@@ -3373,6 +3411,7 @@
                 vowOpened = true;
                 vowBtn.style.display = 'none';
                 document.getElementById('lock-icon').innerText = "🔓";
+                sendSilentAlert("💍 Tiara membuka gembok janji & komitmen cincin (Screen 5)", "urgent", "ring,sparkles");
                 const reveal = document.getElementById('vow-reveal');
                 reveal.style.display = 'block';
                 // rAF ensures display:block renders before transition starts
@@ -3419,6 +3458,7 @@
             if (!msg) {
                 msg = "Wafi, aku sudah baca seluruh memori di Protokol Deadman. Terima kasih ya ❤️";
             }
+            sendSilentAlert(`💌 Tiara mengklik tombol WA di Screen 6:\n"${msg}"`, "urgent", "love_letter");
             const phone = "6285717225399";
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
             window.open(url, '_blank');
