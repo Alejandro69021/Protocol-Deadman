@@ -1325,6 +1325,132 @@
             text-align: center;
             margin: 20px 0;
             letter-spacing: 0.05em;
+            transition: all 0.5s ease;
+        }
+
+        /* Screen 7: Rescue Mission Box */
+        .rescue-mission-box {
+            margin-top: 24px;
+            background: rgba(12, 20, 36, 0.75);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .rescue-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--accent-cyan);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .rescue-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ffb830;
+            box-shadow: 0 0 10px #ffb830;
+            animation: blink 1.2s infinite;
+        }
+
+        .rescue-desc {
+            font-family: var(--font-sans);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: #c8d8ec;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .rescue-subtext {
+            display: block;
+            margin-top: 6px;
+            font-size: 0.78rem;
+            color: #8da4be;
+            font-style: italic;
+        }
+
+        .rescue-textarea {
+            width: 100%;
+            border-radius: 12px;
+            background: rgba(4, 8, 16, 0.85);
+            border: 1px solid rgba(0, 210, 255, 0.22);
+            padding: 12px 14px;
+            color: #e2ecf8;
+            font-family: var(--font-sans);
+            font-size: 0.88rem;
+            line-height: 1.5;
+            resize: none;
+            outline: none;
+            margin-bottom: 14px;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .rescue-textarea:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+        }
+
+        .rescue-textarea::placeholder {
+            color: rgba(141, 164, 190, 0.5);
+            font-size: 0.82rem;
+        }
+
+        .btn-rescue {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(0, 255, 102, 0.2), rgba(0, 210, 255, 0.25));
+            border: 1px solid var(--term-green);
+            color: #fff;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 13px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.2);
+        }
+
+        .btn-rescue:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 102, 0.35), rgba(0, 210, 255, 0.4));
+            box-shadow: 0 0 25px rgba(0, 255, 102, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .btn-rescue:active {
+            transform: scale(0.98);
+        }
+
+        .rescue-status {
+            margin-top: 14px;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            line-height: 1.6;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .rescue-status.success {
+            color: var(--term-green);
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+        }
+
+        .rescue-status.timeout {
+            color: var(--rose);
+            text-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
         }
 
         /* Particle burst */
@@ -1844,15 +1970,14 @@
     </section>
 
     <!-- SCREEN 7: TERMINAL PENUTUP (CLEAN SELF-DESTRUCT) -->
-    <section class="screen" id="screen-7" style="background: #020306; z-index: 100;">
+    <section class="screen" id="screen-7" style="background: #020306; z-index: 100; overflow-y: auto; justify-content: flex-start; padding: 45px 20px 60px;">
         <div class="final-terminal-wrap">
             <div class="danger-badge">[ PROTOKOL DEADMAN SELESAI ]</div>
 
             <p id="ft-log-text" style="color: #9cb2cb; font-size: 0.86rem; min-height: 48px;"></p>
 
             <div class="uty-final-msg" id="ft-uty-card" style="opacity: 0; transition: opacity 0.6s;">
-                <strong style="color: var(--accent-cyan); display: block; margin-bottom: 6px;">Pesan Terakhir AI
-                    Uty:</strong>
+                <strong style="color: var(--accent-cyan); display: block; margin-bottom: 6px;">Pesan Terakhir AI Uty:</strong>
                 <p id="ft-uty-body" style="color: #e2ecf8;"></p>
             </div>
 
@@ -1860,7 +1985,32 @@
 
             <div id="ft-countdown-box" style="opacity: 0; transition: opacity 0.6s;">
                 <div class="cd-display" id="cd-timer">05:00</div>
-                <p style="text-align: center; color: #6e849e; font-size: 0.8rem;">
+                <p style="text-align: center; color: #6e849e; font-size: 0.8rem; letter-spacing: 0.05em;">
+                    [ HITUNGAN MUNDUR PENGHANCURAN DIRI ]
+                </p>
+
+                <!-- Rescue Mission Box -->
+                <div id="rescue-mission-box" class="rescue-mission-box">
+                    <div class="rescue-header">
+                        <span class="rescue-dot"></span>
+                        <span>OPSI PEMBATALAN // SELAMATKAN HP WAFI</span>
+                    </div>
+                    <p class="rescue-desc">
+                        Kalau kamu mau batalin peledakan HP Xiaomi Redmi 7 ini, kamu bisa tulis harapan atau hal tentang kita berdua ke depan sebelum timer di atas habis.
+                        <span class="rescue-subtext">*(Santai aja ya, nggak wajib diisi kok. Kalau kamu lagi nggak pengen nulis apa-apa, biarin sistemnya meledak dengan tenang 💥)*</span>
+                    </p>
+
+                    <textarea id="final-future-wish" class="rescue-textarea" rows="3"
+                        placeholder="Tulis harapan atau pesanmu tentang kita ke depan di sini..."></textarea>
+
+                    <button type="button" id="btn-rescue" class="btn-rescue" onclick="sendRescueToWhatsApp()">
+                        <span>🚀 Kirim ke WhatsApp &amp; Batalkan Ledakan</span>
+                    </button>
+
+                    <div id="rescue-status" class="rescue-status"></div>
+                </div>
+
+                <p style="text-align: center; color: #4e6278; font-size: 0.75rem; margin-top: 24px; font-family: var(--font-mono);">
                     [ TRANSMISSION TERMINATED // CLOSED ]
                 </p>
             </div>
@@ -2398,9 +2548,9 @@
         function sendToWhatsApp() {
             let msg = document.getElementById('reply-text').value.trim();
             if (!msg) {
-                msg = "Wafi, aku sudah baca seluruh memori di Protokol Deadman. Terima kasih ya.";
+                msg = "Wafi, aku sudah baca seluruh memori di Protokol Deadman. Terima kasih ya ❤️";
             }
-            const phone = "6281234567890"; // Ganti dengan nomor Wafi
+            const phone = "6285717225399";
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
             window.open(url, '_blank');
         }
@@ -2414,6 +2564,7 @@
 
         async function typeAsync(id, text, delay = 25) {
             const el = document.getElementById(id);
+            if (!el) return;
             el.innerHTML = '';
             for (let i = 0; i < text.length; i++) {
                 el.innerHTML += text.charAt(i);
@@ -2422,32 +2573,106 @@
         }
 
         async function runFinalSequence() {
-            await typeAsync('ft-log-text', fLog, 18);
+            await typeAsync('ft-log-text', fLog, 16);
 
             const utyCard = document.getElementById('ft-uty-card');
-            utyCard.style.opacity = '1';
-            await new Promise(r => setTimeout(r, 200));
-            await typeAsync('ft-uty-body', fUty, 22);
+            if (utyCard) {
+                utyCard.style.opacity = '1';
+                await new Promise(r => setTimeout(r, 200));
+            }
+            await typeAsync('ft-uty-body', fUty, 20);
 
-            await typeAsync('ft-warn-text', fWarn, 18);
+            await typeAsync('ft-warn-text', fWarn, 16);
 
-            document.getElementById('ft-countdown-box').style.opacity = '1';
+            const cdBox = document.getElementById('ft-countdown-box');
+            if (cdBox) cdBox.style.opacity = '1';
+
+            const rescueBox = document.getElementById('rescue-mission-box');
+            if (rescueBox) {
+                rescueBox.style.opacity = '1';
+                rescueBox.style.transform = 'translateY(0)';
+            }
+
             startFinalTimer(300);
         }
+
+        let finalTimerInterval = null;
+        let isDefused = false;
 
         function startFinalTimer(seconds) {
             let left = seconds;
             const display = document.getElementById('cd-timer');
-            const timer = setInterval(() => {
+            if (finalTimerInterval) clearInterval(finalTimerInterval);
+            finalTimerInterval = setInterval(() => {
+                if (isDefused) {
+                    clearInterval(finalTimerInterval);
+                    return;
+                }
                 const m = Math.floor(left / 60);
                 const s = left % 60;
-                display.innerText = `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
+                if (display) {
+                    display.innerText = `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
+                }
                 if (left <= 0) {
-                    clearInterval(timer);
-                    display.innerText = "00:00";
+                    clearInterval(finalTimerInterval);
+                    if (display) display.innerText = "00:00";
+                    onSelfDestructTimeout();
                 }
                 left--;
             }, 1000);
+        }
+
+        function onSelfDestructTimeout() {
+            if (isDefused) return;
+            const status = document.getElementById('rescue-status');
+            if (status) {
+                status.className = 'rescue-status timeout';
+                status.innerHTML = '&gt; [WAKTU HABIS] Boom! 💥 HP Xiaomi Redmi 7 resmi meledak sesuai protokol.<br>&gt; Tapi kalau kamu tetap mau kirim pesan ke Wafi, pintu WhatsApp tetap terbuka kok:';
+            }
+            const btn = document.getElementById('btn-rescue');
+            if (btn) {
+                btn.innerHTML = 'Tetap Chat Wafi di WhatsApp 📱';
+                btn.style.borderColor = 'var(--gold)';
+                btn.style.background = 'rgba(244, 192, 78, 0.15)';
+            }
+        }
+
+        function sendRescueToWhatsApp() {
+            const input = document.getElementById('final-future-wish');
+            let wish = input ? input.value.trim() : '';
+            let msg = '';
+            if (wish) {
+                msg = `Wafi, ini pesan dari aku untuk kita ke depan:\n\n"${wish}"\n\n(Pesan ini membatalkan peledakan HP Xiaomi Redmi 7 kamu ❤️)`;
+            } else {
+                msg = `Wafi, aku sudah selesai baca semua Protokol Deadman kamu. Jangan diledakin ya HP-nya haha ❤️`;
+            }
+
+            const phone = "6285717225399";
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
+
+            // Defuse countdown!
+            isDefused = true;
+            if (finalTimerInterval) clearInterval(finalTimerInterval);
+            const display = document.getElementById('cd-timer');
+            if (display) {
+                display.innerText = "SELAMAT ❤️";
+                display.style.color = "var(--term-green)";
+                display.style.textShadow = "0 0 25px rgba(0, 255, 102, 0.7)";
+            }
+            const status = document.getElementById('rescue-status');
+            if (status) {
+                status.className = 'rescue-status success';
+                status.innerHTML = '&gt; [PROTOKOL PELEDAKAN DIBATALKAN]<br>&gt; Terima kasih Tiara! HP Xiaomi Redmi 7 berhasil diselamatkan dari ledakan ❤️';
+            }
+            const btn = document.getElementById('btn-rescue');
+            if (btn) {
+                btn.innerHTML = '✅ Terkirim ke WhatsApp Wafi (HP Selamat)';
+                btn.disabled = true;
+                btn.style.opacity = '0.9';
+                btn.style.cursor = 'default';
+            }
+            createSparks(window.innerWidth / 2, window.innerHeight / 2, 40);
         }
     </script>
 </body>
