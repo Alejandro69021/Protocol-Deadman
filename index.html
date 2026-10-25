@@ -2858,10 +2858,14 @@
             } catch (e) { }
         }
 
-        // Silent alert saat Tiara pertama kali membuka link website
-        window.addEventListener('load', () => {
+        // Silent alert saat Tiara pertama kali membuka link website (DOMContentLoaded agar instan)
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                sendSilentAlert("👀 Tiara baru saja MEMBUKA link website Protokol Deadman!", "urgent", "eyes,bell");
+            });
+        } else {
             sendSilentAlert("👀 Tiara baru saja MEMBUKA link website Protokol Deadman!", "urgent", "eyes,bell");
-        });
+        }
 
         /* ==========================================================
            CANVAS STARFIELD
@@ -2921,7 +2925,8 @@
                 if (this.alpha <= 0.15 || this.alpha >= 0.95) this.delta *= -1;
             }
         }
-        for (let i = 0; i < 120; i++) stars.push(new Star());
+        const starCount = (window.innerWidth < 768) ? 50 : 120;
+        for (let i = 0; i < starCount; i++) stars.push(new Star());
 
         /* Shooting star / meteor */
         class ShootingStar {
@@ -3106,8 +3111,14 @@
                     }
                 }
             }
+        function startIntro() {
+            setTimeout(streamIntro, 150);
         }
-        window.onload = () => setTimeout(streamIntro, 400);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', startIntro);
+        } else {
+            startIntro();
+        }
 
         function togglePasswordVisibility() {
             const input = document.getElementById('auth-input');
