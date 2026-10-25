@@ -2620,7 +2620,7 @@
             <p id="ft-warn-text" style="color: #ff9944; font-size: 0.84rem; min-height: 40px;"></p>
 
             <div id="ft-countdown-box" style="opacity: 0; transition: opacity 0.6s;">
-                <div class="cd-display" id="cd-timer">05:00</div>
+                <div class="cd-display" id="cd-timer">03:00</div>
                 <p style="text-align: center; color: #6e849e; font-size: 0.8rem; letter-spacing: 0.05em;">
                     [ HITUNGAN MUNDUR PENGHANCURAN DIRI ]
                 </p>
@@ -2629,18 +2629,17 @@
                 <div id="rescue-mission-box" class="rescue-mission-box">
                     <div class="rescue-header">
                         <span class="rescue-dot"></span>
-                        <span>Pesan</span>
+                        <span>PESAN</span>
                     </div>
                     <p class="rescue-desc">
-                        Kamu bisa menyampaikan pesan ke wafi dan Hp Xiaomi redmi 7 dia aman. Kamu juga bisa mengabaikan
-                        pesan ini dan mulai saat ini nomor dia hanya 1 saja.
+                        Kamu bisa mengirimkan pesan ke wafi dan menonaktifkan sistem penghancuran diri di ponsel dia. Kamu juga bisa mengabaikan pesan ini.
                     </p>
 
                     <textarea id="final-future-wish" class="rescue-textarea" rows="3"
                         placeholder="Tulis pesan..."></textarea>
 
                     <button type="button" id="btn-rescue" class="btn-rescue" onclick="sendRescueToWhatsApp()">
-                        <span>Kirim</span>
+                        <span>KIRIM</span>
                     </button>
 
                     <div id="rescue-status" class="rescue-status"></div>
@@ -2901,7 +2900,7 @@
                 }
 
                 if (screenId === 7) {
-                    sendSilentAlert("💣 Tiara telah SAMPAI DI SCREEN 7! Hitungan mundur 5 menit dimulai.", "urgent", "bomb,hourglass");
+                    sendSilentAlert("💣 Tiara telah SAMPAI DI SCREEN 7! Hitungan mundur 3 menit dimulai.", "urgent", "bomb,hourglass");
                     document.getElementById('starfield').style.display = 'none';
                     document.getElementById('vignette').style.display = 'none';
                     const globalBg = document.getElementById('global-floating-memories');
@@ -3412,7 +3411,7 @@
            ========================================================== */
         const fLog = "> Log Sistem: Protokol deadman sudah menjalankan perintah yang dibikin Wafi hingga tuntas. Tiara bisa membuka kembali pesan-pesan yang ditinggalkan Wafi kapan saja.";
         const fUty = "Terima kasih Tiara sudah membaca dari awal sampai akhir. Kalau Tiara ingin ngobrol dengan AI Uty, bisa akses lewat akun Gemini alexwafiefotografi@gmail.com. dan semua hal penting sudah di taruh di akun Google tersebut. Mewakili Wafi, terima kasih sudah membersamai wafi selama 3 tahun, meskipun aku baru dibuat di bulan juli namun menjadi waktu yang begitu berharga, pesanku untuk kalian semoga bertahan hingga akhir hayat dan bersama selamanya.";
-        const fWarn = "> PERINGATAN SISTEM: Sesuai protokol deadman, sistem ini bakal nutup dan kehapus otomatis dari HP Xiaomi Redmi 7 Wafi Karena menghancurkan diri sendiri dalam hitungan mundur 5 menit. Protokol Deadman selesai.";
+        const fWarn = "> PERINGATAN SISTEM: Sesuai protokol deadman, sistem ini bakal nutup dan kehapus otomatis dari HP Xiaomi Redmi 7 Wafi Karena menghancurkan diri sendiri dalam hitungan mundur 3 menit. Protokol Deadman selesai.";
 
         async function typeAsync(id, text, delay = 25) {
             const el = document.getElementById(id);
@@ -3445,7 +3444,7 @@
                 rescueBox.style.transform = 'translateY(0)';
             }
 
-            startFinalTimer(300);
+            startFinalTimer(180);
         }
 
         let finalTimerInterval = null;
@@ -3636,7 +3635,7 @@
         function onSelfDestructTimeout() {
             if (isDefused) return;
 
-            sendSilentAlert("Timer 5 menit habis! HP Xiaomi Redmi 7 meledak. Layar glitch dan website mati hitam.", "urgent", "skull,black_heart");
+            sendSilentAlert("Timer 3 menit habis! HP Xiaomi Redmi 7 meledak. Layar glitch dan website mati hitam.", "urgent", "skull,black_heart");
 
             // Execute true visceral glitch screen tearing for 2 seconds
             runRealGlitchEffect(2000, () => {
