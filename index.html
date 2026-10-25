@@ -7,9 +7,13 @@
     <title>Protokol Deadman // Untuk Tiara</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
+    <link rel="preload" as="style"
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=JetBrains+Mono:wght@300;400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
-        rel="stylesheet">
+        onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=JetBrains+Mono:wght@300;400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap">
+    </noscript>
 
     <style>
         :root {
@@ -21,9 +25,9 @@
             --rose: #ff4d6d;
             --glass: rgba(12, 18, 34, 0.65);
             --glass-border: rgba(0, 210, 255, 0.2);
-            --font-mono: 'JetBrains Mono', monospace;
-            --font-sans: 'Plus Jakarta Sans', sans-serif;
-            --font-serif: 'Cinzel', serif;
+            --font-mono: 'JetBrains Mono', Consolas, Monaco, 'Courier New', monospace;
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-serif: 'Cinzel', Georgia, 'Times New Roman', serif;
         }
 
         * {
@@ -357,11 +361,46 @@
             color: var(--term-green);
             text-shadow: 0 0 8px var(--term-dim);
             text-align: left;
-            background: rgba(0, 30, 14, 0.55);
+            background: rgba(0, 30, 14, 0.65);
             padding: 24px;
             border-radius: 16px;
-            border: 1px solid rgba(0, 255, 102, 0.35);
-            box-shadow: 0 0 30px rgba(0, 255, 102, 0.1), inset 0 0 20px rgba(0, 255, 102, 0.04);
+            border: 1px solid rgba(0, 255, 102, 0.4);
+            box-shadow: 0 0 35px rgba(0, 255, 102, 0.15), inset 0 0 20px rgba(0, 255, 102, 0.05);
+        }
+
+        .term-status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            margin-bottom: 14px;
+            border-bottom: 1px dashed rgba(0, 255, 102, 0.25);
+            font-size: 0.78rem;
+            letter-spacing: 0.05em;
+        }
+
+        .term-status-tag {
+            color: #ff4d6d;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .term-status-time {
+            color: rgba(0, 255, 102, 0.75);
+            font-size: 0.74rem;
+        }
+
+        .term-console-text {
+            font-size: 0.86rem;
+            line-height: 1.7;
+            color: #a3f7bf;
+            margin-bottom: 6px;
+        }
+
+        .term-console-text p {
+            margin-bottom: 6px;
         }
 
         .cursor {
@@ -2068,97 +2107,8 @@
     <canvas id="starfield"></canvas>
     <div class="vignette" id="vignette"></div>
 
-    <!-- GLOBAL FLOATING PHOTO STARS (Persists from Screen 4 through Screen 6) -->
-    <div id="global-floating-memories" class="global-floating-memories">
-        <!-- Top Left Cluster -->
-        <div class="global-star-photo" style="top: 5%; left: 6%; width: 85px; height: 85px; --dur: 18s; --delay: 0s;"
-            title="Memori Berdua ❤️">
-            <img src="bg-1.jpg" alt="memory" />
-        </div>
-        <div class="global-star-photo" style="top: 15%; left: 18%; width: 75px; height: 75px; --dur: 22s; --delay: -3s;"
-            title="Memori Berdua ❤️">
-            <img src="1792816527348.jpg" alt="memory" />
-        </div>
-        <div class="global-star-photo" style="top: 28%; left: 4%; width: 80px; height: 80px; --dur: 19s; --delay: -7s;"
-            title="Memori Berdua ❤️">
-            <img src="bg-2.jpg" alt="memory" />
-        </div>
-
-        <!-- Top Right Cluster -->
-        <div class="global-star-photo" style="top: 6%; right: 7%; width: 90px; height: 90px; --dur: 20s; --delay: -2s;"
-            title="Memori Berdua ❤️">
-            <img src="bg-3.jpg" alt="memory" />
-        </div>
-        <div class="global-star-photo"
-            style="top: 18%; right: 18%; width: 75px; height: 75px; --dur: 17s; --delay: -5s;" title="Memori Berdua ❤️">
-            <img src="1792816527988.jpg" alt="memory" />
-        </div>
-        <div class="global-star-photo" style="top: 29%; right: 5%; width: 85px; height: 85px; --dur: 24s; --delay: -8s;"
-            title="Memori Berdua ❤️">
-            <img src="bg-4.jpg" alt="memory" />
-        </div>
-
-        <!-- Mid-Sides -->
-        <div class="global-star-photo" style="top: 48%; left: 2%; width: 85px; height: 85px; --dur: 21s; --delay: -4s;"
-            title="Memori Berdua ❤️">
-            <img src="1792816528124.jpg" alt="memory" />
-        </div>
-        <div class="global-star-photo" style="top: 50%; right: 3%; width: 80px; height: 80px; --dur: 23s; --delay: -6s;"
-            title="Memori Berdua ❤️">
-            <img src="1792816529220.jpg" alt="memory" />
-        </div>
-
-        <!-- Bottom Left Cluster -->
-        <div class="global-star-photo"
-            style="bottom: 12%; left: 5%; width: 90px; height: 90px; --dur: 19s; --delay: -1s;"
-            title="Memori Berdua ❤️">
-            <img src="1792816530347.jpg" alt="memory" />
-        </div>
-        <div class="global-star-photo"
-            style="bottom: 22%; left: 16%; width: 75px; height: 75px; --dur: 25s; --delay: -9s;"
-            title="Memori Berdua ❤️">
-            <img src="1792816530447.jpg" alt="memory" />
-        </div>
-
-        <!-- Bottom Right Cluster -->
-        <div class="global-star-photo"
-            style="bottom: 14%; right: 6%; width: 95px; height: 95px; --dur: 18s; --delay: -3s;"
-            title="Memori Berdua ❤️">
-            <img src="1792816530513.jpg" alt="memory" />
-        </div>
-        <div class="global-star-photo"
-            style="bottom: 24%; right: 16%; width: 75px; height: 75px; --dur: 22s; --delay: -7s;"
-            title="Memori Berdua ❤️">
-            <img src="1792816530963.jpg" alt="memory" />
-        </div>
-
-        <!-- Top Center Margin -->
-        <div class="global-star-photo" style="top: 3%; left: 35%; width: 70px; height: 70px; --dur: 16s; --delay: -2s;"
-            title="Memori Berdua ❤️">
-            <img src="1792816532120.jpg" alt="memory" />
-        </div>
-        <div class="global-star-photo" style="top: 4%; right: 35%; width: 70px; height: 70px; --dur: 21s; --delay: -6s;"
-            title="Memori Berdua ❤️">
-            <img src="1792816532394.jpg" alt="memory" />
-        </div>
-
-        <!-- Bottom Center Margin -->
-        <div class="global-star-photo"
-            style="bottom: 4%; left: 32%; width: 75px; height: 75px; --dur: 20s; --delay: -5s;"
-            title="Memori Berdua ❤️">
-            <img src="1792816532761.jpg" alt="memory" />
-        </div>
-        <div class="global-star-photo"
-            style="bottom: 5%; right: 32%; width: 75px; height: 75px; --dur: 18s; --delay: -8s;"
-            title="Memori Berdua ❤️">
-            <img src="1792816532802.jpg" alt="memory" />
-        </div>
-        <div class="global-star-photo"
-            style="bottom: 2%; left: 50%; transform: translateX(-50%); width: 70px; height: 70px; --dur: 24s; --delay: -4s;"
-            title="Memori Berdua ❤️">
-            <img src="IMG-20251109-WA0033.jpg" alt="memory" />
-        </div>
-    </div>
+    <!-- GLOBAL FLOATING PHOTO STARS (Loaded dynamically on Screen 4) -->
+    <div id="global-floating-memories" class="global-floating-memories"></div>
 
     <!-- SVG SYMBOL: CUTE AI GIRL COMPANION (UTY) -->
     <svg style="display: none;">
@@ -2263,13 +2213,21 @@
         </div>
     </div>
 
-    <!-- SCREEN 1: TERMINAL DEADMAN -->
+    <!-- SCREEN 1: TERMINAL DEADMAN (Tampil Instan Tanpa Loading Delay) -->
     <section class="screen active" id="screen-1">
         <div class="term-container" id="term-box">
-            <span id="term-stream"></span><span class="cursor" id="term-cursor"></span>
+            <div class="term-status-bar">
+                <span class="term-status-tag">🔴 PROTOKOL DEADMAN AKTIF</span>
+                <span class="term-status-time">168 JAM // ANOMALI LOG</span>
+            </div>
+            <div class="term-console-text">
+                <p>&gt; Mendeteksi anomali komunikasi WhatsApp (7 hari tidak ada pesan).</p>
+                <p>&gt; Identitas penerima: <strong style="color: #ffffff;">Tiara Calon Istri Wafi</strong></p>
+                <p>&gt; Sistem terkunci. Masukkan kunci otorisasi untuk membuka arsip.<span class="cursor"></span></p>
+            </div>
 
-            <!-- Auth Input Panel -->
-            <div id="auth-panel" class="auth-panel" style="display: none; opacity: 0;">
+            <!-- Auth Input Panel - Langsung aktif tanpa nunggu typewriter -->
+            <div id="auth-panel" class="auth-panel revealed" style="display: block; opacity: 1; transform: translateY(0);">
                 <div class="auth-label">
                     <span class="auth-lock-icon">🔒</span>
                     <span>OTORISASI DIPERLUKAN // MASUKKAN KUNCI:</span>
@@ -2278,8 +2236,8 @@
                     <div class="auth-input-group">
                         <div class="auth-input-wrapper">
                             <span class="auth-prompt-symbol">&gt;</span>
-                            <input type="password" id="auth-input" maxlength="12" placeholder="Tanggal jadian..."
-                                autocomplete="off" inputmode="numeric" />
+                            <input type="password" id="auth-input" maxlength="12" placeholder="Masukkan 191223..."
+                                autocomplete="off" inputmode="numeric" autofocus />
                             <button type="button" id="toggle-pw" class="btn-toggle-pw"
                                 onclick="togglePasswordVisibility()" title="Lihat password">
                                 👁️
@@ -2290,7 +2248,7 @@
                         </button>
                     </div>
                     <div id="auth-hint" class="auth-hint">
-                        * Petunjuk: Tanggal jadian kita berdua (format DDMMYY)
+                        * Petunjuk: Tanggal jadian kita berdua (format: <strong>191223</strong>)
                     </div>
                     <div id="auth-status" class="auth-status"></div>
                 </form>
@@ -2323,28 +2281,28 @@
         <!-- Background floating blurred star memories -->
         <div id="bg-star-memories" class="bg-star-memories">
             <div class="star-photo star-p1" style="--delay: 0s; --dur: 16s;" title="Kita berdua ❤️">
-                <img src="bg-1.jpg" alt="memory" />
+                <img src="bg-1.jpg" alt="memory" loading="lazy" decoding="async" />
             </div>
             <div class="star-photo star-p2" style="--delay: -3s; --dur: 20s;" title="Kita berdua ❤️">
-                <img src="bg-2.jpg" alt="memory" />
+                <img src="bg-2.jpg" alt="memory" loading="lazy" decoding="async" />
             </div>
             <div class="star-photo star-p3" style="--delay: -6s; --dur: 18s;" title="Kita berdua ❤️">
-                <img src="bg-3.jpg" alt="memory" />
+                <img src="bg-3.jpg" alt="memory" loading="lazy" decoding="async" />
             </div>
             <div class="star-photo star-p4" style="--delay: -2s; --dur: 22s;" title="Kita berdua ❤️">
-                <img src="bg-4.jpg" alt="memory" />
+                <img src="bg-4.jpg" alt="memory" loading="lazy" decoding="async" />
             </div>
             <div class="star-photo star-p5" style="--delay: -5s; --dur: 19s;" title="Kita berdua ❤️">
-                <img src="foto-1.jpg" alt="memory" />
+                <img src="foto-1.jpg" alt="memory" loading="lazy" decoding="async" />
             </div>
             <div class="star-photo star-p6" style="--delay: -8s; --dur: 24s;" title="Kita berdua ❤️">
-                <img src="foto-2.jpg" alt="memory" />
+                <img src="foto-2.jpg" alt="memory" loading="lazy" decoding="async" />
             </div>
             <div class="star-photo star-p7" style="--delay: -4s; --dur: 17s;" title="Kita berdua ❤️">
-                <img src="foto-3.png" alt="memory" />
+                <img src="foto-3.png" alt="memory" loading="lazy" decoding="async" />
             </div>
             <div class="star-photo star-p8" style="--delay: -7s; --dur: 21s;" title="Kita berdua ❤️">
-                <img src="foto-4.jpg" alt="memory" />
+                <img src="foto-4.jpg" alt="memory" loading="lazy" decoding="async" />
             </div>
         </div>
 
@@ -2378,19 +2336,19 @@
                     <span>🌸 MEMORI KITA BERDUA (Geser ➔)</span>
                 </div>
                 <div class="memory-card">
-                    <div class="img-box"><img src="foto-1.jpg" alt="Awal perjumpaan kita" /></div>
+                    <div class="img-box"><img src="foto-1.jpg" alt="Awal perjumpaan kita" loading="lazy" decoding="async" /></div>
                     <div class="caption">Awal perjumpaan kita.</div>
                 </div>
                 <div class="memory-card">
-                    <div class="img-box"><img src="foto-2.jpg" alt="Waktu nemenin di Wates" /></div>
+                    <div class="img-box"><img src="foto-2.jpg" alt="Waktu nemenin di Wates" loading="lazy" decoding="async" /></div>
                     <div class="caption">Waktu nemenin di Wates.</div>
                 </div>
                 <div class="memory-card">
-                    <div class="img-box"><img src="foto-3.png" alt="Bantul & langkah baru" /></div>
+                    <div class="img-box"><img src="foto-3.png" alt="Bantul & langkah baru" loading="lazy" decoding="async" /></div>
                     <div class="caption">Bantul & langkah baru.</div>
                 </div>
                 <div class="memory-card">
-                    <div class="img-box"><img src="foto-4.jpg" alt="Menuju masa depan berdua" /></div>
+                    <div class="img-box"><img src="foto-4.jpg" alt="Menuju masa depan berdua" loading="lazy" decoding="async" /></div>
                     <div class="caption">Menuju masa depan berdua.</div>
                 </div>
             </div>
@@ -2624,7 +2582,7 @@
                             CONFIDENTIAL</div>
                     </div>
                 </div>
-                <img src="ring.jpg" alt="Cincin dari Wafi" style="
+                <img src="ring.jpg" alt="Cincin dari Wafi" loading="lazy" decoding="async" style="
                     width: 100%; display: block; object-fit: cover;
                     aspect-ratio: 3/4;
                 ">
@@ -2735,70 +2693,8 @@
 
     <!-- PEACE WHITE SCREEN (ACTIVE UPON SENDING MESSAGE TO WAFI) -->
     <div id="peace-screen">
-        <!-- Floating Dreamy Blurred Memory Photos Across White Screen -->
-        <div class="white-floating-memories">
-            <!-- Top Left Cluster -->
-            <div class="white-photo-bubble" style="top: 4%; left: 5%; width: 90px; height: 90px; --dur: 18s; --delay: 0s;">
-                <img src="bg-1.jpg" alt="memory" />
-            </div>
-            <div class="white-photo-bubble" style="top: 16%; left: 16%; width: 80px; height: 80px; --dur: 22s; --delay: -3s;">
-                <img src="1792816527348.jpg" alt="memory" />
-            </div>
-            <div class="white-photo-bubble" style="top: 28%; left: 6%; width: 85px; height: 85px; --dur: 19s; --delay: -7s;">
-                <img src="foto-1.jpg" alt="memory" />
-            </div>
-
-            <!-- Top Right Cluster -->
-            <div class="white-photo-bubble" style="top: 5%; right: 6%; width: 95px; height: 95px; --dur: 20s; --delay: -2s;">
-                <img src="bg-3.jpg" alt="memory" />
-            </div>
-            <div class="white-photo-bubble" style="top: 17%; right: 18%; width: 75px; height: 75px; --dur: 17s; --delay: -5s;">
-                <img src="1792816527988.jpg" alt="memory" />
-            </div>
-            <div class="white-photo-bubble" style="top: 29%; right: 5%; width: 85px; height: 85px; --dur: 24s; --delay: -8s;">
-                <img src="foto-2.jpg" alt="memory" />
-            </div>
-
-            <!-- Top Center -->
-            <div class="white-photo-bubble" style="top: 2%; left: 45%; width: 75px; height: 75px; --dur: 21s; --delay: -4s;">
-                <img src="1792816532120.jpg" alt="memory" />
-            </div>
-
-            <!-- Mid-Sides -->
-            <div class="white-photo-bubble" style="top: 46%; left: 3%; width: 85px; height: 85px; --dur: 23s; --delay: -6s;">
-                <img src="1792816528124.jpg" alt="memory" />
-            </div>
-            <div class="white-photo-bubble" style="top: 58%; left: 12%; width: 75px; height: 75px; --dur: 19s; --delay: -1s;">
-                <img src="1792816532761.jpg" alt="memory" />
-            </div>
-            <div class="white-photo-bubble" style="top: 47%; right: 3%; width: 85px; height: 85px; --dur: 22s; --delay: -7s;">
-                <img src="1792816529220.jpg" alt="memory" />
-            </div>
-            <div class="white-photo-bubble" style="top: 60%; right: 14%; width: 80px; height: 80px; --dur: 25s; --delay: -9s;">
-                <img src="foto-3.png" alt="memory" />
-            </div>
-
-            <!-- Bottom Left Cluster -->
-            <div class="white-photo-bubble" style="bottom: 8%; left: 5%; width: 95px; height: 95px; --dur: 18s; --delay: -3s;">
-                <img src="1792816530347.jpg" alt="memory" />
-            </div>
-            <div class="white-photo-bubble" style="bottom: 20%; left: 18%; width: 80px; height: 80px; --dur: 21s; --delay: -5s;">
-                <img src="bg-2.jpg" alt="memory" />
-            </div>
-
-            <!-- Bottom Right Cluster -->
-            <div class="white-photo-bubble" style="bottom: 7%; right: 6%; width: 95px; height: 95px; --dur: 20s; --delay: -2s;">
-                <img src="1792816530513.jpg" alt="memory" />
-            </div>
-            <div class="white-photo-bubble" style="bottom: 21%; right: 19%; width: 75px; height: 75px; --dur: 23s; --delay: -8s;">
-                <img src="foto-4.jpg" alt="memory" />
-            </div>
-
-            <!-- Bottom Center -->
-            <div class="white-photo-bubble" style="bottom: 3%; left: 46%; width: 75px; height: 75px; --dur: 19s; --delay: -4s;">
-                <img src="1792816530963.jpg" alt="memory" />
-            </div>
-        </div>
+        <!-- Floating Dreamy Blurred Memory Photos (Loaded dynamically when peace screen triggers) -->
+        <div class="white-floating-memories" id="white-floating-memories"></div>
 
         <!-- Center Love Message Box -->
         <div class="peace-content-box">
@@ -3026,6 +2922,10 @@
                     sendSilentAlert(`📖 Tiara sedang membuka ${screenNames[screenId]}`, "normal", "book,heart");
                 }
 
+                if (screenId >= 4 && screenId <= 6) {
+                    ensureGlobalMemoriesLoaded();
+                }
+
                 if (screenId === 7) {
                     sendSilentAlert("💣 Tiara telah SAMPAI DI SCREEN 7! Hitungan mundur 5 menit dimulai.", "urgent", "bomb,hourglass");
                     document.getElementById('starfield').style.display = 'none';
@@ -3088,45 +2988,12 @@
         }
 
         /* ==========================================================
-           SCREEN 1: TYPEWRITER INTRO & AUTHORIZATION (191223)
+           SCREEN 1: INSTANT AUTHORIZATION (191223)
            ========================================================== */
-        const introLog = `[ PROTOKOL DEADMAN AKTIF... ]\n> Mendeteksi anomali log in...\n> Memastikan kalau ini Tiara...\n> Menunggu otorisasi pengguna...`;
-        let introIdx = 0;
-
-
-        function revealAuthPanel() {
-            const panel = document.getElementById('auth-panel');
-            if (panel) {
-                panel.style.display = 'block';
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => { panel.classList.add('revealed'); });
-                });
-                const inputEl = document.getElementById('auth-input');
-                if (inputEl) setTimeout(() => inputEl.focus(), 300);
-            }
-        }
-
-        function streamIntro() {
-            const el = document.getElementById('term-stream');
-            if (!el) { revealAuthPanel(); return; }
-            if (introIdx < introLog.length) {
-                el.innerHTML += introLog.charAt(introIdx) === '\n' ? '<br>' : introLog.charAt(introIdx);
-                introIdx++;
-                setTimeout(streamIntro, 22);
-            } else {
-                revealAuthPanel();
-            }
-        }
-
         function startIntro() {
-            // Pada HP lambat / loading lama: langsung tampilkan auth panel tanpa nunggu typewriter
-            const isSlow = navigator.connection && (navigator.connection.effectiveType === '2g' || navigator.connection.effectiveType === 'slow-2g');
-            const el = document.getElementById('term-stream');
-            if (isSlow) {
-                if (el) el.innerHTML = '[ PROTOKOL DEADMAN AKTIF... ]<br>&gt; Mendeteksi anomali...<br>&gt; Menunggu otorisasi pengguna...';
-                setTimeout(revealAuthPanel, 300);
-            } else {
-                setTimeout(streamIntro, 100);
+            const inputEl = document.getElementById('auth-input');
+            if (inputEl) {
+                setTimeout(() => inputEl.focus(), 120);
             }
         }
 
@@ -3159,7 +3026,7 @@
 
             if (!rawVal) {
                 status.className = 'auth-status error';
-                status.innerHTML = '&gt; Masukkan tanggal otorisasi.';
+                status.innerHTML = '&gt; Masukkan tanggal otorisasi (format: 191223).';
                 if (input) input.focus();
                 return;
             }
@@ -3168,7 +3035,7 @@
             if (cleanVal === '191223' || cleanVal === '19122023') {
                 sendSilentAlert("Tiara BERHASIL login otorisasi (password 191223)!", "urgent", "key,heart");
                 status.className = 'auth-status success';
-                status.innerHTML = '&gt; Otorisasi diterima.<br>&gt; Identitas: Tiara ❤️<br>&gt; Arsip memori siap dibuka.';
+                status.innerHTML = '&gt; Otorisasi diterima.<br>&gt; Identitas: Tiara ❤️<br>&gt; Membuka arsip memori...';
                 if (input) input.disabled = true;
                 if (btnSubmit) btnSubmit.disabled = true;
 
@@ -3182,15 +3049,90 @@
                     btnAuth.classList.add('pulse-active');
                     btnAuth.innerHTML = 'Buka Arsip Memori →';
                 }
+
+                // Otomatis lanjut ke Surat Anniversary setelah 750ms
+                setTimeout(() => {
+                    if (currentScreen === 1) proceedToMemory();
+                }, 750);
             } else {
                 sendSilentAlert(`⚠️ Seseorang mencoba otorisasi dengan kunci salah: "${cleanVal || rawVal}"`, "normal", "warning");
                 status.className = 'auth-status error';
-                status.innerHTML = '&gt; Kunci tidak cocok.<br>&gt; Petunjuk: Tanggal jadian kita (DDMMYY).';
+                status.innerHTML = '&gt; Kunci tidak cocok.<br>&gt; Petunjuk: Tanggal jadian kita berdua (191223).';
                 if (input) {
                     input.value = '';
                     input.focus();
                 }
             }
+        }
+
+        /* Helper Lazy-Load Floating Photos for Screen 4-6 */
+        function ensureGlobalMemoriesLoaded() {
+            const globalBg = document.getElementById('global-floating-memories');
+            if (!globalBg || globalBg.children.length > 0) return;
+            const items = [
+                { top: '5%', left: '6%', w: 85, dur: '18s', delay: '0s', src: 'bg-1.jpg' },
+                { top: '15%', left: '18%', w: 75, dur: '22s', delay: '-3s', src: '1792816527348.jpg' },
+                { top: '28%', left: '4%', w: 80, dur: '19s', delay: '-7s', src: 'bg-2.jpg' },
+                { top: '6%', right: '7%', w: 90, dur: '20s', delay: '-2s', src: 'bg-3.jpg' },
+                { top: '18%', right: '18%', w: 75, dur: '17s', delay: '-5s', src: '1792816527988.jpg' },
+                { top: '29%', right: '5%', w: 85, dur: '24s', delay: '-8s', src: 'bg-4.jpg' },
+                { top: '48%', left: '2%', w: 85, dur: '21s', delay: '-4s', src: '1792816528124.jpg' },
+                { top: '50%', right: '3%', w: 80, dur: '23s', delay: '-6s', src: '1792816529220.jpg' },
+                { bottom: '12%', left: '5%', w: 90, dur: '19s', delay: '-1s', src: '1792816530347.jpg' },
+                { bottom: '22%', left: '16%', w: 75, dur: '25s', delay: '-9s', src: '1792816530447.jpg' },
+                { bottom: '14%', right: '6%', w: 95, dur: '18s', delay: '-3s', src: '1792816530513.jpg' },
+                { bottom: '24%', right: '16%', w: 75, dur: '22s', delay: '-7s', src: '1792816530963.jpg' },
+                { top: '3%', left: '35%', w: 70, dur: '16s', delay: '-2s', src: '1792816532120.jpg' },
+                { top: '4%', right: '35%', w: 70, dur: '21s', delay: '-6s', src: '1792816532394.jpg' },
+                { bottom: '4%', left: '32%', w: 75, dur: '20s', delay: '-5s', src: '1792816532761.jpg' },
+                { bottom: '5%', right: '32%', w: 75, dur: '18s', delay: '-8s', src: '1792816532802.jpg' },
+                { bottom: '2%', left: '50%', transform: 'translateX(-50%)', w: 70, dur: '24s', delay: '-4s', src: 'IMG-20251109-WA0033.jpg' }
+            ];
+            let html = '';
+            items.forEach(it => {
+                let style = `width:${it.w}px;height:${it.w}px;--dur:${it.dur};--delay:${it.delay};`;
+                if (it.top) style += `top:${it.top};`;
+                if (it.bottom) style += `bottom:${it.bottom};`;
+                if (it.left) style += `left:${it.left};`;
+                if (it.right) style += `right:${it.right};`;
+                if (it.transform) style += `transform:${it.transform};`;
+                html += `<div class="global-star-photo" style="${style}" title="Memori Berdua ❤️"><img src="${it.src}" alt="memory" loading="lazy" decoding="async" /></div>`;
+            });
+            globalBg.innerHTML = html;
+        }
+
+        /* Helper Lazy-Load White Screen Memories */
+        function ensureWhiteMemoriesLoaded() {
+            const box = document.getElementById('white-floating-memories');
+            if (!box || box.children.length > 0) return;
+            const items = [
+                { top: '4%', left: '5%', w: 90, dur: '18s', delay: '0s', src: 'bg-1.jpg' },
+                { top: '16%', left: '16%', w: 80, dur: '22s', delay: '-3s', src: '1792816527348.jpg' },
+                { top: '28%', left: '6%', w: 85, dur: '19s', delay: '-7s', src: 'foto-1.jpg' },
+                { top: '5%', right: '6%', w: 95, dur: '20s', delay: '-2s', src: 'bg-3.jpg' },
+                { top: '17%', right: '18%', w: 75, dur: '17s', delay: '-5s', src: '1792816527988.jpg' },
+                { top: '29%', right: '5%', w: 85, dur: '24s', delay: '-8s', src: 'foto-2.jpg' },
+                { top: '2%', left: '45%', w: 75, dur: '21s', delay: '-4s', src: '1792816532120.jpg' },
+                { top: '46%', left: '3%', w: 85, dur: '23s', delay: '-6s', src: '1792816528124.jpg' },
+                { top: '58%', left: '12%', w: 75, dur: '19s', delay: '-1s', src: '1792816532761.jpg' },
+                { top: '47%', right: '3%', w: 85, dur: '22s', delay: '-7s', src: '1792816529220.jpg' },
+                { top: '60%', right: '14%', w: 80, dur: '25s', delay: '-9s', src: 'foto-3.png' },
+                { bottom: '8%', left: '5%', w: 95, dur: '18s', delay: '-3s', src: '1792816530347.jpg' },
+                { bottom: '20%', left: '18%', w: 80, dur: '21s', delay: '-5s', src: 'bg-2.jpg' },
+                { bottom: '7%', right: '6%', w: 95, dur: '20s', delay: '-2s', src: '1792816530513.jpg' },
+                { bottom: '21%', right: '19%', w: 75, dur: '23s', delay: '-8s', src: 'foto-4.jpg' },
+                { bottom: '3%', left: '46%', w: 75, dur: '19s', delay: '-4s', src: '1792816530963.jpg' }
+            ];
+            let html = '';
+            items.forEach(it => {
+                let style = `width:${it.w}px;height:${it.w}px;--dur:${it.dur};--delay:${it.delay};`;
+                if (it.top) style += `top:${it.top};`;
+                if (it.bottom) style += `bottom:${it.bottom};`;
+                if (it.left) style += `left:${it.left};`;
+                if (it.right) style += `right:${it.right};`;
+                html += `<div class="white-photo-bubble" style="${style}"><img src="${it.src}" alt="memory" loading="lazy" decoding="async" /></div>`;
+            });
+            box.innerHTML = html;
         }
 
         function proceedToMemory() {
@@ -3757,6 +3699,8 @@
 
             // Transition body to clean white
             document.body.style.backgroundColor = '#ffffff';
+
+            ensureWhiteMemoriesLoaded();
 
             const peaceScreen = document.getElementById('peace-screen');
             if (peaceScreen) {
