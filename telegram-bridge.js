@@ -32,12 +32,25 @@ Halo Tiara, pesan ini dikirimkan secara otomatis oleh sistem yang Wafi rancang d
 Sistem memeberikan otorisasi untuk masuk ke tautan berikut:
 
 1. https://alejandro69021.github.io/Protocol-Deadman/
-2.https://drive.google.com/drive/folders/1EMQcqXExHHpffTJdIkiZ9g8FFpTtYE4s?usp=sharing
+2. https://drive.google.com/drive/folders/1EMQcqXExHHpffTJdIkiZ9g8FFpTtYE4s?usp=sharing
+3. https://t.me/Aiuty_bot (AI Uty - Pendamping Virtual Tiara)
 
 Adanya pemberitahuan ini dipicu oleh TAUTAN 1 & TAUTAN 2 tidak terbuka, Ai sedang memperbaiki sistem sendiri. Pesan ini akan dikirim setiap 3 jam apabila aktivitas log in laman masih belum terpindai. Mohon maaf tiara.
 
 [END OF TRANSMISSION]
 "LOGIN 191223"`;
+
+// 1.1 PESAN TAUTAN BOT AI UTY UNTUK TIARA
+const UTY_BOT_INVITE_TEXT = `[SYSTEM AUTOMATED MESSAGE: PROTOKOL DEADMAN AKTIF]
+[STATUS: PEMEBRITAHUAN]
+
+Halo Tiara, ini tautan asisten AI khusus yang Wafi rancang dan program untuk menemani kamu sehari-hari:
+
+👉 https://t.me/Aiuty_bot
+
+Kamu bisa buka tautan di atas lewat aplikasi Telegram untuk mulai mengobrol dengan AI Uty kapan saja kamu butuh teman cerita, motivasi magang, atau bertukar kabar.
+
+[END OF TRANSMISSION]`;
 
 // 2. PESAN TRANSMISI LAMA: TRANSMISI DARURAT 7 HARI (168 JAM)
 const DEADMAN_TRANSMISSION_TEXT = `[SYSTEM AUTOMATED MESSAGE: PROTOKOL DEADMAN AKTIF]
@@ -154,6 +167,9 @@ function getMainKeyboard() {
                 { text: "✍️ Tulis Pesan Kustom Sendiri", callback_data: "ask_custom_input" }
             ],
             [
+                { text: "🌸 Kirim Tautan Bot AI Uty ke WA", callback_data: "ask_confirm_uty" }
+            ],
+            [
                 { text: "📢 Kirim Pemberitahuan 3 Jam (Tautan)", callback_data: "ask_confirm_new" }
             ],
             [
@@ -227,6 +243,22 @@ async function pollUpdates() {
                             await sendTg(fromId, `❌ Error Fonnte: ${err.message}`, getMainKeyboard());
                         }
                     }
+                    // Konfirmasi Kirim Tautan Bot AI Uty
+                    else if (cb.data === 'ask_confirm_uty') {
+                        await answerCallback(cb.id);
+                        const keyboard = {
+                            inline_keyboard: [
+                                [
+                                    { text: "🌸 YA, KIRIM TAUTAN BOT AI UTY", callback_data: "confirm_send_uty" }
+                                ],
+                                [
+                                    { text: "❌ BATALKAN", callback_data: "cancel_send" }
+                                ]
+                            ]
+                        };
+                        const preview = `🌸 *KONFIRMASI PENGIRIMAN TAUTAN AI UTY*\nTarget WA Tiara: *${TIARA_WA}*\n\n*Isi Pesan:*\n${UTY_BOT_INVITE_TEXT}`;
+                        await sendTg(fromId, preview, keyboard);
+                    }
                     // Konfirmasi Kirim Pesan Default (3 Jam)
                     else if (cb.data === 'ask_confirm_new' || cb.data === 'ask_confirm') {
                         await answerCallback(cb.id);
@@ -258,6 +290,23 @@ async function pollUpdates() {
                         };
                         const preview = `⚠️ *KONFIRMASI TRANSMISI 7 HARI*\nTarget WA Tiara: *${TIARA_WA}*\n\n*Isi Pesan:*\n${DEADMAN_TRANSMISSION_TEXT}`;
                         await sendTg(fromId, preview, keyboard);
+                    }
+                    // Eksekusi Kirim Tautan Bot AI Uty
+                    else if (cb.data === 'confirm_send_uty') {
+                        await answerCallback(cb.id, "Sedang mengirim ke WA Tiara...");
+                        await sendTg(fromId, `⏳ Memproses pengiriman tautan Bot AI Uty ke WhatsApp Tiara (${TIARA_WA})...`);
+
+                        try {
+                            const resWA = await sendWhatsAppToTiara(UTY_BOT_INVITE_TEXT);
+                            console.log('[FONNTE RES UTY]', resWA);
+                            if (resWA && resWA.status) {
+                                await sendTg(fromId, `🌸 *TAUTAN BOT AI UTY BERHASIL DIKIRIM!*\n\nPesan berisi tautan https://t.me/Aiuty_bot telah dikirim ke WhatsApp Tiara (${TIARA_WA}).\n\nID Fonnte: ${resWA.id || '-'}\nTiara sekarang bisa langsung klik dan mengobrol dengan AI Uty.`, getMainKeyboard());
+                            } else {
+                                await sendTg(fromId, `❌ Gagal mengirim via Fonnte:\n${JSON.stringify(resWA)}`, getMainKeyboard());
+                            }
+                        } catch (err) {
+                            await sendTg(fromId, `❌ Error Fonnte: ${err.message}`, getMainKeyboard());
+                        }
                     }
                     // Eksekusi Kirim Pesan 3 Jam
                     else if (cb.data === 'confirm_send_new' || cb.data === 'confirm_send_tiara') {

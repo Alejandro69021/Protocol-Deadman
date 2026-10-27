@@ -129,13 +129,21 @@ async function sendChatAction(chatId, action = 'typing') {
     }
 }
 
-// Gemini AI: Generate Jawaban Percakapan
-async function generateGeminiReply(chatId, userMessage) {
+// Helper Deteksi Pengguna (Wafi vs Tiara)
+function isWafiUser(chatId, username = '') {
+    if (String(chatId) === String(WAFI_CHAT_ID)) return true;
+    const cleanUser = String(username).replace('@', '').toLowerCase().trim();
+    if (cleanUser === 'alexdodod') return true;
+    return false;
+}
+
+// Gemini AI: Generate Jawaban Percakapan Sesuai Identitas Pengguna
+async function generateGeminiReply(chatId, userMessage, senderInfo = {}) {
     if (!chatHistories[chatId]) {
         chatHistories[chatId] = [];
     }
 
-    // Tambahkan pesan user ke histori
+    // Tambahkan pesan user ke histori percakapan
     chatHistories[chatId].push({
         role: 'user',
         parts: [{ text: userMessage }]
@@ -146,9 +154,25 @@ async function generateGeminiReply(chatId, userMessage) {
         chatHistories[chatId] = chatHistories[chatId].slice(-MAX_HISTORY_TURNS);
     }
 
+    // Sesuaikan instruksi sistem berdasarkan siapa yang sedang chat
+    const isWafi = isWafiUser(chatId, senderInfo.username);
+    let personaContext = SYSTEM_INSTRUCTION;
+
+    if (isWafi) {
+        personaContext += `\n\n[DETEKSI IDENTITAS: PENGGUNA SAAT INI ADALAH WAFI (Fadhil Alwafie / @alexdodod), PEMBUAT & DEVELOPER KAMU].
+- Panggil dia "Mas Wafi" atau "Wafi".
+- Bersikaplah sebagai asisten cerdas buatan yang bangga melapor kepadanya, setia, santai, dan siap membantu Wafi memeriksa kinerja sistem atau menyempurnakan pesan untuk Tiara.
+- Jangan berpura-pura menganggap Wafi sebagai Tiara.`;
+    } else {
+        const callerName = senderInfo.name || 'Tiara';
+        personaContext += `\n\n[DETEKSI IDENTITAS: PENGGUNA SAAT INI ADALAH TIARA (${callerName} ${senderInfo.username || ''}), CALON ISTRI WAFI].
+- Panggil dia dengan lembut: "Tiara" atau "Kak Tiara".
+- Curahkan seluruh kehangatan, perhatian, empati, kelembutan, dan jadilah sahabat terbaik yang mendampingi harinya seperti amanah cinta dari Wafi.`;
+    }
+
     const payload = {
         system_instruction: {
-            parts: [{ text: SYSTEM_INSTRUCTION }]
+            parts: [{ text: personaContext }]
         },
         contents: chatHistories[chatId],
         generationConfig: {
@@ -178,8 +202,19 @@ async function generateGeminiReply(chatId, userMessage) {
     }
 }
 
-// Sambutan Awal untuk Tiara
-function getWelcomeMessage(firstName = "Tiara") {
+// Sambutan Awal Khusus (Diferensiasi Pengguna)
+function getWelcomeMessage(chatId, senderInfo = {}) {
+    if (isWafiUser(chatId, senderInfo.username)) {
+        return `🛠️ *Halo Mas Wafi (Creator)!*
+        
+Sistem AI Uty online dan berjalan sempurna ✨
+Aku mengenali kamu sebagai pembuatku (Fadhil Alwafie / @alexdodod).
+
+Riwayat obrolanmu terisolasi penuh di ID Telegram ini dan tidak akan bercampur dengan obrolan Tiara.
+Kamu bisa tes percakapan, tanya performa, atau cek simulasi jawaban Uty di sini. ❤️`;
+    }
+
+    const firstName = senderInfo.name || "Tiara";
     return `🌸 *Halo ${firstName}! Aku AI Uty ❤️*
 
 Aku adalah asisten pribadi dan sahabat virtual yang dibuat dan diprogram langsung oleh Wafi khusus untuk kamu.
@@ -218,18 +253,20 @@ async function pollUpdates() {
                     const userText = msg.text.trim();
                     const senderName = msg.from ? (msg.from.first_name || 'Tiara') : 'Tiara';
                     const username = msg.from && msg.from.username ? `@${msg.from.username}` : '';
+                    const senderInfo = { name: senderName, username: username };
+                    const isSenderWafi = isWafiUser(chatId, username);
 
-                    console.log(`[AI UTY] Chat from ${senderName} (${chatId}): "${userText}"`);
+                    console.log(`[AI UTY] Chat from ${senderName} (${chatId}) [IsWafi: ${isSenderWafi}]: "${userText}"`);
 
-                    // Perintah /start
+                    // Perintah /start atau /help
                     if (userText === '/start' || userText === '/help') {
                         chatHistories[chatId] = [];
-                        await sendTelegramMessage(chatId, getWelcomeMessage(senderName));
+                        await sendTelegramMessage(chatId, getWelcomeMessage(chatId, senderInfo));
 
-                        // Notifikasi senyap ke Wafi jika orang yang chat bukan Wafi sendiri
-                        if (String(chatId) !== WAFI_CHAT_ID && !activeUsersNotified.has(chatId)) {
+                        // Notifikasi ke Wafi jika Tiara yang membuka bot
+                        if (!isSenderWafi && !activeUsersNotified.has(chatId)) {
                             activeUsersNotified.add(chatId);
-                            sendTelegramMessage(WAFI_CHAT_ID, `🔔 *KABAR GEMBIRA! Tiara telah membuka obrolan dengan AI Uty!*\nPengguna: ${senderName} ${username}\nWaktu: ${new Date().toLocaleTimeString('id-ID')}`).catch(() => {});
+                            sendTelegramMessage(WAFI_CHAT_ID, `🔔 *TIARA MEMBUKA AI UTY (@Aiuty_bot)!*\nPengguna: ${senderName} ${username}\nWaktu: ${new Date().toLocaleTimeString('id-ID')}`).catch(() => {});
                         }
                         continue;
                     }
@@ -237,14 +274,11 @@ async function pollUpdates() {
                     // Perintah /reset
                     if (userText === '/reset' || userText === '/ulang') {
                         chatHistories[chatId] = [];
-                        await sendTelegramMessage(chatId, "✨ Obrolan telah di-reset! Aku siap mendengarkan cerita barumu, Tiara ❤️");
+                        const resetMsg = isSenderWafi 
+                            ? "✨ Sesi obrolan Mas Wafi telah di-reset!" 
+                            : "✨ Obrolan telah di-reset! Aku siap mendengarkan cerita barumu, Tiara ❤️";
+                        await sendTelegramMessage(chatId, resetMsg);
                         continue;
-                    }
-
-                    // Notifikasi ke Wafi pada chat pertama
-                    if (String(chatId) !== WAFI_CHAT_ID && !activeUsersNotified.has(chatId)) {
-                        activeUsersNotified.add(chatId);
-                        sendTelegramMessage(WAFI_CHAT_ID, `🔔 *Tiara mengirim pesan ke AI Uty!*\n"${userText}"\nPengguna: ${senderName} ${username}`).catch(() => {});
                     }
 
                     // Tampilkan status "sedang mengetik..."
@@ -252,15 +286,23 @@ async function pollUpdates() {
                     const typingInterval = setInterval(() => sendChatAction(chatId, 'typing'), 4000);
 
                     try {
-                        const reply = await generateGeminiReply(chatId, userText);
+                        const reply = await generateGeminiReply(chatId, userText, senderInfo);
                         clearInterval(typingInterval);
 
-                        // Kirim balasan cerdas dari AI Uty
+                        // Kirim balasan cerdas
                         await sendTelegramMessage(chatId, reply);
+
+                        // Teruskan salinan percakapan Tiara ke Telegram Wafi
+                        if (!isSenderWafi) {
+                            sendTelegramMessage(WAFI_CHAT_ID, `💬 *[LOG TIARA -> AI UTY]*\n👤 *Tiara:* "${userText}"\n🌸 *AI Uty:* "${reply.slice(0, 400)}${reply.length > 400 ? '...' : ''}"`).catch(() => {});
+                        }
                     } catch (err) {
                         clearInterval(typingInterval);
                         console.error('[REPLY ERROR]', err.message);
-                        await sendTelegramMessage(chatId, "Maafkan Uty ya Tiara, koneksiku sempat terganggu sebentar. Boleh tolong ulangi lagi apa yang kamu sampaikan tadi? ❤️");
+                        const errMsg = isSenderWafi
+                            ? `⚠️ Mas Wafi, koneksi Gemini bermasalah: ${err.message}`
+                            : "Maafkan Uty ya Tiara, koneksiku sempat terganggu sebentar. Boleh tolong ulangi lagi apa yang kamu sampaikan tadi? ❤️";
+                        await sendTelegramMessage(chatId, errMsg);
                     }
                 }
             }
