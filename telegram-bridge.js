@@ -10,7 +10,20 @@ const ALLOWED_CHAT_ID = "5443153034"; // ID Telegram Wafi
 const FONNTE_TOKEN = "B9xXX9Muj7Ji71f6AKLN";
 const TIARA_WA = "6285954113051";
 
-// 1. PESAN BARU: PEMBERITAHUAN LOG 3 JAM (REVISI TERBARU)
+// Session store untuk state percakapan Wafi di Telegram
+const userSession = {};
+
+// Generator Template Kustom Deadman
+function buildCustomTemplate(content) {
+    return `[SYSTEM AUTOMATED MESSAGE: PROTOKOL DEADMAN AKTIF]
+[STATUS: PEMEBRITAHUAN]
+
+${content.trim()}
+
+[END OF TRANSMISSION]`;
+}
+
+// 1. PESAN DEFAULT: PEMBERITAHUAN LOG 3 JAM (REVISI TERBARU)
 const NEW_DEADMAN_NOTIFICATION = `[SYSTEM AUTOMATED MESSAGE: PROTOKOL DEADMAN AKTIF]
 [STATUS: PEMEBRITAHUAN]
 
@@ -138,7 +151,10 @@ function getMainKeyboard() {
     return {
         inline_keyboard: [
             [
-                { text: "📢 Kirim Pesan Baru (Pemberitahuan 3 Jam)", callback_data: "ask_confirm_new" }
+                { text: "✍️ Tulis Pesan Kustom Sendiri", callback_data: "ask_custom_input" }
+            ],
+            [
+                { text: "📢 Kirim Pemberitahuan 3 Jam (Tautan)", callback_data: "ask_confirm_new" }
             ],
             [
                 { text: "🚨 Kirim Transmisi 7 Hari (Darurat)", callback_data: "ask_confirm_7d" }
@@ -181,20 +197,50 @@ async function pollUpdates() {
 
                     console.log(`[CALLBACK] Action clicked: ${cb.data} from ${fromId}`);
 
-                    // Konfirmasi Kirim Pesan Baru (3 Jam)
-                    if (cb.data === 'ask_confirm_new' || cb.data === 'ask_confirm') {
+                    // Aksi: Mulai Tulis Pesan Kustom
+                    if (cb.data === 'ask_custom_input') {
+                        userSession[fromId] = { state: 'WAITING_CUSTOM_TEXT' };
+                        await answerCallback(cb.id);
+                        await sendTg(fromId, "✍️ *TULIS PESAN KUSTOM UNTUK TIARA*\n\nSilakan ketik dan kirim pesan kamu sekarang di chat ini.\n\nPesan tersebut akan otomatis dibungkus ke dalam format:\n```\n[SYSTEM AUTOMATED MESSAGE: PROTOKOL DEADMAN AKTIF]\n[STATUS: PEMEBRITAHUAN]\n\n<pesan kamu>\n\n[END OF TRANSMISSION]\n```\n\n_Ketik pesanmu langsung di bawah atau ketik /batal untuk membatalkan._");
+                    }
+                    // Aksi: Eksekusi Kirim Pesan Kustom
+                    else if (cb.data === 'confirm_send_custom') {
+                        const pending = userSession[fromId] && userSession[fromId].pendingMsg;
+                        if (!pending) {
+                            await answerCallback(cb.id, "Tidak ada pesan tersimpan.");
+                            await sendTg(fromId, "⚠️ Tidak ada pesan kustom yang tersimpan untuk dikirim.", getMainKeyboard());
+                            continue;
+                        }
+                        await answerCallback(cb.id, "Sedang mengirim ke WA Tiara...");
+                        await sendTg(fromId, `⏳ Memproses pengiriman pesan kustom ke WhatsApp Tiara (${TIARA_WA})...`);
+
+                        try {
+                            const resWA = await sendWhatsAppToTiara(pending);
+                            console.log('[FONNTE RES CUSTOM]', resWA);
+                            if (resWA && resWA.status) {
+                                delete userSession[fromId];
+                                await sendTg(fromId, `✅ *PESAN KUSTOM BERHASIL TERKIRIM!*\n\nPesan kustom kamu telah resmi dikirim ke WhatsApp Tiara (${TIARA_WA}).\n\nStatus Fonnte: Pesan masuk antrean kirim.\nID: ${resWA.id || '-'}`, getMainKeyboard());
+                            } else {
+                                await sendTg(fromId, `❌ Gagal mengirim via Fonnte:\n${JSON.stringify(resWA)}`, getMainKeyboard());
+                            }
+                        } catch (err) {
+                            await sendTg(fromId, `❌ Error Fonnte: ${err.message}`, getMainKeyboard());
+                        }
+                    }
+                    // Konfirmasi Kirim Pesan Default (3 Jam)
+                    else if (cb.data === 'ask_confirm_new' || cb.data === 'ask_confirm') {
                         await answerCallback(cb.id);
                         const keyboard = {
                             inline_keyboard: [
                                 [
-                                    { text: "🚨 YA, KIRIM PESAN BARU SEKARANG", callback_data: "confirm_send_new" }
+                                    { text: "🚨 YA, KIRIM PESAN 3 JAM SEKARANG", callback_data: "confirm_send_new" }
                                 ],
                                 [
                                     { text: "❌ BATALKAN", callback_data: "cancel_send" }
                                 ]
                             ]
                         };
-                        const preview = `⚠️ *KONFIRMASI PENGIRIMAN PESAN BARU*\nTarget WA Tiara: *${TIARA_WA}*\n\n*Isi Pesan:*\n${NEW_DEADMAN_NOTIFICATION}`;
+                        const preview = `⚠️ *KONFIRMASI PENGIRIMAN PESAN 3 JAM*\nTarget WA Tiara: *${TIARA_WA}*\n\n*Isi Pesan:*\n${NEW_DEADMAN_NOTIFICATION}`;
                         await sendTg(fromId, preview, keyboard);
                     }
                     // Konfirmasi Kirim Transmisi 7 Hari
@@ -213,21 +259,21 @@ async function pollUpdates() {
                         const preview = `⚠️ *KONFIRMASI TRANSMISI 7 HARI*\nTarget WA Tiara: *${TIARA_WA}*\n\n*Isi Pesan:*\n${DEADMAN_TRANSMISSION_TEXT}`;
                         await sendTg(fromId, preview, keyboard);
                     }
-                    // Eksekusi Kirim Pesan Baru
+                    // Eksekusi Kirim Pesan 3 Jam
                     else if (cb.data === 'confirm_send_new' || cb.data === 'confirm_send_tiara') {
                         await answerCallback(cb.id, "Sedang mengirim ke WA Tiara...");
-                        await sendTg(fromId, `⏳ Memproses pengiriman pesan baru ke WhatsApp Tiara (${TIARA_WA})...`);
+                        await sendTg(fromId, `⏳ Memproses pengiriman pesan 3 jam ke WhatsApp Tiara (${TIARA_WA})...`);
 
                         try {
                             const resWA = await sendWhatsAppToTiara(NEW_DEADMAN_NOTIFICATION);
                             console.log('[FONNTE RES]', resWA);
                             if (resWA && resWA.status) {
-                                await sendTg(fromId, `✅ *PESAN BARU BERHASIL TERKIRIM!*\n\nPesan Pemberitahuan 3 Jam telah resmi masuk antrean pengiriman Fonnte ke WhatsApp Tiara (${TIARA_WA}).\n\nID: ${resWA.id || '-'}\nProses selesai.`);
+                                await sendTg(fromId, `✅ *PESAN 3 JAM BERHASIL TERKIRIM!*\n\nPesan Pemberitahuan 3 Jam telah resmi masuk antrean pengiriman Fonnte ke WhatsApp Tiara (${TIARA_WA}).\n\nID: ${resWA.id || '-'}\nProses selesai.`, getMainKeyboard());
                             } else {
-                                await sendTg(fromId, `❌ Gagal mengirim via Fonnte:\n${JSON.stringify(resWA)}`);
+                                await sendTg(fromId, `❌ Gagal mengirim via Fonnte:\n${JSON.stringify(resWA)}`, getMainKeyboard());
                             }
                         } catch (err) {
-                            await sendTg(fromId, `❌ Error Fonnte: ${err.message}`);
+                            await sendTg(fromId, `❌ Error Fonnte: ${err.message}`, getMainKeyboard());
                         }
                     }
                     // Eksekusi Kirim Transmisi 7 Hari
@@ -239,63 +285,119 @@ async function pollUpdates() {
                             const resWA = await sendWhatsAppToTiara(DEADMAN_TRANSMISSION_TEXT);
                             console.log('[FONNTE RES]', resWA);
                             if (resWA && resWA.status) {
-                                await sendTg(fromId, `✅ *TRANSMISI 7 HARI BERHASIL TERKIRIM!*\n\nPesan Transmisi 7 Hari telah resmi terkirim ke WhatsApp Tiara (${TIARA_WA}).`);
+                                await sendTg(fromId, `✅ *TRANSMISI 7 HARI BERHASIL TERKIRIM!*\n\nPesan Transmisi 7 Hari telah resmi terkirim ke WhatsApp Tiara (${TIARA_WA}).`, getMainKeyboard());
                             } else {
-                                await sendTg(fromId, `❌ Gagal mengirim via Fonnte:\n${JSON.stringify(resWA)}`);
+                                await sendTg(fromId, `❌ Gagal mengirim via Fonnte:\n${JSON.stringify(resWA)}`, getMainKeyboard());
                             }
                         } catch (err) {
-                            await sendTg(fromId, `❌ Error Fonnte: ${err.message}`);
+                            await sendTg(fromId, `❌ Error Fonnte: ${err.message}`, getMainKeyboard());
                         }
                     }
                     else if (cb.data === 'cancel_send') {
+                        delete userSession[fromId];
                         await answerCallback(cb.id, "Dibatalkan.");
-                        await sendTg(fromId, "🛑 Pengiriman dibatalkan. Pesan TIDAK dikirim ke WhatsApp Tiara.");
+                        await sendTg(fromId, "🛑 Pengiriman dibatalkan. Pesan TIDAK dikirim ke WhatsApp Tiara.", getMainKeyboard());
                     }
                     else if (cb.data === 'check_status') {
                         await answerCallback(cb.id, "Mengecek status...");
                         try {
                             const st = await checkFonnteStatus();
-                            await sendTg(fromId, `📊 *STATUS WHATSAPP GATEWAY:*\n- Status: ${st.device_status || 'Unknown'}\n- Nomor Pengirim: ${st.device || '-'}\n- Sisa Kuota: ${st.quota || '-'}\n- Expired: ${st.expired || '-'}`);
+                            await sendTg(fromId, `📊 *STATUS WHATSAPP GATEWAY:*\n- Status: ${st.device_status || 'Unknown'}\n- Nomor Pengirim: ${st.device || '-'}\n- Sisa Kuota: ${st.quota || '-'}\n- Expired: ${st.expired || '-'}`, getMainKeyboard());
                         } catch (e) {
-                            await sendTg(fromId, `❌ Gagal cek status: ${e.message}`);
+                            await sendTg(fromId, `❌ Gagal cek status: ${e.message}`, getMainKeyboard());
                         }
                     }
                     continue;
                 }
 
-                // 2. Tangani Perintah Teks
+                // 2. Tangani Perintah Teks & Input Kustom
                 if (upd.message && upd.message.text) {
                     const msg = upd.message;
                     const fromId = String(msg.from ? msg.from.id : '');
                     if (fromId !== ALLOWED_CHAT_ID) continue;
 
-                    const text = msg.text.trim().toLowerCase();
-                    console.log(`[TEXT] Message: ${text} from ${fromId}`);
+                    const rawText = msg.text.trim();
+                    const lowerText = rawText.toLowerCase();
+                    console.log(`[TEXT] Message: ${rawText} from ${fromId}`);
 
-                    if (text === '/start' || text === '/menu' || text === '/help') {
-                        await sendTg(fromId, "🤖 *KONTROL PUSAT PROTOKOL DEADMAN*\n\nSelamat datang, Wafi. Sistem siap mengeksekusi pesan darurat ke WhatsApp Tiara.\n\nPilih tindakan di bawah:", getMainKeyboard());
-                    } else if (text === '/kirim' || text === '/kirim_wa') {
+                    // Cek pembatalan input
+                    if (lowerText === '/batal' || lowerText === 'batal') {
+                        delete userSession[fromId];
+                        await sendTg(fromId, "🛑 Aksi dibatalkan. Kembali ke menu utama.", getMainKeyboard());
+                        continue;
+                    }
+
+                    // A: Jika user sedang dalam state menunggu penulisan pesan kustom
+                    if (userSession[fromId] && userSession[fromId].state === 'WAITING_CUSTOM_TEXT') {
+                        const formatted = buildCustomTemplate(rawText);
+                        userSession[fromId] = {
+                            state: 'CONFIRM_CUSTOM_SEND',
+                            pendingMsg: formatted
+                        };
+
                         const keyboard = {
                             inline_keyboard: [
                                 [
-                                    { text: "📢 Kirim Pesan Baru (Pemberitahuan 3 Jam)", callback_data: "ask_confirm_new" }
+                                    { text: "🚨 YA, KIRIM KE WA TIARA SEKARANG", callback_data: "confirm_send_custom" }
                                 ],
                                 [
-                                    { text: "🚨 Kirim Transmisi 7 Hari (Darurat)", callback_data: "ask_confirm_7d" }
-                                ],
-                                [
-                                    { text: "❌ BATALKAN", callback_data: "cancel_send" }
+                                    { text: "✏️ Tulis Ulang", callback_data: "ask_custom_input" },
+                                    { text: "❌ Batalkan", callback_data: "cancel_send" }
                                 ]
                             ]
                         };
-                        await sendTg(fromId, `⚠️ *PILIH PESAN YANG AKAN DIKIRIM KE TIARA*\n📱 *${TIARA_WA}*`, keyboard);
-                    } else if (text === '/status') {
+
+                        const previewText = `📋 *PRATINJAU PESAN KUSTOM YANG AKAN DIKIRIM:*\nTarget: WhatsApp Tiara (*${TIARA_WA}*)\n\n\`\`\`\n${formatted}\n\`\`\`\n\nKirim pesan di atas sekarang?`;
+                        await sendTg(fromId, previewText, keyboard);
+                        continue;
+                    }
+
+                    // B: Perintah cepat langsung: /pesan <isi> atau /tulis <isi> atau /custom <isi>
+                    if (lowerText.startsWith('/pesan ') || lowerText.startsWith('/tulis ') || lowerText.startsWith('/custom ')) {
+                        const content = rawText.replace(/^\/(pesan|tulis|custom)\s+/i, '').trim();
+                        if (!content) {
+                            await sendTg(fromId, "⚠️ Isi pesan tidak boleh kosong.\nContoh penggunaan:\n`/pesan Halo sayang, ini pesan dari aku...`", getMainKeyboard());
+                            continue;
+                        }
+
+                        const formatted = buildCustomTemplate(content);
+                        userSession[fromId] = {
+                            state: 'CONFIRM_CUSTOM_SEND',
+                            pendingMsg: formatted
+                        };
+
+                        const keyboard = {
+                            inline_keyboard: [
+                                [
+                                    { text: "🚨 YA, KIRIM KE WA TIARA SEKARANG", callback_data: "confirm_send_custom" }
+                                ],
+                                [
+                                    { text: "✏️ Tulis Ulang", callback_data: "ask_custom_input" },
+                                    { text: "❌ Batalkan", callback_data: "cancel_send" }
+                                ]
+                            ]
+                        };
+
+                        const previewText = `📋 *PRATINJAU PESAN KUSTOM:*\nTarget: WhatsApp Tiara (*${TIARA_WA}*)\n\n\`\`\`\n${formatted}\n\`\`\`\n\nKirim pesan di atas sekarang?`;
+                        await sendTg(fromId, previewText, keyboard);
+                        continue;
+                    }
+
+                    // C: Menu Umum
+                    if (lowerText === '/start' || lowerText === '/menu' || lowerText === '/help') {
+                        await sendTg(fromId, "🤖 *KONTROL PUSAT PROTOKOL DEADMAN*\n\nSelamat datang, Wafi. Kamu bisa mengirim pesan template otomatis atau menulis pesan kustom sendiri langsung dari Telegram ini.\n\nPilih tindakan di bawah:", getMainKeyboard());
+                    } else if (lowerText === '/kirim' || lowerText === '/kirim_wa') {
+                        await sendTg(fromId, "⚠️ *PILIH TINDAKAN PENGIRIMAN:*\n\nKamu bisa menulis pesan kustom sendiri atau memilih pesan transmisi yang sudah disiapkan:", getMainKeyboard());
+                    } else if (lowerText === '/status') {
                         try {
                             const st = await checkFonnteStatus();
-                            await sendTg(fromId, `📊 *STATUS WHATSAPP GATEWAY:*\n- Status: ${st.device_status}\n- Nomor Pengirim: ${st.device}\n- Kuota: ${st.quota}\n- Masa Aktif: ${st.expired}`);
+                            await sendTg(fromId, `📊 *STATUS WHATSAPP GATEWAY:*\n- Status: ${st.device_status || 'Unknown'}\n- Nomor Pengirim: ${st.device || '-'}\n- Kuota: ${st.quota || '-'}\n- Masa Aktif: ${st.expired || '-'}`, getMainKeyboard());
                         } catch (e) {
-                            await sendTg(fromId, `❌ Gagal: ${e.message}`);
+                            await sendTg(fromId, `❌ Gagal: ${e.message}`, getMainKeyboard());
                         }
+                    } else {
+                        // Teks bebas saat tidak dalam mode tulis
+                        await sendTg(fromId, "🤖 *PERINTAH TIDAK DIKENALI*\n\nUntuk menulis pesan kustom ke Tiara, klik tombol **'✍️ Tulis Pesan Kustom Sendiri'** di bawah, atau ketik:\n`/pesan <isi pesan kamu>`", getMainKeyboard());
                     }
                 }
             }
@@ -311,7 +413,7 @@ async function pollUpdates() {
 
 console.log("Deadman Telegram Bridge is ACTIVE and listening...");
 
-// Kirim sinyal siap & tombol langsung ke Telegram Wafi saat daemon aktif
-sendTg(ALLOWED_CHAT_ID, "🤖 *UPDATE SISTEM PROTOKOL DEADMAN BERHASIL*\n\nPesan baru (Pemberitahuan 3 Jam) sudah siap dikirim ke WhatsApp Tiara.\n\nKlik tombol di bawah untuk langsung eksekusi:", getMainKeyboard()).catch(e => console.error('[NOTIF ERR]', e.message));
+// Kirim sinyal siap & menu interaktif ke Telegram Wafi saat daemon aktif
+sendTg(ALLOWED_CHAT_ID, "🤖 *SISTEM TEMPLATE KUSTOM TELEGRAM AKTIF*\n\nSekarang kamu bisa menulis pesan kustom sendiri langsung dari Telegram kapan saja tanpa perlu mengubah kodingan!\n\nTemplate otomatis:\n```\n[SYSTEM AUTOMATED MESSAGE: PROTOKOL DEADMAN AKTIF]\n[STATUS: PEMEBRITAHUAN]\n\n<isi pesan kamu>\n\n[END OF TRANSMISSION]\n```\n\nSilakan pilih menu di bawah:", getMainKeyboard()).catch(e => console.error('[NOTIF ERR]', e.message));
 
 pollUpdates();
