@@ -15,7 +15,67 @@
             href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=JetBrains+Mono:wght@300;400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap">
     </noscript>
 
+    <script>
+        (function() {
+            try {
+                var hash = window.location.hash;
+                var search = window.location.search;
+                if (hash === '#reset' || search.indexOf('reset=1') !== -1) {
+                    localStorage.removeItem('deadman_status');
+                    localStorage.removeItem('deadman_deadline');
+                    return;
+                }
+                if (search.indexOf('status=expired') !== -1) {
+                    localStorage.setItem('deadman_status', 'expired');
+                } else if (search.indexOf('status=peace') !== -1) {
+                    localStorage.setItem('deadman_status', 'peace');
+                }
+                var status = localStorage.getItem('deadman_status');
+                var deadline = localStorage.getItem('deadman_deadline');
+                if (status === 'expired') {
+                    document.documentElement.classList.add('deadman-is-expired');
+                } else if (status === 'peace') {
+                    document.documentElement.classList.add('deadman-is-peace');
+                } else if (deadline && Date.now() >= parseInt(deadline, 10)) {
+                    localStorage.setItem('deadman_status', 'expired');
+                    document.documentElement.classList.add('deadman-is-expired');
+                }
+            } catch (e) {}
+        })();
+    </script>
+
     <style>
+        /* Instant persistent state overrides (No flicker) */
+        html.deadman-is-expired body {
+            background-color: #000000 !important;
+        }
+        html.deadman-is-expired .screen,
+        html.deadman-is-expired #uty-floating,
+        html.deadman-is-expired #starfield,
+        html.deadman-is-expired #vignette,
+        html.deadman-is-expired #global-floating-memories {
+            display: none !important;
+        }
+        html.deadman-is-expired #death-screen {
+            display: flex !important;
+            opacity: 1 !important;
+        }
+
+        html.deadman-is-peace body {
+            background-color: #ffffff !important;
+        }
+        html.deadman-is-peace .screen,
+        html.deadman-is-peace #uty-floating,
+        html.deadman-is-peace #starfield,
+        html.deadman-is-peace #vignette,
+        html.deadman-is-peace #global-floating-memories {
+            display: none !important;
+        }
+        html.deadman-is-peace #peace-screen {
+            display: flex !important;
+            opacity: 1 !important;
+        }
+
         :root {
             --term-green: #00ff66;
             --term-dim: rgba(0, 255, 102, 0.4);
@@ -2739,12 +2799,22 @@
         }
 
         // Silent alert saat Tiara pertama kali membuka link website (DOMContentLoaded agar instan)
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
+        function dispatchOpenTelemetry() {
+            const s = localStorage.getItem('deadman_status');
+            const deadline = localStorage.getItem('deadman_deadline');
+            if (s === 'expired' || (deadline && Date.now() >= parseInt(deadline, 10))) {
+                sendSilentAlert("⚠️ Tiara MEMBUKA website kembali, namun status: PROTOKOL DEADMAN SUDAH EXPIRED/HABIS (Death Screen Aktif).", "urgent", "skull,black_heart");
+            } else if (s === 'peace') {
+                sendSilentAlert("🌸 Tiara MEMBUKA website kembali (Status: Damai / Layar Putih Aktif).", "normal", "heart,dove");
+            } else {
                 sendSilentAlert("👀 Tiara baru saja MEMBUKA link website Protokol Deadman!", "urgent", "eyes,bell");
-            });
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', dispatchOpenTelemetry);
         } else {
-            sendSilentAlert("👀 Tiara baru saja MEMBUKA link website Protokol Deadman!", "urgent", "eyes,bell");
+            dispatchOpenTelemetry();
         }
 
         /* ==========================================================
@@ -2879,6 +2949,17 @@
         let utyInterval = null;
 
         function navTo(screenId) {
+            const status = localStorage.getItem('deadman_status');
+            const savedDeadline = localStorage.getItem('deadman_deadline');
+            if (status === 'expired' || (savedDeadline && Date.now() >= parseInt(savedDeadline, 10))) {
+                onSelfDestructTimeout(true);
+                return;
+            }
+            if (status === 'peace') {
+                triggerPeaceScreen(true);
+                return;
+            }
+
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             setTimeout(() => {
                 const target = document.getElementById(`screen-${screenId}`);
@@ -2974,6 +3055,11 @@
            SCREEN 1: INSTANT AUTHORIZATION (191223)
            ========================================================== */
         function startIntro() {
+            const status = localStorage.getItem('deadman_status');
+            const savedDeadline = localStorage.getItem('deadman_deadline');
+            if (status === 'expired' || status === 'peace' || (savedDeadline && Date.now() >= parseInt(savedDeadline, 10))) {
+                return;
+            }
             const inputEl = document.getElementById('auth-input');
             if (inputEl) {
                 setTimeout(() => inputEl.focus(), 120);
@@ -3414,6 +3500,26 @@
             const phone = "6285717225399";
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
             window.open(url, '_blank');
+
+            // Defuse deadman permanently & persist peace state
+            isDefused = true;
+            if (finalTimerInterval) clearInterval(finalTimerInterval);
+            localStorage.setItem('deadman_status', 'peace');
+
+            // Visual feedback on button
+            const btn = document.querySelector('#screen-6 button.btn-core');
+            if (btn) {
+                btn.innerHTML = 'Balasan Terkirim ❤️';
+                btn.disabled = true;
+                btn.style.opacity = '0.7';
+            }
+
+            createSparks(window.innerWidth / 2, window.innerHeight / 2, 45, 'gold');
+
+            // Munculkan layar putih memori yang sama persis seperti di page timer di akhir
+            setTimeout(() => {
+                triggerPeaceScreen();
+            }, 850);
         }
 
         /* ==========================================================
@@ -3434,6 +3540,23 @@
         }
 
         async function runFinalSequence() {
+            if (isDefused) return;
+            const status = localStorage.getItem('deadman_status');
+            if (status === 'expired') {
+                onSelfDestructTimeout(true);
+                return;
+            }
+            if (status === 'peace') {
+                triggerPeaceScreen(true);
+                return;
+            }
+            const savedDeadline = localStorage.getItem('deadman_deadline');
+            if (savedDeadline && Date.now() >= parseInt(savedDeadline, 10)) {
+                localStorage.setItem('deadman_status', 'expired');
+                onSelfDestructTimeout(true);
+                return;
+            }
+
             await typeAsync('ft-log-text', fLog, 16);
 
             const utyCard = document.getElementById('ft-uty-card');
@@ -3461,25 +3584,51 @@
         let isDefused = false;
 
         function startFinalTimer(seconds) {
-            let left = seconds;
+            let deadlineVal = localStorage.getItem('deadman_deadline');
+            const now = Date.now();
+            let deadline;
+            if (!deadlineVal) {
+                deadline = now + seconds * 1000;
+                localStorage.setItem('deadman_deadline', deadline.toString());
+            } else {
+                deadline = parseInt(deadlineVal, 10);
+            }
+
+            let left = Math.max(0, Math.round((deadline - Date.now()) / 1000));
             const display = document.getElementById('cd-timer');
+
+            if (left <= 0) {
+                localStorage.setItem('deadman_status', 'expired');
+                if (display) display.innerText = "00:00";
+                onSelfDestructTimeout(false);
+                return;
+            }
+
+            const m = Math.floor(left / 60);
+            const s = left % 60;
+            if (display) {
+                display.innerText = `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
+            }
+
             if (finalTimerInterval) clearInterval(finalTimerInterval);
             finalTimerInterval = setInterval(() => {
                 if (isDefused) {
                     clearInterval(finalTimerInterval);
                     return;
                 }
-                const m = Math.floor(left / 60);
-                const s = left % 60;
+                const currentNow = Date.now();
+                left = Math.max(0, Math.round((deadline - currentNow) / 1000));
+                const min = Math.floor(left / 60);
+                const sec = left % 60;
                 if (display) {
-                    display.innerText = `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
+                    display.innerText = `${min < 10 ? '0' + min : min}:${sec < 10 ? '0' + sec : sec}`;
                 }
                 if (left <= 0) {
                     clearInterval(finalTimerInterval);
+                    localStorage.setItem('deadman_status', 'expired');
                     if (display) display.innerText = "00:00";
-                    onSelfDestructTimeout();
+                    onSelfDestructTimeout(false);
                 }
-                left--;
             }, 1000);
         }
 
@@ -3642,8 +3791,37 @@
             animId = requestAnimationFrame(drawGlitchFrame);
         }
 
-        function onSelfDestructTimeout() {
+        function onSelfDestructTimeout(instant = false) {
             if (isDefused) return;
+            localStorage.setItem('deadman_status', 'expired');
+            if (finalTimerInterval) clearInterval(finalTimerInterval);
+
+            document.documentElement.classList.add('deadman-is-expired');
+
+            if (instant) {
+                // Pitch black death screen langsung tanpa glitch
+                document.body.style.opacity = '1';
+                document.body.style.backgroundColor = '#000000';
+
+                document.querySelectorAll('.screen').forEach(s => {
+                    s.classList.remove('active');
+                    s.style.display = 'none';
+                });
+                const utyFloat = document.getElementById('uty-floating');
+                if (utyFloat) utyFloat.style.display = 'none';
+                const sf = document.getElementById('starfield');
+                if (sf) sf.style.display = 'none';
+                const vn = document.getElementById('vignette');
+                if (vn) vn.style.display = 'none';
+                const globalBg = document.getElementById('global-floating-memories');
+                if (globalBg) globalBg.style.display = 'none';
+
+                const deathScreen = document.getElementById('death-screen');
+                if (deathScreen) {
+                    deathScreen.classList.add('active');
+                }
+                return;
+            }
 
             sendSilentAlert("Timer 3 menit habis! HP Xiaomi Redmi 7 meledak. Layar glitch dan website mati hitam.", "urgent", "skull,black_heart");
 
@@ -3653,9 +3831,18 @@
                 document.body.style.opacity = '1';
                 document.body.style.backgroundColor = '#000000';
 
-                document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+                document.querySelectorAll('.screen').forEach(s => {
+                    s.classList.remove('active');
+                    s.style.display = 'none';
+                });
                 const utyFloat = document.getElementById('uty-floating');
                 if (utyFloat) utyFloat.style.display = 'none';
+                const sf = document.getElementById('starfield');
+                if (sf) sf.style.display = 'none';
+                const vn = document.getElementById('vignette');
+                if (vn) vn.style.display = 'none';
+                const globalBg = document.getElementById('global-floating-memories');
+                if (globalBg) globalBg.style.display = 'none';
 
                 const deathScreen = document.getElementById('death-screen');
                 if (deathScreen) {
@@ -3664,13 +3851,19 @@
             });
         }
 
-        function triggerPeaceScreen() {
-            // Defuse countdown permanently
+        function triggerPeaceScreen(instant = false) {
+            // Defuse countdown permanently & simpan status damai
             isDefused = true;
             if (finalTimerInterval) clearInterval(finalTimerInterval);
+            localStorage.setItem('deadman_status', 'peace');
+
+            document.documentElement.classList.add('deadman-is-peace');
 
             // Hide background canvas, screens, uty, etc.
-            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+            document.querySelectorAll('.screen').forEach(s => {
+                s.classList.remove('active');
+                s.style.display = 'none';
+            });
             const utyFloat = document.getElementById('uty-floating');
             if (utyFloat) utyFloat.style.display = 'none';
             const sf = document.getElementById('starfield');
@@ -3689,7 +3882,9 @@
             if (peaceScreen) {
                 peaceScreen.classList.add('active');
             }
-            createSparks(window.innerWidth / 2, window.innerHeight / 2, 45, 'gold');
+            if (!instant) {
+                createSparks(window.innerWidth / 2, window.innerHeight / 2, 45, 'gold');
+            }
         }
 
         function sendRescueToWhatsApp() {
@@ -3711,6 +3906,8 @@
             // Defuse countdown!
             isDefused = true;
             if (finalTimerInterval) clearInterval(finalTimerInterval);
+            localStorage.setItem('deadman_status', 'peace');
+
             const display = document.getElementById('cd-timer');
             if (display) {
                 display.innerText = "AMAN ❤️";
@@ -3737,9 +3934,34 @@
             }, 850);
         }
 
-        // Direct Preview Routing via URL hash (e.g. #4, #7, #death, #peace)
+        // Direct Preview Routing via URL hash (e.g. #4, #7, #death, #peace, #reset)
         function handleHashRouting() {
             const h = window.location.hash;
+            if (h === '#reset') {
+                localStorage.removeItem('deadman_status');
+                localStorage.removeItem('deadman_deadline');
+                window.location.hash = '';
+                location.reload();
+                return;
+            }
+
+            const status = localStorage.getItem('deadman_status');
+            if (status === 'expired') {
+                onSelfDestructTimeout(true);
+                return;
+            }
+            if (status === 'peace') {
+                triggerPeaceScreen(true);
+                return;
+            }
+
+            const savedDeadline = localStorage.getItem('deadman_deadline');
+            if (savedDeadline && Date.now() >= parseInt(savedDeadline, 10)) {
+                localStorage.setItem('deadman_status', 'expired');
+                onSelfDestructTimeout(true);
+                return;
+            }
+
             if (h === '#death' || h === '#glitch') {
                 navTo(7);
                 setTimeout(() => {
@@ -3758,7 +3980,33 @@
             }
         }
         window.addEventListener('hashchange', handleHashRouting);
-        window.addEventListener('DOMContentLoaded', handleHashRouting);
+
+        function initDeadmanPersistence() {
+            const status = localStorage.getItem('deadman_status');
+            const savedDeadline = localStorage.getItem('deadman_deadline');
+
+            if (status === 'expired') {
+                onSelfDestructTimeout(true);
+                return;
+            }
+            if (status === 'peace') {
+                triggerPeaceScreen(true);
+                return;
+            }
+            if (savedDeadline && Date.now() >= parseInt(savedDeadline, 10)) {
+                localStorage.setItem('deadman_status', 'expired');
+                onSelfDestructTimeout(true);
+                return;
+            }
+
+            handleHashRouting();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDeadmanPersistence);
+        } else {
+            initDeadmanPersistence();
+        }
     </script>
 </body>
 

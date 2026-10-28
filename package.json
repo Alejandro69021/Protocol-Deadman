@@ -4,7 +4,8 @@
   "description": "Protokol Deadman Web",
   "main": "index.html",
   "scripts": {
-    "dev": "npx serve ."
+    "dev": "npx serve .",
+    "bridge": "node telegram-bridge.js"
   },
   "keywords": [],
   "author": "",

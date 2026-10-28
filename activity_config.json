@@ -1,0 +1,44 @@
+{
+  "target_wa": "6285717225399",
+  "target_label": "WA Ku (Wafi)",
+  "auto_mode": false,
+  "schedules": [
+    {
+      "id": "sarapan",
+      "label": "Sarapan Pagi",
+      "time": "08:00",
+      "enabled": true,
+      "template": "Sudah sarapan pagi ini! Energi siap untuk memulai aktivitas."
+    },
+    {
+      "id": "makan_siang",
+      "label": "Makan Siang",
+      "time": "12:30",
+      "enabled": true,
+      "template": "Sudah masuk jam makan siang & istirahat sejenak! Jangan lupa makan yang cukup."
+    },
+    {
+      "id": "kabar_sore",
+      "label": "Kabar Sore / Aktivitas",
+      "time": "16:30",
+      "enabled": true,
+      "template": "Update sore: Sedang menyelesaikan agenda hari ini sebelum pulang/istirahat."
+    },
+    {
+      "id": "makan_malam",
+      "label": "Makan Malam",
+      "time": "19:30",
+      "enabled": true,
+      "template": "Sudah makan malam dan santai sejenak untuk melepas lelah."
+    },
+    {
+      "id": "rekap_malam",
+      "label": "Rekap Aktivitas & Istirahat",
+      "time": "22:00",
+      "enabled": true,
+      "template": "Semua agenda hari ini selesai. Waktunya istirahat tidur malam agar besok kembali bugar."
+    }
+  ],
+  "recent_logs": [],
+  "last_triggered": {}
+}
