@@ -5,7 +5,9 @@
   "main": "index.html",
   "scripts": {
     "dev": "npx serve .",
-    "bridge": "node telegram-bridge.js"
+    "bridge": "node telegram-bridge.js",
+    "uty": "node ai-uty-bot.js",
+    "start": "node start-all.js"
   },
   "keywords": [],
   "author": "",

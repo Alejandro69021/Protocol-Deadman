@@ -7,11 +7,18 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const TG_TOKEN = "8674896830:AAFnMAWzmNvnDXqKSNoK3yXVQvSaaz36sVw";
-const ALLOWED_CHAT_ID = "5443153034"; // ID Telegram Wafi
-const FONNTE_TOKEN = "B9xXX9Muj7Ji71f6AKLN";
-const TIARA_WA = "6285954113051";
-const WAFI_WA = "6285717225399";
+let config = {};
+try {
+    config = require('./config.json');
+} catch (e) {
+    config = {};
+}
+
+const TG_TOKEN = process.env.TG_TOKEN || config.TG_TOKEN || "8674896830:AAFnMAWzmNvnDXqKSNoK3yXVQvSaaz36sVw";
+const ALLOWED_CHAT_ID = process.env.ALLOWED_CHAT_ID || config.ALLOWED_CHAT_ID || "5443153034"; // ID Telegram Wafi
+const FONNTE_TOKEN = process.env.FONNTE_TOKEN || config.FONNTE_TOKEN || "B9xXX9Muj7Ji71f6AKLN";
+const TIARA_WA = process.env.TIARA_WA || config.TIARA_WA || "6285954113051";
+const WAFI_WA = process.env.WAFI_WA || config.WAFI_WA || "6285717225399";
 
 const CONFIG_FILE = path.join(__dirname, 'activity_config.json');
 
